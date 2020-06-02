@@ -1,6 +1,6 @@
 package egovframework.com.lpmg.dao;
 
-public class LoginPolicyManagerVo {
+public class LoginPolicyHitRegisterVo {
 
 	private String blkIp;
 	private String addUsrid;

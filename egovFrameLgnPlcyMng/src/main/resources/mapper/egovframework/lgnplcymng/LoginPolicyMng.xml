@@ -1,62 +1,86 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="egovframework.com.auth.dao.AuthInfoDao">
+<mapper namespace="egovframework.com.lpmg.dao.LoginPolicyManagerDao">
 
-	<!-- Maria -->
-    <select id="selectAuthList" resultType="hashMap">
-			SELECT AUTHOR_CODE
-			     , AUTHOR_NM
-			     , AUTHOR_DC
-			     , AUTHOR_CREAT_DT
-			     , CHANGE_DT
-			  FROM COMTNAUTHORINFO
-    </select>
-    
-    <select id="selectAuthDetail"  parameterType="Map" resultType="hashMap">
-			SELECT AUTHOR_CODE
-			     , AUTHOR_NM
-			     , AUTHOR_DC
-			     , AUTHOR_CREAT_DT
-			     , CHANGE_DT
-			  FROM COMTNAUTHORINFO
-			 WHERE AUTHOR_CODE = '${AUTHCD}'
+    <select id="selectLgPlcyList" resultType="hashMap">
+			SELECT POLICY_ID
+			     , POLICY_NM
+			     , POLICY_DC
+			     , POLICY_BGNDT
+			     , POLICY_ENDDT
+			     , POLICY_APPY_YN
+			     , POLICY_REGIST_DT
+			     , POLICY_APPY_USRID 
+			  FROM COMTNLOGINPOLICY
     </select>
 
 
-    <insert id="insertAuthInfo" parameterType="hashMap">
-			INSERT INTO COMTNAUTHORINFO (
-			  AUTHOR_CODE
-			, AUTHOR_NM
-			, AUTHOR_DC
-			, AUTHOR_CREAT_DT
-			, CHANGE_DT
+    <select id="selectLgPlcyDetail"  parameterType="Map" resultType="hashMap">
+			SELECT POLICY_ID
+			     , POLICY_NM
+			     , POLICY_DC
+			     , POLICY_BGNDT
+			     , POLICY_ENDDT
+			     , POLICY_APPY_YN
+			     , POLICY_REGIST_DT
+			     , POLICY_APPY_USRID 
+			  FROM COMTNLOGINPOLICY
+			 WHERE POLICY_ID = '${PLCYID}'
+    </select>
+
+
+    <select id="selectLgPlcyInfoCnt" parameterType="Map" resultType="int">
+			SELECT COUNT(*) CNT
+			  FROM COMTNLOGINPOLICY
+			 WHERE POLICY_ID = '${PLCYID}'
+    </select>
+
+    <insert id="insertLgPlcyInfo" parameterType="hashMap">
+			INSERT INTO COMTNLOGINPOLICY (
+				 POLICY_ID
+				, POLICY_NM
+				, POLICY_DC
+				, POLICY_BGNDT
+				, POLICY_ENDDT
+				, POLICY_APPY_YN
+				, POLICY_REGIST_DT
+				, POLICY_APPY_USRID
 			) VALUES (
-			  #{AUTHCD}
-			, #{AUTHNM}
-			, #{AUTHDC}
-			, DATE_FORMAT(CURRENT_TIMESTAMP, '%Y%m%d%H%i%s')
-			, DATE_FORMAT(CURRENT_TIMESTAMP, '%Y%m%d%H%i%s')
+				  #{PLCYID}
+				, #{PLCYNM}
+				, #{PLCYDC}
+				, #{PLCYBGNDT}
+				, #{PLCYENDDT}
+				, #{PLCYAPPYYN}
+				, DATE_FORMAT(CURRENT_TIMESTAMP, '%Y%m%d%H%i%s')
+				, #{PLCYAPPYUSRID}
 			)
     </insert>
-    
-    <update id="updateAuthInfo" parameterType="hashMap">
-			UPDATE COMTNAUTHORINFO
+
+    <update id="updateLgPlcyInfo" parameterType="hashMap">
+			UPDATE COMTNLOGINPOLICY
 			   SET CHANGE_DT = DATE_FORMAT(CURRENT_TIMESTAMP, '%Y%m%d%H%i%s')
-			    <if test='AUTHNM != null'> 	, AUTHOR_NM	= '${AUTHNM}' 	</if>
-			    <if test='AUTHDC != null'> 	, AUTHOR_DC	= '${AUTHDC}' 	</if>
-			 WHERE AUTHOR_CODE           = '${AUTHCD}'
+			    <if test='PLCYNM != null'> 	, POLICY_NM	= '${PLCYNM}' 	</if>
+			    <if test='PLCYDC != null'> 	, POLICY_DC	= '${PLCYDC}' 	</if>
+			    <if test='PLCYBGNDT != null'> 	, POLICY_BGNDT	= '${PLCYBGNDT}' 	</if>
+			    <if test='PLCYENDDT != null'> 	, POLICY_ENDDT	= '${PLCYENDDT}' 	</if>
+			    <if test='PLCYAPPYYN != null'> 	, POLICY_APPY_YN	= '${PLCYAPPYYN}' 	</if>
+			    <if test='PLCYAPPYUSRID != null'> 	, POLICY_APPY_USRID	= '${PLCYAPPYUSRID}' 	</if>
+			 WHERE POLICY_ID = '${PLCYID}'
     </update>
     
-    <delete id="deleteAuthInfo" parameterType="hashMap">
-			DELETE FROM COMTNAUTHORINFO
-			 WHERE AUTHOR_CODE           = '${AUTHCD}'
+    <delete id="deleteLgPlcyInfo" parameterType="hashMap">
+			DELETE FROM COMTNLOGINPOLICY
+			 WHERE POLICY_ID = '${PLCYID}'
     </delete>
+
     
-    <select id="selectAuthInfoCnt" parameterType="Map" resultType="int">
-			SELECT COUNT(*) CNT
-			  FROM COMTNAUTHORINFO
-			 WHERE AUTHOR_CODE = '${AUTHCD}'
-    </select>
-    
+    <update id="updateLgPlcyStat" parameterType="hashMap">
+			UPDATE COMTNLOGINPOLICY
+			   SET CHANGE_DT = DATE_FORMAT(CURRENT_TIMESTAMP, '%Y%m%d%H%i%s')
+			    <if test='PLCYAPPYYN != null'> 	, POLICY_APPY_YN	= '${PLCYAPPYYN}' 	</if>
+			    <if test='PLCYAPPYUSRID != null'> 	, POLICY_APPY_USRID	= '${PLCYAPPYUSRID}' 	</if>
+			 WHERE POLICY_ID = '${PLCYID}'
+    </update>
     
 </mapper> 

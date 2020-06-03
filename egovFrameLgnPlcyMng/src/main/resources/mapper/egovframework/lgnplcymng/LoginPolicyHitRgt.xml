@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovframework.com.lpmg.dao.LoginPolicyManagerDao">
+
+    <select id="selectHitRgstList" resultType="hashMap">
+			SELECT a.USR_ID
+			     , a.POLICY_ID
+			     , nullif(b.POLICY_NM,'-정책미등록-') AS POLICY_NM 
+			     , COUNT(*) CNT
+			  FROM COMTNLOGINPOLICYHITHISTORY a
+			  	   LEFT OUTER JOIN
+			        COMTNLOGINPOLICY b
+			       ON (a.POLICY_ID  = b.POLICY_ID) 
+			 GROUP BY a.USR_ID, a.POLICY_ID
+    </select>
+
+
+    <select id="selectHitRgstUsrList"  parameterType="Map" resultType="hashMap">
+			SELECT a.USR_ID
+			     , a.POLICY_ID
+			     , nullif(b.POLICY_NM,'-정책미등록-') AS POLICY_NM 
+			     , COUNT(*) CNT
+			  FROM COMTNLOGINPOLICYHITHISTORY a
+			  	   LEFT OUTER JOIN
+			        COMTNLOGINPOLICY b
+			       ON (a.POLICY_ID  = b.POLICY_ID)
+			 WHERE a.USR_ID = '${USRID}'			       
+			 GROUP BY a.USR_ID, a.POLICY_ID
+
+    </select>
+
+
+    <select id="selectLgPlcyInfoCnt" parameterType="Map" resultType="int">
+			SELECT COUNT(*) CNT
+			  FROM COMTNLOGINPOLICY
+			 WHERE POLICY_ID = '${PLCYID}'
+    </select>
+
+    <insert id="insertLgPlcyInfo" parameterType="hashMap">
+			INSERT INTO COMTNLOGINPOLICY (
+				 POLICY_ID
+				, POLICY_NM
+				, POLICY_DC
+				, POLICY_BGNDT
+				, POLICY_ENDDT
+				, POLICY_APPY_YN
+				, POLICY_REGIST_DT
+				, POLICY_APPY_USRID
+			) VALUES (
+				  #{PLCYID}
+				, #{PLCYNM}
+				, #{PLCYDC}
+				, #{PLCYBGNDT}
+				, #{PLCYENDDT}
+				, #{PLCYAPPYYN}
+				, DATE_FORMAT(CURRENT_TIMESTAMP, '%Y%m%d%H%i%s')
+				, #{PLCYAPPYUSRID}
+			)
+    </insert>
+
+    <update id="updateLgPlcyInfo" parameterType="hashMap">
+			UPDATE COMTNLOGINPOLICY
+			   SET CHANGE_DT = DATE_FORMAT(CURRENT_TIMESTAMP, '%Y%m%d%H%i%s')
+			    <if test='PLCYNM != null'> 	, POLICY_NM	= '${PLCYNM}' 	</if>
+			    <if test='PLCYDC != null'> 	, POLICY_DC	= '${PLCYDC}' 	</if>
+			    <if test='PLCYBGNDT != null'> 	, POLICY_BGNDT	= '${PLCYBGNDT}' 	</if>
+			    <if test='PLCYENDDT != null'> 	, POLICY_ENDDT	= '${PLCYENDDT}' 	</if>
+			    <if test='PLCYAPPYYN != null'> 	, POLICY_APPY_YN	= '${PLCYAPPYYN}' 	</if>
+			    <if test='PLCYAPPYUSRID != null'> 	, POLICY_APPY_USRID	= '${PLCYAPPYUSRID}' 	</if>
+			 WHERE POLICY_ID = '${PLCYID}'
+    </update>
+    
+    <delete id="deleteLgPlcyInfo" parameterType="hashMap">
+			DELETE FROM COMTNLOGINPOLICY
+			 WHERE POLICY_ID = '${PLCYID}'
+    </delete>
+
+    
+    <update id="updateLgPlcyStat" parameterType="hashMap">
+			UPDATE COMTNLOGINPOLICY
+			   SET CHANGE_DT = DATE_FORMAT(CURRENT_TIMESTAMP, '%Y%m%d%H%i%s')
+			    <if test='PLCYAPPYYN != null'> 	, POLICY_APPY_YN	= '${PLCYAPPYYN}' 	</if>
+			    <if test='PLCYAPPYUSRID != null'> 	, POLICY_APPY_USRID	= '${PLCYAPPYUSRID}' 	</if>
+			 WHERE POLICY_ID = '${PLCYID}'
+    </update>
+    
+</mapper> 

@@ -14,6 +14,9 @@ public interface LoginPolicyHitRegisterDao {
 	//차단대상IP 목록 조회
 	List<HashMap<Object, Object>> selectHitRgstList();
 
+	//차단대상IP 목록 조회
+	List<HashMap<Object, Object>> selectHitRgstUsrList();
+
 	//차단대상IP 기등록여부 확인
 	int selectLgPlcyHitRgstCnt(Map<Object, Object> param);
 

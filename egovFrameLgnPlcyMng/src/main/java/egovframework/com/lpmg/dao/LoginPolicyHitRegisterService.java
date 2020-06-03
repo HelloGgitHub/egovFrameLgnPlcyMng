@@ -21,6 +21,11 @@ public class LoginPolicyHitRegisterService {
         return mapper.selectHitRgstList();
     }	
 
+	//차단대상IP 목록 조회
+//	public List<HashMap<Object, Object>> selectHitRgstUsrList() {
+////        return mapper.selectHitRgsUsrtList();
+//    }	
+
 	//차단대상IP 기등록여부 확인
 	public int selectLgPlcyHitRgstCnt(Map<Object, Object> param) {
         return mapper.selectLgPlcyHitRgstCnt(param);

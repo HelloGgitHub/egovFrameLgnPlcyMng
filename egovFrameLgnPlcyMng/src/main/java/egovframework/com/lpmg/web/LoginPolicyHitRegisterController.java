@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,16 +29,16 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@Api(value = "LoginPolicyDpIpController", description = "로그인정책 차단IP 정보 관리 REST API")
-@RequestMapping("/lgDpIp")
+@Api(value = "LoginPolicyHitRegisterController", description = "로그인정책 적중이력 정보 관리 REST API")
+@RequestMapping("/lgHRgt")
 public class LoginPolicyHitRegisterController {
 	
 	@Autowired
 	LoginPolicyHitRegisterService lgnPlcyHitRegstService;
 	
-	@ApiOperation(value = "사용자별 ID/PW 오류 횟수 조회")
+	@ApiOperation(value = "사용자별 로그인 적중이력 조회")
 	@GetMapping(path = "/list")
-	public String LgPlcyDpIpList() {
+	public String LgPlcyHitRgtList() {
 		
 		String rtn = "";
 		Map<String, Object> rtnMap = new HashMap<String, Object>();
@@ -69,6 +70,48 @@ public class LoginPolicyHitRegisterController {
 	}
 	
 	
+	@ApiOperation(value = "사용자 로그인 정책 적중이력")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(name = "userId", value = "사용자ID", required = true, dataType = "string", paramType = "path", defaultValue = "")
+    })
+	@GetMapping(path = "/list/{userId}")
+	public String LgPlcyHitRgtUser(@PathVariable("userId") String userId) throws Exception {
+		String rtn = "";
+		ObjectMapper om = new ObjectMapper();
+		Map<String, Object> rtnMap = new HashMap<String, Object>();
+		
+		try {
+			Map<Object, Object> sqlInpt = new HashMap<Object, Object>();
+			sqlInpt.put("USRID", URLDecoder.decode(userId		,"UTF-8"));
+			
+//			rtnMap = lgnPlcyHitRegstService.selectHitRgstUsrList(sqlInpt);
+			if(rtnMap==null) {
+				rtnMap = new HashMap<String, Object>();
+				rtnMap.put("RESULTCD", "0");
+				rtnMap.put("RESULTMSG", "대상건이 없습니다.");
+			}else {
+				rtnMap.put("RESULTCD", "0");
+				rtnMap.put("RESULTMSG", "정상 처리 되었습니다.");
+			}
+			System.out.println(rtnMap);
+		}catch (Exception e) {
+			e.getStackTrace();
+			System.out.println(e);
+			rtnMap.put("RESULTCD", "1");
+			rtnMap.put("RESULTMSG", "조회에 실패하였습니다.");
+		}
+		
+		try {
+			rtn = om.writeValueAsString(rtnMap);
+		} catch (JsonProcessingException e) {
+			rtn = "json Mapper Error.";
+			e.printStackTrace();
+		}
+		
+		return rtn;
+	}
+	
+	
 	@ApiOperation(value = "사용자별 ID/PW 오류 횟수 저장", notes = "사용자별 ID/PW 오류 횟수 저장 합니다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "OK !!"),
@@ -76,7 +119,7 @@ public class LoginPolicyHitRegisterController {
             @ApiResponse(code = 404, message = "Not Found !!")
     })
 	@PostMapping(path = "/addnew")
-	public String InsertLgPlcyDpIp(@RequestBody LoginPolicyDpIpVo param) throws Exception {
+	public String LgPlcyHitRgtInsert(@RequestBody LoginPolicyDpIpVo param) throws Exception {
 
 		String rtn = "";
 		ObjectMapper om = new ObjectMapper();
@@ -124,7 +167,7 @@ public class LoginPolicyHitRegisterController {
     	@ApiImplicitParam(name = "bkIp", value = "차단IP", required = true, dataType = "string", paramType = "query", defaultValue = "")
     })
 	@DeleteMapping(path = "/delete")
-	public String LgPlcyDeleteDpIp(@RequestParam(value = "bkIp") String bkIp) throws Exception {
+	public String LgPlcyHitRgtDelete(@RequestParam(value = "bkIp") String bkIp) throws Exception {
 		String rtn = "";
 		ObjectMapper om = new ObjectMapper();
 		Map<Object, Object> rtnMap = new HashMap<Object, Object>();

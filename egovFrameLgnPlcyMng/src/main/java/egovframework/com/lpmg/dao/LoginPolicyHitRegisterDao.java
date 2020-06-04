@@ -15,15 +15,17 @@ public interface LoginPolicyHitRegisterDao {
 	List<HashMap<Object, Object>> selectHitRgstList();
 
 	//차단대상IP 목록 조회
-	List<HashMap<Object, Object>> selectHitRgstUsrList();
-
-	//차단대상IP 기등록여부 확인
-	int selectLgPlcyHitRgstCnt(Map<Object, Object> param);
+	List<HashMap<Object, Object>> selectHitRgstUser(Map<Object, Object> param);
 
 	//차단대상IP 등록
 	int insertLgPlcyHitRgst(Map<Object, Object> param);
 	
-	//차단대상IP 삭제
-	int deleteLgPlcyHitRgst(Map<Object, Object> param);
+	//사용자 단위 적중이력 삭제
+	int deleteLgPlcyHitUsrRgst(Map<Object, Object> param);
+	//로그인정책 단위 적중이력 삭제
+	int deleteLgPlcyHitPlcyRgst(Map<Object, Object> param);
 	
+	
+	//로그인정책 조회
+	List<HashMap<String, Object>> selectLgPlcyHitlMsg(Map<Object, Object> param);
 }

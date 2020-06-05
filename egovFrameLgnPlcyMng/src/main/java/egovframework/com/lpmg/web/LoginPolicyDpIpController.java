@@ -28,7 +28,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @RestController
-@Api(value = "LoginPolicyDpIpController", description = "로그인정책 차단IP 정보 관리 REST API")
+@Api(value = "LoginPolicyDpIpController", description = "로그인정책 차단IP 정보 관리 REST APIaaaaaa")
 @RequestMapping("/lgDpIp")
 public class LoginPolicyDpIpController {
 	

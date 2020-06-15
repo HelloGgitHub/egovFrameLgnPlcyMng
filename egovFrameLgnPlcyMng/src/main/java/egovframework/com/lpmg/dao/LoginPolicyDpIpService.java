@@ -8,6 +8,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @title : 로그인정책 차단IP관리 Service  
+ * @package : egovframework.com.lpmg.dao
+ * @filename : LoginPolicyDpIpService.java
+ * @author : "egov"
+ * @since : 2020. 6. 15.
+ * @version : 1.0
+ * @desc : 로그인정책 차단IP목록 관리 Service 모음
+ * 
+ *  ======= 변경이력 =======
+ * 
+ * 날자                       변경자                  설명
+ * ----------         -------           ------------------------------------
+ * 2020. 6. 15.         "egov"           최초 생성(ver 1.0)
+ * 
+ */
 @Service
 @Transactional
 public class LoginPolicyDpIpService {
@@ -15,22 +31,42 @@ public class LoginPolicyDpIpService {
 	@Autowired
     private LoginPolicyDpIpDao mapper;
 	
-	
-	//차단대상IP 목록 조회
+	/**
+	 * @name : selectDpIpList(차단대상IP 목록 조회)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : List<HashMap<Object,Object>>
+	 */
 	public List<HashMap<Object, Object>> selectDpIpList() {
         return mapper.selectDpIpList();
     }	
 
-	//차단대상IP 기등록여부 확인
+	/**
+	 * @name : selectLgPlcyDpIpCnt(차단대상IP 기등록여부 확인)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : int
+	 */
 	public int selectLgPlcyDpIpCnt(Map<Object, Object> param) {
         return mapper.selectLgPlcyDpIpCnt(param);
     }
-	//차단대상IP 등록
+	
+	/**
+	 * @name : insertLgDpIp(차단대상IP 등록)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : int
+	 */
 	public int insertLgDpIp(Map<Object, Object> param) {
         return mapper.insertLgPlcyDpIp(param);
     }
 	 
-	//차단대상IP 삭제
+	/**
+	 * @name : deleteLgPlcyDpIp(차단대상IP 삭제)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : int
+	 */
 	public int deleteLgPlcyDpIp(Map<Object, Object> param) {
         return mapper.deleteLgPlcyDpIp(param);
     }

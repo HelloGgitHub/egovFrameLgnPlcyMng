@@ -9,6 +9,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @title : 로그인 정책 적중이력 관리 Service 
+ * @package : egovframework.com.lpmg.dao
+ * @filename : LoginPolicyHitRegisterService.java
+ * @author : "egov"
+ * @since : 2020. 6. 15.
+ * @version : 1.0
+ * @desc : 로그인 정책 적중이력 관리 Service
+ * 
+ *  ======= 변경이력 =======
+ * 
+ * 날자                       변경자                  설명
+ * ----------         -------           ------------------------------------
+ * 2020. 6. 15.         "egov"           최초 생성(ver 1.0)
+ * 
+ */
 @Service
 @Transactional
 public class LoginPolicyHitRegisterService {
@@ -16,34 +32,64 @@ public class LoginPolicyHitRegisterService {
 	@Autowired
     private LoginPolicyHitRegisterDao mapper;
 	
-	
-	//차단대상IP 목록 조회
+
+	/**
+	 * @name : selectHitRgstList(로그인정책 적중목록 조회)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : List<HashMap<Object,Object>>
+	 */
 	public List<HashMap<Object, Object>> selectHitRgstList() {
         return mapper.selectHitRgstList();
-    }	
+    }
 
-	//차단대상IP 목록 조회
+	/**
+	 * @name : selectHitRgstUser(사용자 기준 로그인정책 적중이력)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : List<HashMap<Object,Object>>
+	 */
 	public List<HashMap<Object, Object>> selectHitRgstUser(Map<Object, Object> param) {
         return mapper.selectHitRgstUser(param);
     }	
 
-	//차단대상IP 등록
+	/**
+	 * @name : insertLgHitRgst(로그인정책 적중이력 저장)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : int
+	 */
 	public int insertLgHitRgst(Map<Object, Object> param) {
         return mapper.insertLgPlcyHitRgst(param);
     }
 	 
-	//차단대상IP 삭제
+	/**
+	 * @name : deleteLgPlcyHitUsrRgst(사용자기준 로그인 정책적중이력 삭제)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : int
+	 */
 	public int deleteLgPlcyHitUsrRgst(Map<Object, Object> param) {
         return mapper.deleteLgPlcyHitUsrRgst(param);
     }
 	
-	//차단대상IP 삭제
+	/**
+	 * @name : deleteLgPlcyHitPlcyRgst(정책기준 로그인 정책적중이력 삭제)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : int
+	 */
 	public int deleteLgPlcyHitPlcyRgst(Map<Object, Object> param) {
         return mapper.deleteLgPlcyHitPlcyRgst(param);
     }
 
 	
-	//로그인 적중 이력 메시지 출력
+	/**
+	 * @name : selectLgPlcyHitlMsg(로그인 적중 이력 메시지 출력)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : HashMap<String,Object>
+	 */
 	public HashMap<String, Object> selectLgPlcyHitlMsg(Map<Object, Object> param) {
 		HashMap<String, Object> rtnMap = new HashMap<String, Object>();
 		List<HashMap<String, Object>> sqlList = new ArrayList<HashMap<String, Object>> ();

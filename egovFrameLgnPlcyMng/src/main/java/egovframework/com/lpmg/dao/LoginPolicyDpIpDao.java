@@ -7,20 +7,29 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @title : 로그인정책 차단IP관리 Dao 
+ * @package : egovframework.com.lpmg.dao
+ * @filename : LoginPolicyDpIpDao.java
+ * @author : "egov"
+ * @since : 2020. 6. 15.
+ * @version : 1.0
+ * @desc : 로그인정책 차단IP목록을 관리 하는 CRUD 모음.
+ * 
+ *  ======= 변경이력 =======
+ * 
+ * 날자                       변경자                  설명
+ * ----------         -------           ------------------------------------
+ * 2020. 6. 15.         "egov"           최초 생성(ver 1.0)
+ * 
+ */
 @Repository
 @Mapper
 public interface LoginPolicyDpIpDao {
 
-	//차단대상IP 목록 조회
 	List<HashMap<Object, Object>> selectDpIpList();
-
-	//차단대상IP 기등록여부 확인
 	int selectLgPlcyDpIpCnt(Map<Object, Object> param);
-
-	//차단대상IP 등록
 	int insertLgPlcyDpIp(Map<Object, Object> param);
-	
-	//차단대상IP 삭제
 	int deleteLgPlcyDpIp(Map<Object, Object> param);
 	
 }

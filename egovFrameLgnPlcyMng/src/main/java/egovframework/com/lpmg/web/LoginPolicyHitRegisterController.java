@@ -69,18 +69,15 @@ public class LoginPolicyHitRegisterController {
 		try {
 			List<HashMap<Object, Object>> lst = new ArrayList<HashMap<Object, Object>>();
 			lst = lgnPlcyHitRegstService.selectHitRgstList();
-			System.out.println(lst);
 			rtnMap.put("list", lst);
 			
 			rtnMap.put("RESULTCD", "0");
 			rtnMap.put("RESULTMSG", "정상 처리 되었습니다.");
 		}catch (Exception e) {
-			e.getStackTrace();
-			System.out.println(e);
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "조회에 실패하였습니다.");
+			e.getStackTrace();
 		}
-		
 		
 		try {
 			rtn = om.writeValueAsString(rtnMap);
@@ -93,6 +90,13 @@ public class LoginPolicyHitRegisterController {
 	}
 	
 	
+	/**
+	 * @name : LgPlcyHitRgtUser(사용자 로그인 정책 적중이력)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 로그인 정책에 적중한 이력을 조회한다.
+	 */
 	@ApiOperation(value = "사용자 로그인 정책 적중이력")
     @ApiImplicitParams({
     	@ApiImplicitParam(name = "userId", value = "사용자ID", required = true, dataType = "string", paramType = "path", defaultValue = "")
@@ -109,17 +113,13 @@ public class LoginPolicyHitRegisterController {
 			sqlInpt.put("USRID", URLDecoder.decode(userId		,"UTF-8"));
 			
 			lst = lgnPlcyHitRegstService.selectHitRgstUser(sqlInpt);
-			System.out.println(lst);
 			rtnMap.put("list", lst);
-			
 			rtnMap.put("RESULTCD", "0");
 			rtnMap.put("RESULTMSG", "정상 처리 되었습니다.");
-			System.out.println(rtnMap);
 		}catch (Exception e) {
-			e.getStackTrace();
-			System.out.println(e);
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "조회에 실패하였습니다.");
+			e.getStackTrace();
 		}
 		
 		try {
@@ -133,12 +133,14 @@ public class LoginPolicyHitRegisterController {
 	}
 	
 	
+	/**
+	 * @name : LgPlcyHitRgtInsert(로그인정책 적중이력 저장)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 로그인 정책이 적중했을때 해당 정척이 적중한 이력을 저장한다.
+	 */
 	@ApiOperation(value = "로그인정책 적중이력 저장", notes = "로그인정책 적중이력 저장한다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK !!"),
-            @ApiResponse(code = 500, message = "Internal Server Error !!"),
-            @ApiResponse(code = 404, message = "Not Found !!")
-    })
 	@PostMapping(path = "/addRegt")
 	public String LgPlcyHitRgtInsert(@RequestBody LoginPolicyHitRegisterVo param) throws Exception {
 
@@ -163,19 +165,23 @@ public class LoginPolicyHitRegisterController {
 				rtnMap.put("RESULTMSG", "등록에 실패 하였습니다.");
 			}
 		}catch (Exception e) {
-			e.getStackTrace();
-			System.out.println(e);
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
+			e.getStackTrace();
 		}
 		
 		rtn = om.writeValueAsString(rtnMap);
-		System.out.println(rtnMap);
 		return rtn;
 	}
 
 	
-	
+	/**
+	 * @name : LgPlcyHitRgtUsrDelete(로그인정책 적중이력 삭제)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 사용자 기준으로 로그인 정책 적중 이력을 삭제 한다.
+	 */
 	@ApiOperation(value = "사용자별 로그인정책 적중이력 초기화", notes = "사용자 단위로 로그인정책 적중이력을 초기화한다.")
     @ApiImplicitParams({
     	@ApiImplicitParam(name = "userId", value = "사용자ID", required = true, dataType = "string", paramType = "path", defaultValue = "")
@@ -201,17 +207,22 @@ public class LoginPolicyHitRegisterController {
 				rtnMap.put("RESULTMSG", "삭제 할 차단대상 IP가 없습니다.");
 			}
 		}catch (Exception e) {
-			e.getStackTrace();
-			System.out.println(e);
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
+			e.getStackTrace();
 		}
 		rtn = om.writeValueAsString(rtnMap);
-		System.out.println(rtnMap);
 		return rtn;
 	}
 
 	
+	/**
+	 * @name : LgPlcyHitRgtPlcyDelete(로그인정책별 로그인정책 적중이력 초기화)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 로그인 정책 기준으로 사용자 적중이력을 삭제 한다. 
+	 */
 	@ApiOperation(value = "로그인정책별 로그인정책 적중이력 초기화", notes = "로그인정책단위로 로그인정책 적중이력을 초기화한다.")
     @ApiImplicitParams({
     	@ApiImplicitParam(name = "plcyId", value = "로그인 정책ID", required = true, dataType = "string", paramType = "path", defaultValue = "")
@@ -237,18 +248,24 @@ public class LoginPolicyHitRegisterController {
 				rtnMap.put("RESULTMSG", "삭제 할 차단대상 IP가 없습니다.");
 			}
 		}catch (Exception e) {
-			e.getStackTrace();
-			System.out.println(e);
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
+			e.getStackTrace();
 		}
+
 		rtn = om.writeValueAsString(rtnMap);
-		System.out.println(rtnMap);
 		return rtn;
 	}
 
 	
 	
+	/**
+	 * @name : LgPlcyHitRgtMsg(로그인 정책 적중이력 조회)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 로그인 정책 적중내용을 조회한다.
+	 */
 	@ApiOperation(value = "로그인 정책 적중내용 조회")
     @ApiImplicitParams({
     	@ApiImplicitParam(name = "userId", value = "사용자ID", required = true, dataType = "string", paramType = "path", defaultValue = "")
@@ -262,6 +279,7 @@ public class LoginPolicyHitRegisterController {
 		try {
 			Map<Object, Object> sqlInpt = new HashMap<Object, Object>();
 			sqlInpt.put("USRID", URLDecoder.decode(userId		,"UTF-8"));
+			
 			rtnMap = lgnPlcyHitRegstService.selectLgPlcyHitlMsg(sqlInpt);
 			if(rtnMap==null) {
 				rtnMap = new HashMap<String, Object>();
@@ -271,9 +289,7 @@ public class LoginPolicyHitRegisterController {
 				rtnMap.put("RESULTCD", "0");
 				rtnMap.put("RESULTMSG", "정상 처리 되었습니다.");
 			}
-			System.out.println(rtnMap);
 		}catch (Exception e) {
-			System.out.println(e);
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "조회에 실패하였습니다.");
 			e.getStackTrace();
@@ -283,7 +299,6 @@ public class LoginPolicyHitRegisterController {
 			rtn = om.writeValueAsString(rtnMap);
 		} catch (JsonProcessingException e) {
 			rtn = "json Mapper Error.";
-			System.out.println(e);
 			e.printStackTrace();
 		}
 		

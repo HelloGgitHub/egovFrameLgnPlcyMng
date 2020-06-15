@@ -27,36 +27,57 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+/**
+ * @title : 차단IP목록 관리 
+ * @package : egovframework.com.lpmg.web
+ * @filename : LoginPolicyDpIpController.java
+ * @author : "egov"
+ * @since : 2020. 6. 15.
+ * @version : 1.0
+ * @desc : 로그인 정책 중 차단IP목록을 관리하는 API모음.
+ * 
+ *  ======= 변경이력 =======
+ * 
+ * 날자                       변경자                  설명
+ * ----------         -------           ------------------------------------
+ * 2020. 6. 15.         "egov"           최초 생성(ver 1.0)
+ * 
+ */
 @RestController
-@Api(value = "LoginPolicyDpIpController", description = "로그인정책 차단IP 정보 관리 REST APIffffaaaaaa")
+@Api(value = "LoginPolicyDpIpController", description = "로그인정책 차단IP 정보 관리 REST API")
 @RequestMapping("/lgDpIp")
 public class LoginPolicyDpIpController {
 	
 	@Autowired
 	LoginPolicyDpIpService lgnPlcyDpIpService;
 	
+	/**
+	 * @name : LgPlcyDpIpList(차단IP목록 조회)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 로그인 정책의 '특정IP접근 차단'에 사용되는 차단IP목록을 조회한다.
+	 */
 	@ApiOperation(value = "차단IP 목록 조회")
 	@GetMapping(path = "/list")
 	public String LgPlcyDpIpList() {
 		
-		String rtn = "";
+		String rtn = ""; 
 		Map<String, Object> rtnMap = new HashMap<String, Object>();
 		ObjectMapper om = new ObjectMapper();
 
 		try {
 			List<HashMap<Object, Object>> lst = new ArrayList<HashMap<Object, Object>>();
 			lst = lgnPlcyDpIpService.selectDpIpList();
-			System.out.println(lst);
 			rtnMap.put("list", lst);
 			
 			rtnMap.put("RESULTCD", "0");
 			rtnMap.put("RESULTMSG", "정상 처리 되었습니다.");
 		}catch (Exception e) {
-			e.getStackTrace();
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "조회에 실패하였습니다.");
+			e.getStackTrace();
 		}
-		
 		
 		try {
 			rtn = om.writeValueAsString(rtnMap);
@@ -69,12 +90,14 @@ public class LoginPolicyDpIpController {
 	}
 	
 	
+	/**
+	 * @name : InsertLgPlcyDpIp(차단대상 IP등록)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 로그인 정책의 '특정IP접근 차단'에 적용되는 차단IP를 등록한다.
+	 */
 	@ApiOperation(value = "차단 IP 등록", notes = "차단대상 IP를 등록 합니다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK !!"),
-            @ApiResponse(code = 500, message = "Internal Server Error !!"),
-            @ApiResponse(code = 404, message = "Not Found !!")
-    })
 	@PostMapping(path = "/addnew")
 	public String InsertLgPlcyDpIp(@RequestBody LoginPolicyDpIpVo param) throws Exception {
 
@@ -90,7 +113,6 @@ public class LoginPolicyDpIpController {
 			sqlInpt.put("ADUSR" 			,param.getAddUsrid());
 			
 			int rowCnt = lgnPlcyDpIpService.selectLgPlcyDpIpCnt(sqlInpt);
-			System.out.println(rowCnt);
 			
 			if(rowCnt == 0) {
 				int inputCnt = lgnPlcyDpIpService.insertLgDpIp(sqlInpt);
@@ -106,18 +128,24 @@ public class LoginPolicyDpIpController {
 				rtnMap.put("RESULTMSG", "중복되는 IP가 있습니다.");
 			}
 		}catch (Exception e) {
-			e.getStackTrace();
-			System.out.println(e);
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
+			e.getStackTrace();
 		}
+
 		rtn = om.writeValueAsString(rtnMap);
-		System.out.println(rtnMap);
 		return rtn;
 	}
 
 	
 	
+	/**
+	 * @name : LgPlcyDeleteDpIp(차단IP 삭제)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 로그인 정책의 '특정IP접근 차단'에 적용되는 차단IP를 삭제한다. 
+	 */
 	@ApiOperation(value = "차단 IP 삭제", notes = "차단 대상 IP를 삭제 한다.")
     @ApiImplicitParams({
     	@ApiImplicitParam(name = "bkIp", value = "차단IP", required = true, dataType = "string", paramType = "query", defaultValue = "")
@@ -142,13 +170,11 @@ public class LoginPolicyDpIpController {
 				rtnMap.put("RESULTMSG", "삭제 할 차단대상 IP가 없습니다.");
 			}
 		}catch (Exception e) {
-			e.getStackTrace();
-			System.out.println(e);
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
+			e.getStackTrace();
 		}
 		rtn = om.writeValueAsString(rtnMap);
-		System.out.println(rtnMap);
 		return rtn;
 	}
 

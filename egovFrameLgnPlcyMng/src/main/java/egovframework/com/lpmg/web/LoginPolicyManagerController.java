@@ -26,9 +26,23 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
+/**
+ * @title : 로그인 정책관리
+ * @package : egovframework.com.lpmg.web
+ * @filename : LoginPolicyManagerController.java
+ * @author : "egov"
+ * @since : 2020. 6. 15.
+ * @version : 1.0
+ * @desc : 로그인 정책관리 API모음
+ * 
+ *  ======= 변경이력 =======
+ * 
+ * 날자                       변경자                  설명
+ * ----------         -------           ------------------------------------
+ * 2020. 6. 15.         "egov"           최초 생성(ver 1.0)
+ * 
+ */
 @RestController
 @Api(value = "LoginPolicyManagerController", description = "로그인정책 정보 관리 REST API")
 @RequestMapping("/lgplcy")
@@ -37,28 +51,33 @@ public class LoginPolicyManagerController {
 	@Autowired
 	LoginPolicyManagerService lgnPlcyMngService;
 	
+	/**
+	 * @name : LgPlcyList(로그인정책 목록 조회)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 로그인 정책 목록을 조회한다.
+	 */
 	@ApiOperation(value = "로그인정책 목록 조회")
 	@GetMapping(path = "/list")
 	public String LgPlcyList() {
 		
-		String rtn = "";
+		String rtn = "";	
 		Map<String, Object> rtnMap = new HashMap<String, Object>();
 		ObjectMapper om = new ObjectMapper();
 
 		try {
 			List<HashMap<Object, Object>> lst = new ArrayList<HashMap<Object, Object>>();
 			lst = lgnPlcyMngService.selectLgPlcyList();
-			System.out.println(lst);
 			rtnMap.put("list", lst);
 			
 			rtnMap.put("RESULTCD", "0");
 			rtnMap.put("RESULTMSG", "정상 처리 되었습니다.");
 		}catch (Exception e) {
-			e.getStackTrace();
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "조회에 실패하였습니다.");
+			e.getStackTrace();
 		}
-		
 		
 		try {
 			rtn = om.writeValueAsString(rtnMap);
@@ -70,6 +89,13 @@ public class LoginPolicyManagerController {
 		return rtn;
 	}
 	
+	/**
+	 * @name : LgPlcyDetailInfo(로그인정책 정보 조회)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 로그인 정책 정보를 조회한다.
+	 */
 	@ApiOperation(value = "로그인정책 정보 조회")
     @ApiImplicitParams({
     	@ApiImplicitParam(name = "plcyCd", value = "로그인정책 코드", required = true, dataType = "string", paramType = "path", defaultValue = "")
@@ -93,12 +119,10 @@ public class LoginPolicyManagerController {
 				rtnMap.put("RESULTCD", "0");
 				rtnMap.put("RESULTMSG", "정상 처리 되었습니다.");
 			}
-			System.out.println(rtnMap);
 		}catch (Exception e) {
-			e.getStackTrace();
-			System.out.println(e);
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "조회에 실패하였습니다.");
+			e.getStackTrace();
 		}
 		
 		try {
@@ -112,12 +136,14 @@ public class LoginPolicyManagerController {
 	}
 	
 	
+	/**
+	 * @name : InsertLgPlcyInfo(로그인 정책 등록)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 신규 로그인 정책을 등록한다.
+	 */
 	@ApiOperation(value = "로그인정책 등록", notes = "로그인 정책을 등록 합니다.")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "OK !!"),
-            @ApiResponse(code = 500, message = "Internal Server Error !!"),
-            @ApiResponse(code = 404, message = "Not Found !!")
-    })
 	@PostMapping(path = "/addnew")
 	public String InsertLgPlcyInfo(@RequestBody LoginPolicyManagerVo param) throws Exception {
 
@@ -138,8 +164,6 @@ public class LoginPolicyManagerController {
 			sqlInpt.put("PLCYAPPYUSRID" 	,param.getPolicyAppyUsrid());
 			
 			int rowCnt = lgnPlcyMngService.selectLgPlcyInfoCnt(sqlInpt);
-			System.out.println(rowCnt);
-			
 			if(rowCnt == 0) {
 				int inputCnt = lgnPlcyMngService.insertLgPlcyInfo(sqlInpt);
 				if(inputCnt > 0) {
@@ -154,17 +178,22 @@ public class LoginPolicyManagerController {
 				rtnMap.put("RESULTMSG", "중복되는 정책ID가 있습니다.");
 			}
 		}catch (Exception e) {
-			e.getStackTrace();
-			System.out.println(e);
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
+			e.getStackTrace();
 		}
 		rtn = om.writeValueAsString(rtnMap);
-		System.out.println(rtnMap);
 		return rtn;
 	}
 
 	
+	/**
+	 * @name : LgPlcyChangeInfo(로그인정책 정보 변경)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 등록된 로그인 정책 정보의 내용을 수정한다.
+	 */
 	@ApiOperation(value = "로그인 정책 정보수정", notes = "로그인 정책정보를 수정한다.")
 	@PutMapping(path = "/modifyInfo")
 	public String LgPlcyChangeInfo(@RequestBody LoginPolicyManagerVo param) throws Exception {
@@ -191,17 +220,22 @@ public class LoginPolicyManagerController {
 				rtnMap.put("RESULTMSG", "등록된 로그인정책이 없습니다.");
 			}
 		}catch (Exception e) {
-			e.getStackTrace();
-			System.out.println(e);
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
+			e.getStackTrace();
 		}
 		rtn = om.writeValueAsString(rtnMap);
-		System.out.println(rtnMap);
 		return rtn;
 	}
 	
 	
+	/**
+	 * @name : LgPlcyDeleteInfo(로그인정책 삭제)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 등록된 로그인 정책을 삭제 한다.
+	 */
 	@ApiOperation(value = "로그인정책 삭제", notes = "로그인정책을 삭제한다.")
     @ApiImplicitParams({
     	@ApiImplicitParam(name = "plcyCd", value = "로그인정책 코드", required = true, dataType = "string", paramType = "query", defaultValue = "")
@@ -226,18 +260,24 @@ public class LoginPolicyManagerController {
 				rtnMap.put("RESULTMSG", "삭제 할 로그인 정책이 없습니다.");
 			}
 		}catch (Exception e) {
-			e.getStackTrace();
-			System.out.println(e);
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
+			e.getStackTrace();
 		}
+		
 		rtn = om.writeValueAsString(rtnMap);
-		System.out.println(rtnMap);
 		return rtn;
 	}
 
 	
-	@ApiOperation(value = "로그인 적용여부 등록", notes = "로그인 정책의 적용여부를 수정한다.")
+	/**
+	 * @name : LgPlcyChangeStat(로그인정책 적용여부 등록)
+	 * @date : 2020. 6. 15.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 로그인 정책 적용 여부 변경을 관리 한다.
+	 */
+	@ApiOperation(value = "로그인정책 적용여부 등록", notes = "로그인 정책의 적용여부를 수정한다.")
 	@PutMapping(path = "/modifyStat")
 	public String LgPlcyChangeStat(@RequestBody LoginPolicyManagerVo param) throws Exception {
 		String rtn = "";
@@ -259,13 +299,12 @@ public class LoginPolicyManagerController {
 				rtnMap.put("RESULTMSG", "등록된 로그인정책이 없습니다.");
 			}
 		}catch (Exception e) {
-			e.getStackTrace();
-			System.out.println(e);
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
+			e.getStackTrace();
 		}
 		rtn = om.writeValueAsString(rtnMap);
-		System.out.println(rtnMap);
 		return rtn;
 	}
+	
 }

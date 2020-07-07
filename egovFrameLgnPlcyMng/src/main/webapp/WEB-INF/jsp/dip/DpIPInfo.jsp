@@ -99,10 +99,10 @@ function fn_insert(){
 	}
 
 	var dpIpData = new Object();
-	dpIpData.BlkIp				=	$("#inDpIp").val();
-	dpIpData.BlkIpNm			=	$("#inDpipNm").val();
-	dpIpData.BlkIpDc			=	$("#inDpipDc").val();
-	dpIpData.AddUsrid		=	$("#inAplyUsr").val();
+	dpIpData.blkIp				=	$("#inDpIp").val();
+	dpIpData.blkIpNm			=	$("#inDpipNm").val();
+	dpIpData.blkIpDc			=	$("#inDpipDc").val();
+	dpIpData.addUsrid		=	$("#inAplyUsr").val();
 
 	var rtnData = new Object();
 	rtnData = fn_calApi("POST", "/lgDpIp/addnew", dpIpData, false);

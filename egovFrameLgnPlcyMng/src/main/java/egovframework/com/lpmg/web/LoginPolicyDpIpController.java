@@ -9,23 +9,22 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import egovframework.com.cmm.ComUtil;
 import egovframework.com.lpmg.dao.LoginPolicyDpIpService;
 import egovframework.com.lpmg.dao.LoginPolicyDpIpVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
 
 /**
  * @title : 차단IP목록 관리 
@@ -55,36 +54,77 @@ public class LoginPolicyDpIpController {
 	 * @name : LgPlcyDpIpList(차단IP목록 조회)
 	 * @date : 2020. 6. 15.
 	 * @author : "egov"
+	 * @throws Exception 
 	 * @return_type : String
 	 * @desc : 로그인 정책의 '특정IP접근 차단'에 사용되는 차단IP목록을 조회한다.
 	 */
 	@ApiOperation(value = "차단IP 목록 조회")
 	@GetMapping(path = "/list")
-	public String LgPlcyDpIpList() {
+	public String LgPlcyDpIpList() throws Exception {
 		
 		String rtn = ""; 
 		Map<String, Object> rtnMap = new HashMap<String, Object>();
 		ObjectMapper om = new ObjectMapper();
+		List<HashMap<Object, Object>> lst = new ArrayList<HashMap<Object, Object>>();
 
 		try {
-			List<HashMap<Object, Object>> lst = new ArrayList<HashMap<Object, Object>>();
 			lst = lgnPlcyDpIpService.selectDpIpList();
 			rtnMap.put("list", lst);
-			
 			rtnMap.put("RESULTCD", "0");
 			rtnMap.put("RESULTMSG", "정상 처리 되었습니다.");
 		}catch (Exception e) {
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "조회에 실패하였습니다.");
-			e.getStackTrace();
-		}
-		
-		try {
-			rtn = om.writeValueAsString(rtnMap);
-		} catch (JsonProcessingException e) {
-			rtn = "json Mapper Error.";
 			e.printStackTrace();
 		}
+		
+		rtn = om.writeValueAsString(rtnMap);
+		
+		return rtn;
+	}
+	
+	
+	/**
+	 * @name : DpIpDetailInfo(차단IP정보 조회)
+	 * @date : 2020. 7. 7.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 차단IP정보를 조회한다..
+	 */
+	@ApiOperation(value = "차단IP 정보 조회")
+    @ApiImplicitParams({
+    	@ApiImplicitParam(name = "dpIp", value = "차단IP", required = true, dataType = "string", paramType = "path", defaultValue = "")
+    })
+	@GetMapping(path = "/detailInfo/{dpIp}")
+	public String DpIpDetailInfo(@PathVariable("dpIp") String dpIp) throws Exception {
+		String rtn = "";
+		ObjectMapper om = new ObjectMapper();
+		Map<String, Object> rtnMap = new HashMap<String, Object>();
+		List<HashMap<Object, Object>> lst = new ArrayList<HashMap<Object, Object>>();
+		Map<Object, Object> sqlInpt = new HashMap<Object, Object>();
+		
+		try {
+			
+			sqlInpt.put("BLKIP", URLDecoder.decode(dpIp		,"UTF-8"));
+			
+			lst = lgnPlcyDpIpService.selectDpIpDetail(sqlInpt);
+			
+			if(lst==null || lst.size()==0) {
+				rtnMap = new HashMap<String, Object>();
+				rtnMap.put("RESULTCD", "0");
+				rtnMap.put("RESULTMSG", "대상건이 없습니다.");
+			}else {
+				rtnMap.put("list", lst);
+				rtnMap.put("RESULTCD", "0");
+				rtnMap.put("RESULTMSG", "정상 처리 되었습니다.");
+			}
+		}catch (Exception e) {
+			rtnMap.put("RESULTCD", "1");
+			rtnMap.put("RESULTMSG", "조회에 실패하였습니다.");
+			e.printStackTrace();
+		}
+		
+		rtn = om.writeValueAsString(rtnMap);
 		
 		return rtn;
 	}
@@ -110,7 +150,10 @@ public class LoginPolicyDpIpController {
 	
 			//입력값 파라미터 정의
 			sqlInpt.put("BLKIP" 			,param.getBlkIp());
+			sqlInpt.put("BLKNM" 			,param.getBlkIpNm());
+			sqlInpt.put("BLKDC" 			,param.getBlkIpDc());
 			sqlInpt.put("ADUSR" 			,param.getAddUsrid());
+			sqlInpt.put("ADDDT" 			,ComUtil.getTime("yyyyMMddHHmmss"));
 			
 			int rowCnt = lgnPlcyDpIpService.selectLgPlcyDpIpCnt(sqlInpt);
 			
@@ -130,7 +173,7 @@ public class LoginPolicyDpIpController {
 		}catch (Exception e) {
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
-			e.getStackTrace();
+			e.printStackTrace();
 		}
 
 		rtn = om.writeValueAsString(rtnMap);
@@ -172,7 +215,7 @@ public class LoginPolicyDpIpController {
 		}catch (Exception e) {
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
-			e.getStackTrace();
+			e.printStackTrace();
 		}
 		rtn = om.writeValueAsString(rtnMap);
 		return rtn;

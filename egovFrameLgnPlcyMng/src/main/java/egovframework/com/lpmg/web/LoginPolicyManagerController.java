@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import egovframework.com.cmm.ComUtil;
 import egovframework.com.lpmg.dao.LoginPolicyManagerService;
 import egovframework.com.lpmg.dao.LoginPolicyManagerVo;
 import io.swagger.annotations.Api;
@@ -55,19 +55,20 @@ public class LoginPolicyManagerController {
 	 * @name : LgPlcyList(로그인정책 목록 조회)
 	 * @date : 2020. 6. 15.
 	 * @author : "egov"
+	 * @throws Exception 
 	 * @return_type : String
 	 * @desc : 로그인 정책 목록을 조회한다.
 	 */
 	@ApiOperation(value = "로그인정책 목록 조회")
 	@GetMapping(path = "/list")
-	public String LgPlcyList() {
+	public String LgPlcyList() throws Exception {
 		
-		String rtn = "";	
-		Map<String, Object> rtnMap = new HashMap<String, Object>();
+		String rtn = "";
 		ObjectMapper om = new ObjectMapper();
-
+		Map<String, Object> rtnMap = new HashMap<String, Object>();
+		List<HashMap<Object, Object>> lst = new ArrayList<HashMap<Object, Object>>();
+		
 		try {
-			List<HashMap<Object, Object>> lst = new ArrayList<HashMap<Object, Object>>();
 			lst = lgnPlcyMngService.selectLgPlcyList();
 			rtnMap.put("list", lst);
 			
@@ -76,15 +77,10 @@ public class LoginPolicyManagerController {
 		}catch (Exception e) {
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "조회에 실패하였습니다.");
-			e.getStackTrace();
-		}
-		
-		try {
-			rtn = om.writeValueAsString(rtnMap);
-		} catch (JsonProcessingException e) {
-			rtn = "json Mapper Error.";
 			e.printStackTrace();
 		}
+		
+		rtn = om.writeValueAsString(rtnMap);
 		
 		return rtn;
 	}
@@ -105,32 +101,29 @@ public class LoginPolicyManagerController {
 		String rtn = "";
 		ObjectMapper om = new ObjectMapper();
 		Map<String, Object> rtnMap = new HashMap<String, Object>();
+		List<HashMap<Object, Object>> lst = new ArrayList<HashMap<Object, Object>>();
 		
 		try {
 			Map<Object, Object> sqlInpt = new HashMap<Object, Object>();
 			sqlInpt.put("PLCYID", URLDecoder.decode(plcyCd		,"UTF-8"));
 			
-			rtnMap = lgnPlcyMngService.selectLgPlcyDetail(sqlInpt);
-			if(rtnMap==null) {
+			lst = lgnPlcyMngService.selectLgPlcyDetail(sqlInpt);
+			if(lst==null || lst.size()==0) {
 				rtnMap = new HashMap<String, Object>();
 				rtnMap.put("RESULTCD", "0");
 				rtnMap.put("RESULTMSG", "대상건이 없습니다.");
 			}else {
+				rtnMap.put("list", lst);
 				rtnMap.put("RESULTCD", "0");
 				rtnMap.put("RESULTMSG", "정상 처리 되었습니다.");
 			}
 		}catch (Exception e) {
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "조회에 실패하였습니다.");
-			e.getStackTrace();
-		}
-		
-		try {
-			rtn = om.writeValueAsString(rtnMap);
-		} catch (JsonProcessingException e) {
-			rtn = "json Mapper Error.";
 			e.printStackTrace();
 		}
+		
+		rtn = om.writeValueAsString(rtnMap);
 		
 		return rtn;
 	}
@@ -162,6 +155,7 @@ public class LoginPolicyManagerController {
 			sqlInpt.put("PLCYENDDT" 		,param.getPolicyEnddt());
 			sqlInpt.put("PLCYAPPYYN" 		,param.getPolicyAppyYn());
 			sqlInpt.put("PLCYAPPYUSRID" 	,param.getPolicyAppyUsrid());
+			sqlInpt.put("DT" 					,ComUtil.getTime("yyyyMMddHHmmss"));
 			
 			int rowCnt = lgnPlcyMngService.selectLgPlcyInfoCnt(sqlInpt);
 			if(rowCnt == 0) {
@@ -180,7 +174,7 @@ public class LoginPolicyManagerController {
 		}catch (Exception e) {
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
-			e.getStackTrace();
+			e.printStackTrace();
 		}
 		rtn = om.writeValueAsString(rtnMap);
 		return rtn;
@@ -210,7 +204,8 @@ public class LoginPolicyManagerController {
 			sqlInpt.put("PLCYENDDT" 		,param.getPolicyEnddt());
 			sqlInpt.put("PLCYAPPYYN" 		,param.getPolicyAppyYn());
 			sqlInpt.put("PLCYAPPYUSRID" 	,param.getPolicyAppyUsrid());
-	
+			sqlInpt.put("CHANGE_DT" 		,ComUtil.getTime("yyyyMMddHHmmss"));
+			
 			int inputCnt = lgnPlcyMngService.updateLgPlcyInfo(sqlInpt);
 			if(inputCnt > 0) {
 				rtnMap.put("RESULTCD", "0");
@@ -222,7 +217,7 @@ public class LoginPolicyManagerController {
 		}catch (Exception e) {
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
-			e.getStackTrace();
+			e.printStackTrace();
 		}
 		rtn = om.writeValueAsString(rtnMap);
 		return rtn;
@@ -238,10 +233,10 @@ public class LoginPolicyManagerController {
 	 */
 	@ApiOperation(value = "로그인정책 삭제", notes = "로그인정책을 삭제한다.")
     @ApiImplicitParams({
-    	@ApiImplicitParam(name = "plcyCd", value = "로그인정책 코드", required = true, dataType = "string", paramType = "query", defaultValue = "")
+    	@ApiImplicitParam(name = "plcyId", value = "로그인정책 ID", required = true, dataType = "string", paramType = "query", defaultValue = "")
     })
 	@DeleteMapping(path = "/delete")
-	public String LgPlcyDeleteInfo(@RequestParam(value = "plcyCd") String plcyCd) throws Exception {
+	public String LgPlcyDeleteInfo(@RequestParam(value = "plcyId") String plcyId) throws Exception {
 		String rtn = "";
 		ObjectMapper om = new ObjectMapper();
 		Map<Object, Object> rtnMap = new HashMap<Object, Object>();
@@ -249,7 +244,7 @@ public class LoginPolicyManagerController {
 		try {
 			//입력값 파라미터 정의
 			Map<Object, Object> sqlInpt = new HashMap<Object, Object>();
-			sqlInpt.put("PLCYID", URLDecoder.decode(plcyCd		,"UTF-8"));
+			sqlInpt.put("PLCYID", URLDecoder.decode(plcyId		,"UTF-8"));
 			
 			int inputCnt = lgnPlcyMngService.deleteLgPlcyInfo(sqlInpt);
 			if(inputCnt > 0) {
@@ -262,7 +257,7 @@ public class LoginPolicyManagerController {
 		}catch (Exception e) {
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
-			e.getStackTrace();
+			e.printStackTrace();
 		}
 		
 		rtn = om.writeValueAsString(rtnMap);
@@ -289,7 +284,8 @@ public class LoginPolicyManagerController {
 			sqlInpt.put("PLCYID" 			,param.getPolicyId());
 			sqlInpt.put("PLCYAPPYYN" 		,param.getPolicyAppyYn());
 			sqlInpt.put("PLCYAPPYUSRID" 	,param.getPolicyAppyUsrid());
-	
+			sqlInpt.put("CHANGE_DT" 		,ComUtil.getTime("yyyyMMddHHmmss"));
+			
 			int inputCnt = lgnPlcyMngService.updateLgPlcyInfo(sqlInpt);
 			if(inputCnt > 0) {
 				rtnMap.put("RESULTCD", "0");
@@ -301,7 +297,7 @@ public class LoginPolicyManagerController {
 		}catch (Exception e) {
 			rtnMap.put("RESULTCD", "1");
 			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
-			e.getStackTrace();
+			e.printStackTrace();
 		}
 		rtn = om.writeValueAsString(rtnMap);
 		return rtn;

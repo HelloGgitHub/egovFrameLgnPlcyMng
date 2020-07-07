@@ -28,7 +28,7 @@ import org.springframework.stereotype.Repository;
 public interface LoginPolicyManagerDao {
 	
 	List<HashMap<Object, Object>> selectLgPlcyList();
-	HashMap<String, Object> selectLgPlcyDetail(Map<Object, Object> param);
+	List<HashMap<Object, Object>> selectLgPlcyDetail(Map<Object, Object> param);
 	
 	int selectLgPlcyInfoCnt(Map<Object, Object> param);
 	int insertLgPlcyInfo(Map<Object, Object> param);

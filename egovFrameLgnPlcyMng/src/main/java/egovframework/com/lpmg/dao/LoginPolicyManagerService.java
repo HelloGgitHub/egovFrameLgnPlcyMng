@@ -47,7 +47,7 @@ public class LoginPolicyManagerService {
 	 * @author : "egov"
 	 * @return_type : HashMap<String,Object>
 	 */
-	public HashMap<String, Object> selectLgPlcyDetail(Map<Object, Object> param) {
+	public List<HashMap<Object, Object>> selectLgPlcyDetail(Map<Object, Object> param) {
         return mapper.selectLgPlcyDetail(param);
     }
 	

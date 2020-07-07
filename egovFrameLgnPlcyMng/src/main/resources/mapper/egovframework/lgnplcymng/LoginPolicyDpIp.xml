@@ -4,9 +4,21 @@
 
     <select id="selectDpIpList" resultType="hashMap">
 			SELECT BLK_IP 
+			     , BLK_IPNM 
+			     , BLK_IPDC 
 			     , ADD_USRID 
 			     , ADD_DT 
 			  FROM COMBLKIPMNGR
+    </select>
+
+    <select id="selectDpIpDetail" resultType="hashMap">
+			SELECT BLK_IP 
+			     , BLK_IPNM 
+			     , BLK_IPDC 
+			     , ADD_USRID 
+			     , ADD_DT 
+			  FROM COMBLKIPMNGR
+			 WHERE BLK_IP = '${BLKIP}'
     </select>
 
 
@@ -19,12 +31,16 @@
     <insert id="insertLgPlcyDpIp" parameterType="hashMap">
 			INSERT INTO COMBLKIPMNGR (
 				 BLK_IP
+				, BLK_IPNM
+			    , BLK_IPDC
 				, ADD_USRID
 				, ADD_DT
 			) VALUES (
 				  #{BLKIP}
+				, #{BLKNM}
+				, #{BLKDC}
 				, #{ADUSR}
-				, DATE_FORMAT(CURRENT_TIMESTAMP, '%Y%m%d%H%i%s')
+				, #{ADDDT}
 			)
     </insert>
 

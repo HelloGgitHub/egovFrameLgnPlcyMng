@@ -42,6 +42,16 @@ public class LoginPolicyDpIpService {
     }	
 
 	/**
+	 * @name : selectDpIpDetail(차단IP 정보 조회)
+	 * @date : 2020. 7. 7.
+	 * @author : "egov"
+	 * @return_type : HashMap<String,Object>
+	 */
+	public List<HashMap<Object, Object>> selectDpIpDetail(Map<Object, Object> param) {
+        return mapper.selectDpIpDetail(param);
+    }
+	
+	/**
 	 * @name : selectLgPlcyDpIpCnt(차단대상IP 기등록여부 확인)
 	 * @date : 2020. 6. 15.
 	 * @author : "egov"

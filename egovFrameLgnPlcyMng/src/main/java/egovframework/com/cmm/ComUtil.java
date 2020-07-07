@@ -1,6 +1,8 @@
 package egovframework.com.cmm;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -52,4 +54,15 @@ public class ComUtil {
 		return reLst;
 	}
 	
+	
+	public static String getTime(String param) {
+		String rtn = "";
+		SimpleDateFormat sdf = new SimpleDateFormat(param);
+        long timeInMillis =System.currentTimeMillis();
+
+        Date timeInDate = new Date(timeInMillis);
+        rtn = sdf.format(timeInDate);
+        
+        return rtn;
+	}
 }

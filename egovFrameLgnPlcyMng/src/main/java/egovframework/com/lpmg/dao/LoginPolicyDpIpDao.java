@@ -28,6 +28,7 @@ import org.springframework.stereotype.Repository;
 public interface LoginPolicyDpIpDao {
 
 	List<HashMap<Object, Object>> selectDpIpList();
+	List<HashMap<Object, Object>> selectDpIpDetail(Map<Object, Object> param);
 	int selectLgPlcyDpIpCnt(Map<Object, Object> param);
 	int insertLgPlcyDpIp(Map<Object, Object> param);
 	int deleteLgPlcyDpIp(Map<Object, Object> param);

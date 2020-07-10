@@ -1,5 +1,6 @@
 package egovframework.com.lpmg.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,8 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import egovframework.com.cmm.ComUtil;
 
 /**
  * @title : 로그인정책 차단IP관리 Service  
@@ -38,7 +41,21 @@ public class LoginPolicyDpIpService {
 	 * @return_type : List<HashMap<Object,Object>>
 	 */
 	public List<HashMap<Object, Object>> selectDpIpList() {
-        return mapper.selectDpIpList();
+		
+		
+		List<HashMap<Object, Object>> rtnLst = new ArrayList<HashMap<Object, Object>> ();
+		List<HashMap<Object, Object>> sqlLst = new ArrayList<HashMap<Object, Object>> ();
+		
+		sqlLst = mapper.selectDpIpList();
+		
+		for(int i = 0; sqlLst.size() > i; i++) {
+			HashMap<Object, Object> rtnMap= new HashMap<Object, Object>();
+			rtnMap = sqlLst.get(i);
+			rtnMap.put("add_dt", ComUtil.dbDatetoDataTimeFrm(rtnMap.get("add_dt").toString()));
+			rtnLst.add(rtnMap);
+		}
+		
+        return rtnLst;
     }	
 
 	/**

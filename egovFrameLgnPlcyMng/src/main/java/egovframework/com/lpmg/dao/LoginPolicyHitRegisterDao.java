@@ -27,7 +27,8 @@ import org.springframework.stereotype.Repository;
 @Mapper
 public interface LoginPolicyHitRegisterDao {
 
-	List<HashMap<Object, Object>> selectHitRgstList();
+	List<HashMap<Object, Object>> selectHitRgstList(Map<Object, Object> param);
+	List<HashMap<Object, Object>> selectHitRgstDetailList(Map<Object, Object> param);
 	List<HashMap<Object, Object>> selectHitRgstUser(Map<Object, Object> param);
 
 	int insertLgPlcyHitRgst(Map<Object, Object> param);
@@ -35,4 +36,19 @@ public interface LoginPolicyHitRegisterDao {
 	int deleteLgPlcyHitPlcyRgst(Map<Object, Object> param);
 	
 	List<HashMap<String, Object>> selectLgPlcyHitlMsg(Map<Object, Object> param);
+	
+	
+	//로그인 처리(정책적용)
+	List<HashMap<String, Object>> selectLgPlcyList(Map<Object, Object> param);
+	//ID/PW체크
+	HashMap<String, Object> selectUserPwCk(Map<Object, Object> param);
+	//IP체크
+	HashMap<String, Object> selectUserIpCk(Map<Object, Object> param);
+	//정책오류 횟수확인
+	HashMap<String, Object> selectUserPwErCnt(Map<Object, Object> param);
+	//사용자 정보 조회
+	List<HashMap<String, Object>> selectUserDetail(Map<Object, Object> param);
+	//적중이력 삭제
+	int deleteHtlist(Map<Object, Object> param);
+		
 }

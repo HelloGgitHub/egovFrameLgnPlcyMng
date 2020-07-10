@@ -67,7 +67,7 @@ public class LoginPolicyPageController {
 		return "/dip/DpIPList"; 
 	}
 
-	@RequestMapping("/DpIPInfo") 
+	@RequestMapping("/DpIPInfo")
 	public String DpIPInfo(Model model
 			, @RequestParam(value = "callType") String callType
 			, @RequestParam(value = "dpIp") String dpIp) {
@@ -80,80 +80,23 @@ public class LoginPolicyPageController {
 	}
 
 	
+	@RequestMapping("/LoginPolicyHitList") 
+	public String LoginPolicyHitList(Model model) {
+		System.out.println("++++++++++++++++LoginPolicyHitList.jsp++++++++++++");
+		return "/hhs/LoginPolicyHitList"; 
+	}
 	
-	
-	
-	
-	
-	
-	
-	
-	@RequestMapping("/GroupUserSet") 
-	public String GroupUserSet(Model model
-			, @RequestParam(value = "callType") String callType
-			, @RequestParam(value = "userId") String userId) {
-		model.addAttribute("msg", "jstl");
-		model.addAttribute("callType", 	callType);
-		model.addAttribute("userId", 		userId);
+	@RequestMapping("/LoginPolicyHitDetailList") 
+	public String LoginPolicyHitDetailList(Model model
+			, @RequestParam(value = "userId") String userId
+			, @RequestParam(value = "plcyId") String plcyId) {
 		
-		System.out.println("++++++++++++++++GroupUserSet++++++++++++userId::"+ userId + "===callType :: "+callType);
-		return "/grp/GroupUserSet"; 
-	}
-	
-	@RequestMapping("/UserGroupSet") 
-	public String UserGroupSet(Model model
-			, @RequestParam(value = "callType") String callType
-			, @RequestParam(value = "groupId") String groupId) {
-		model.addAttribute("msg", "jstl");
-		model.addAttribute("callType", 	callType);
-		model.addAttribute("groupId", 		groupId);
+		model.addAttribute("userId", 	userId);
+		model.addAttribute("plcyId", 	plcyId);
 		
-		System.out.println("++++++++++++++++UserGroupSet++++++++++++userId::"+ groupId + "===callType :: "+callType);
-		return "/grp/UserGroupSet"; 
-	}
-	
-	
-	
-	@RequestMapping("/DoroName") 
-	public String DoroName(Model model) {
-		model.addAttribute("msg", "jstl");
-		System.out.println("++++++++++++++++DoroName++++++++++++");
-		return "/cmm/DoroName"; 
-	}
-	
-
-	@RequestMapping("/jusoPopup") 
-	public String jusoPopup(Model model) {
-		model.addAttribute("msg", "jstl");
-		System.out.println("++++++++++++++++DoroName++++++++++++");
-		return "cmm/jusoPopup"; 
+		System.out.println("++++++++++++++++LoginPolicyHitDetailList.jsp++++++++++++");
+		return "/hhs/LoginPolicyHitDetailList"; 
 	}
 
-	@RequestMapping("/doroSample") 
-	public String doroSample(Model model) {
-		model.addAttribute("msg", "jstl");
-		System.out.println("++++++++++++++++DoroName++++++++++++");
-		return "cmm/Sample"; 
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

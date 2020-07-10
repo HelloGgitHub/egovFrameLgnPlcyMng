@@ -1,5 +1,6 @@
 package egovframework.com.cmm;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -64,5 +65,29 @@ public class ComUtil {
         rtn = sdf.format(timeInDate);
         
         return rtn;
+	}
+	
+	public static String dbDatetoDataTimeFrm(String data) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		String rtn = "";
+		try {
+			rtn = sdf2.format(sdf.parse(data));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return rtn;
+	}
+	
+	public static String dbDatetoDataFrm(String data) {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy/MM/dd");
+		String rtn = "";
+		try {
+			rtn = sdf2.format(sdf.parse(data));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return rtn;
 	}
 }

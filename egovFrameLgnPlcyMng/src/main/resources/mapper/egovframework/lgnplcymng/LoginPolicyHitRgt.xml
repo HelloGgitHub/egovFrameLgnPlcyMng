@@ -10,10 +10,27 @@
 			  FROM COMTNLOGINPOLICYHITHISTORY a
 			  	   LEFT OUTER JOIN
 			        COMTNLOGINPOLICY b
-			       ON (a.POLICY_ID  = b.POLICY_ID) 
+			       ON (a.POLICY_ID  = b.POLICY_ID)
+			   WHERE 1=1  
+				<if test='PLCYNM != null'> 	AND POLICY_NM like '%${PLCYNM}%' 	</if>
+				<if test='USRID != null'> 	AND USR_ID like '%${USRID}%' 	</if>
 			 GROUP BY a.USR_ID, a.POLICY_ID
     </select>
 
+    <select id="selectHitRgstDetailList" resultType="hashMap">
+			SELECT a.USR_ID 
+			     , a.POLICY_ID
+			     , ifnull(b.POLICY_NM,'-미등록정책-') AS POLICY_NM 
+			     , a.POLICY_HIT_DT 
+			     , a.LOGIN_IP 
+			  FROM COMTNLOGINPOLICYHITHISTORY a
+			  LEFT OUTER JOIN 
+			       COMTNLOGINPOLICY b
+			  ON a.POLICY_ID = b.POLICY_ID
+			 WHERE 1=1
+ 		    <if test='PLCYID != null'> 	AND a.POLICY_ID = '${PLCYID}' 	</if>
+			<if test='USRID != null'> 	AND a.USR_ID = '${USRID}' 	</if>
+    </select>
 
     <select id="selectHitRgstUser"  parameterType="Map" resultType="hashMap">
 			SELECT a.USR_ID 
@@ -37,7 +54,7 @@
 			) VALUES (
 				  #{USRID}
 				, #{PLCYID}
-				, DATE_FORMAT(NOW(6), '%Y%m%d%H%i%s%f')
+				, #{POLICYHITDT}
 				, #{LGINIP}
  			)
     </insert>
@@ -52,6 +69,41 @@
 			 WHERE POLICY_ID = '${PLCYID}'
     </delete>
     
+    <select id="selectUserPwCk"  parameterType="Map" resultType="hashMap">
+			SELECT PASSWORD
+			     , USR_ID
+			  FROM COMTNUSERMNG
+			 WHERE USR_ID = '${USRID}'
+<!-- 			   AND PASSWORD  = '${USRPW}' -->
+    </select>
+    <select id="selectUserIpCk"  parameterType="Map" resultType="hashMap">
+			SELECT COUNT(*) CNT
+			  FROM COMBLKIPMNGR
+			 WHERE BLK_IP LIKE '${LGINIP}%' 
+    </select>
+    <select id="selectUserPwErCnt"  parameterType="Map" resultType="hashMap">
+			SELECT COUNT(*) CNT 
+			  FROM COMTNLOGINPOLICYHITHISTORY
+			 WHERE USR_ID  = '${USRID}'
+			   AND POLICY_ID = '${PLCYID}'
+    </select>
+    
+	<select id="selectLgPlcyList" resultType="hashMap">
+			SELECT POLICY_ID
+			     , POLICY_NM
+			     , POLICY_DC
+			     , POLICY_BGNDT
+			     , POLICY_ENDDT
+			     , POLICY_APPY_YN
+			     , POLICY_REGIST_DT
+			     , POLICY_REGIST_DT
+			     , POLICY_HTMXCNT
+			     , POLICY_APPY_USRID 
+			  FROM COMTNLOGINPOLICY
+			 WHERE POLICY_APPY_YN = 'Y'
+			    AND '${PDT}' BETWEEN POLICY_BGNDT AND POLICY_ENDDT
+    </select>
+    
     <select id="selectLgPlcyHitlMsg"  parameterType="Map" resultType="hashMap">
 			SELECT a.USR_ID 
 			     , a.POLICY_ID 
@@ -64,5 +116,32 @@
 			 WHERE a.USR_ID = '${USRID}'
 			 GROUP BY a.USR_ID, a.POLICY_ID
     </select>
+    
+    
+        
+    <select id="selectUserDetail"  parameterType="Map" resultType="hashMap">
+		SELECT 
+		        ESNTL_ID               as "uniqId",
+		        'USR01'               as "userTy",
+		        USR_ID               as "userId",
+		        USR_NM               as "userNm",
+		        USR_EMAIL_ADRES      as "emailAdres",
+		        AREA_NO               as "areaNo",
+		        MIDDLE_TELNO          as "middleTelno",
+		        END_TELNO             as "endTelno",
+		        MBTLNUM           as "moblphonNo",
+		       -- GROUP_ID              as "groupId",
+		        USR_STTUS            as "sttus",
+		        SBSCRB_DE             as "sbscrbDe"
+		  FROM COMTNUSERMNG
+		 WHERE USR_ID = '${USRID}'
+    </select>
+    
+    <delete id="deleteHtlist" parameterType="hashMap">
+			DELETE FROM COMTNLOGINPOLICYHITHISTORY
+			 WHERE POLICY_ID = '${PLCYID}'
+			   AND USR_ID = '${USRID}'
+    </delete>
+    
 
 </mapper> 

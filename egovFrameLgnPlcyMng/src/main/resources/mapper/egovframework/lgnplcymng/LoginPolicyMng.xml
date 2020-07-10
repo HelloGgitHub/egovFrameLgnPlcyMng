@@ -9,6 +9,7 @@
 			     , POLICY_BGNDT
 			     , POLICY_ENDDT
 			     , POLICY_APPY_YN
+			     , POLICY_HTMXCNT
 			     , POLICY_REGIST_DT
 			     , POLICY_APPY_USRID 
 			  FROM COMTNLOGINPOLICY
@@ -22,6 +23,7 @@
 			     , POLICY_BGNDT
 			     , POLICY_ENDDT
 			     , POLICY_APPY_YN
+			     , POLICY_HTMXCNT
 			     , POLICY_REGIST_DT
 			     , POLICY_APPY_USRID 
 			  FROM COMTNLOGINPOLICY
@@ -43,6 +45,7 @@
 				, POLICY_BGNDT
 				, POLICY_ENDDT
 				, POLICY_APPY_YN
+				, POLICY_HTMXCNT
 				, POLICY_REGIST_DT
 				, POLICY_APPY_USRID
 				, CHANGE_DT
@@ -53,6 +56,7 @@
 				, #{PLCYBGNDT}
 				, #{PLCYENDDT}
 				, #{PLCYAPPYYN}
+				, #{POLICYHTMXCNT}
 				, '${DT}'
 				, #{PLCYAPPYUSRID}
 				, '${DT}'
@@ -66,6 +70,7 @@
 			    <if test='PLCYDC != null'> 	, POLICY_DC	= '${PLCYDC}' 	</if>
 			    <if test='PLCYBGNDT != null'> 	, POLICY_BGNDT	= '${PLCYBGNDT}' 	</if>
 			    <if test='PLCYENDDT != null'> 	, POLICY_ENDDT	= '${PLCYENDDT}' 	</if>
+			    <if test='POLICYHTMXCNT != null'> 	, POLICY_HTMXCNT	= ${POLICYHTMXCNT} 	</if>
 			    <if test='PLCYAPPYYN != null'> 	, POLICY_APPY_YN	= '${PLCYAPPYYN}' 	</if>
 			    <if test='PLCYAPPYUSRID != null'> 	, POLICY_APPY_USRID	= '${PLCYAPPYUSRID}' 	</if>
 			 WHERE POLICY_ID = '${PLCYID}'

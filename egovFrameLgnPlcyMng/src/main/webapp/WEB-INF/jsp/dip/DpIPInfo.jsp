@@ -141,6 +141,13 @@ function fn_DetailPlcy(){
  * 정책정보 삭제
  ******************************************************** */
 function fn_delete(){
+	if(confirm("삭제 하시겠습니까?")){
+		if($("#inDpIp").val() == null){
+			alert("IP가 등록되어있지 않습니다. \n삭제 할 IP가 없습니다.");
+			return;
+		}
+	}
+	
 	var rtnData = new Object();
 	rtnData = fn_calApi("DELETE", "/lgDpIp/delete?bkIp="+$("#inDpIp").val(), null, false);
 	fn_moveDpIpList();

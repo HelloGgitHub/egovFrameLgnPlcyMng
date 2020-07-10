@@ -55,6 +55,7 @@
 			if((cType=="GET"||cType=="DELETE") && cParam != null){
 				var p = "";
 				$.each(cParam, function(key, value){
+					console.log(key + "<>" +value);
 				    p = p + key + "=" + value+"&";
 				});
 				tUrl = baseUrl+cPath+"?"+p.substring(0,(p.length-1));

@@ -148,14 +148,15 @@ public class LoginPolicyManagerController {
 			Map<Object, Object> sqlInpt = new HashMap<Object, Object>();
 	
 			//입력값 파라미터 정의
-			sqlInpt.put("PLCYID" 			,param.getPolicyId());
-			sqlInpt.put("PLCYNM" 			,param.getPolicyNm());
-			sqlInpt.put("PLCYDC" 			,param.getPolicyDc());
-			sqlInpt.put("PLCYBGNDT" 		,param.getPolicyBgndt());
-			sqlInpt.put("PLCYENDDT" 		,param.getPolicyEnddt());
-			sqlInpt.put("PLCYAPPYYN" 		,param.getPolicyAppyYn());
-			sqlInpt.put("PLCYAPPYUSRID" 	,param.getPolicyAppyUsrid());
-			sqlInpt.put("DT" 					,ComUtil.getTime("yyyyMMddHHmmss"));
+			sqlInpt.put("PLCYID" 				,param.getPolicyId());
+			sqlInpt.put("PLCYNM" 				,param.getPolicyNm());
+			sqlInpt.put("PLCYDC" 				,param.getPolicyDc());
+			sqlInpt.put("PLCYBGNDT" 			,param.getPolicyBgndt());
+			sqlInpt.put("PLCYENDDT" 			,param.getPolicyEnddt());
+			sqlInpt.put("PLCYAPPYYN" 			,param.getPolicyAppyYn());
+			sqlInpt.put("POLICYHTMXCNT" 	,param.getPolicyHtmxCnt());
+			sqlInpt.put("PLCYAPPYUSRID" 		,param.getPolicyAppyUsrid());
+			sqlInpt.put("DT" 						,ComUtil.getTime("yyyyMMddHHmmss"));
 			
 			int rowCnt = lgnPlcyMngService.selectLgPlcyInfoCnt(sqlInpt);
 			if(rowCnt == 0) {
@@ -197,14 +198,15 @@ public class LoginPolicyManagerController {
 		try {
 			//입력값 파라미터 정의
 			Map<Object, Object> sqlInpt = new HashMap<Object, Object>();
-			sqlInpt.put("PLCYID" 			,param.getPolicyId());
-			sqlInpt.put("PLCYNM" 			,param.getPolicyNm());
-			sqlInpt.put("PLCYDC" 			,param.getPolicyDc());
-			sqlInpt.put("PLCYBGNDT" 		,param.getPolicyBgndt());
-			sqlInpt.put("PLCYENDDT" 		,param.getPolicyEnddt());
-			sqlInpt.put("PLCYAPPYYN" 		,param.getPolicyAppyYn());
-			sqlInpt.put("PLCYAPPYUSRID" 	,param.getPolicyAppyUsrid());
-			sqlInpt.put("CHANGE_DT" 		,ComUtil.getTime("yyyyMMddHHmmss"));
+			sqlInpt.put("PLCYID" 				,param.getPolicyId());
+			sqlInpt.put("PLCYNM" 				,param.getPolicyNm());
+			sqlInpt.put("PLCYDC" 				,param.getPolicyDc());
+			sqlInpt.put("PLCYBGNDT" 			,param.getPolicyBgndt());
+			sqlInpt.put("PLCYENDDT" 			,param.getPolicyEnddt());
+			sqlInpt.put("PLCYAPPYYN" 			,param.getPolicyAppyYn());
+			sqlInpt.put("POLICYHTMXCNT" 	,param.getPolicyHtmxCnt());
+			sqlInpt.put("PLCYAPPYUSRID" 		,param.getPolicyAppyUsrid());
+			sqlInpt.put("CHANGE_DT" 			,ComUtil.getTime("yyyyMMddHHmmss"));
 			
 			int inputCnt = lgnPlcyMngService.updateLgPlcyInfo(sqlInpt);
 			if(inputCnt > 0) {

@@ -28,13 +28,13 @@ public class LoginPolicyManagerVo {
 	private String policyBgndt;
 	private String policyEnddt;
 	private String policyAppyYn;
+	private int policyHtmxCnt;
 	private String policyRegistDt;
 	private String policyAppyUsrid;
 
 	private String usrId;
 	private String policyHitDt;
 	private String loginIp;
-	
 	
 	
 	public String getBlkIp() {
@@ -91,6 +91,12 @@ public class LoginPolicyManagerVo {
 	public void setPolicyAppyYn(String policyAppyYn) {
 		this.policyAppyYn = policyAppyYn;
 	}
+	public int getPolicyHtmxCnt() {
+		return policyHtmxCnt;
+	}
+	public void setPolicyHtmxCnt(int policyHtmxCnt) {
+		this.policyHtmxCnt = policyHtmxCnt;
+	}
 	public String getPolicyRegistDt() {
 		return policyRegistDt;
 	}
@@ -121,7 +127,5 @@ public class LoginPolicyManagerVo {
 	public void setLoginIp(String loginIp) {
 		this.loginIp = loginIp;
 	}
-	
-	
-	
+
 }

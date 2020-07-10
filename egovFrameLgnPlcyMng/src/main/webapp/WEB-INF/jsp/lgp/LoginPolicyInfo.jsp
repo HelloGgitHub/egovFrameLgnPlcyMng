@@ -33,10 +33,10 @@ function inputCellSet(type) {
 	}else if(type == "cr"){  //readOnly
 		$("#btn_Add").attr("disabled",true);
 		$("#btn_Add").css("display","none");
-		$("#btn_Modify").attr("disabled",true);
-		$("#btn_Modify").css("display","none"); 
-		$("#btn_Del").attr("disabled",true);
-		$("#btn_Del").css("display","none");
+// 		$("#btn_Modify").attr("disabled",true);
+// 		$("#btn_Modify").css("display","none"); 
+// 		$("#btn_Del").attr("disabled",true);
+// 		$("#btn_Del").css("display","none");
 		
 		$("#inPlcyId").attr("readonly",true);
 	}else if(type == "u"){ //modify
@@ -61,29 +61,6 @@ function maxlength() {
 	}
 }
 	
-// 	function password1 () { 
-// 		this.aa = new Array("password", "비밀번호은(는) 8~20자 내에서 입력해야 합니다.", new Function ("varName", " return this[varName];"));
-// 	} 
-// 	function password2 () { 
-// 		this.aa = new Array("password", "비밀번호은(는) 한글,특수문자,띄어쓰기는 허용되지 않습니다.", new Function ("varName", " return this[varName];"));
-// 	}
-// 	function password3 () { 
-// 		this.aa = new Array("password", "비밀번호은(는) 순차적인 숫자를 4개이상 연속해서 사용할수 없습니다.", new Function ("varName", " return this[varName];"));
-// 	} 
-// 	function password4 () { 
-// 		this.aa = new Array("password", "비밀번호은(는) 반복되는 문자나 숫자를 4개이상 연속해서 사용할 수 없습니다.", new Function ("varName", " return this[varName];"));
-// 	}
-// 	function IntegerValidations () { 
-// 		this.aa = new Array("inAreaNo", "집지역번호은(는) integer 타입이어야 합니다.", new Function ("varName", "this.maxlength='4';  return this[varName];"));
-// 		this.ab = new Array("inMiddleTelno", "집중간전화번호은(는) integer 타입이어야 합니다.", new Function ("varName", "this.maxlength='4';  return this[varName];"));
-// 		this.ac = new Array("inEndTelno", "집마지막전화번호은(는) integer 타입이어야 합니다.", new Function ("varName", "this.maxlength='4';  return this[varName];"));
-// 	}
-// 	function email () { 
-// 		this.aa = new Array("inUserEmailAdres", "이메일주소은(는) 유효하지 않은 이메일 주소입니다.", new Function ("varName", "this.maxlength='50';  return this[varName];"));
-// 	} 
-
-
-
 
 
 /*********************************************************
@@ -102,6 +79,7 @@ function fn_insert(){
 	policyData.policyDc			=	$("#inPlcydis").val();
 	policyData.policyBgndt		=	$("#inPlcyBgn").val();
 	policyData.policyEnddt		=	$("#inPlcyEnd").val();
+	policyData.policyHtmxCnt	=	$("#inDpCnt").val();
 	policyData.policyAppyYn	=	$("#inPlcyYn").val();
 	policyData.policyAppyUsrid	=	$("#inAplyUsr").val();
 
@@ -136,6 +114,7 @@ function fn_DetailPlcy(){
 	$("#inPlcyBgn").val(obj2.policy_bgndt);
 	$("#inPlcyEnd").val(obj2.policy_enddt);
 	$("#inPlcyYn").val(obj2.policy_appy_yn);
+	$("#inDpCnt").val(obj2.policy_htmxcnt);
 	$("#inPlcydis").val(obj2.policy_dc);
 	$("#inAplyUsr").val(obj2.policy_appy_usrid);
 }
@@ -157,6 +136,7 @@ function fn_update(){
 	policyData.policyDc			=	$("#inPlcydis").val();
 	policyData.policyBgndt		=	$("#inPlcyBgn").val();
 	policyData.policyEnddt		=	$("#inPlcyEnd").val();
+	policyData.policyHtmxCnt	=	$("#inDpCnt").val();
 	policyData.policyAppyYn	=	$("#inPlcyYn").val();
 	policyData.policyAppyUsrid	=	$("#inAplyUsr").val();
 
@@ -170,6 +150,13 @@ function fn_update(){
  * 정책정보 삭제
  ******************************************************** */
 function fn_delete(){
+	if(confirm("삭제 하시겠습니까?")){
+		if($("#inPlcyId").val() == null){
+			alert("정책ID가 등록되어있지 않습니다. \n삭제 할 정책이 없습니다.");
+			return;
+		}
+	}
+	
 	var rtnData = new Object();
 	rtnData = fn_calApi("DELETE", "/lgplcy/delete?plcyId="+$("#inPlcyId").val(), null, false);
 	fn_movePlcyList();
@@ -236,7 +223,13 @@ function fn_movebak(){
 				<input id="inPlcyEnd" name="inPlcyEnd" class="txaIpUmt" title="로그인정책 적용 종료일자" type="text" value="" size="50" maxlength="100"/>
 			</td>
 		</tr>
-		
+		<!-- 접근허용 횟수 -->
+		<tr>
+			<th><label for="inDpCnt">접근허용 횟수</label> <span class="pilsu">*</span></th>
+			<td class="left">
+				<input id="inDpCnt" name="inDpCnt" class="txaIpUmt" title="로그인 접근 허용 횟수" type="text" value="0" size="50" maxlength="5"/>
+			</td>
+		</tr>
 		<!-- 정책적용여부 -->
 		<tr>
 			<th><label for="inPlcyYn">적용여부</label> <span class="pilsu">*</span></th>
@@ -268,7 +261,7 @@ function fn_movebak(){
 	<!-- 하단 버튼 -->
 	<button title="뒤로가기" 		id="btn_movBak" onclick="fn_movebak();">뒤로가기</button> 
 	<button title="등록" 			id="btn_Add" 		onclick="fn_insert();">등록</button>
-	<button title="수정" 			id="btn_Modify" 	onclick="fn_update();">수정</button>
+	<button title="저장" 			id="btn_Modify" 	onclick="fn_update();">저장</button>
 	<button title="삭제" 			id="btn_Del" 		onclick="fn_delete();">삭제</button>
 
 </body>

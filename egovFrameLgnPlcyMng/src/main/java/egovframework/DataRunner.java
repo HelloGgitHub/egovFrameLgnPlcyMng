@@ -106,13 +106,14 @@ public class DataRunner implements ApplicationRunner {
         	comtnLoginPolicy.append("\n 	POLICY_ENDDT VARCHAR(14),             ");
         	comtnLoginPolicy.append("\n 	POLICY_APPY_YN VARCHAR(1),         ");
         	comtnLoginPolicy.append("\n 	POLICY_REGIST_DT VARCHAR(14),         ");
+        	comtnLoginPolicy.append("\n 	POLICY_HTMXCNT NUMERIC(5),         ");
         	comtnLoginPolicy.append("\n 	POLICY_APPY_USRID VARCHAR(20),     ");
         	comtnLoginPolicy.append("\n 	CHANGE_DT VARCHAR(14) NOT NULL,    ");
         	comtnLoginPolicy.append("\n 	PRIMARY KEY (POLICY_ID)            ");
         	comtnLoginPolicy.append("\n )                                    ");
         	statement.executeUpdate(comtnLoginPolicy.toString());
-        	String comtnLoginPolicyQry1 = "INSERT INTO COMTNLOGINPOLICY (POLICY_ID,POLICY_NM,POLICY_DC,POLICY_BGNDT,POLICY_ENDDT,POLICY_APPY_YN,POLICY_REGIST_DT,POLICY_APPY_USRID,CHANGE_DT) VALUES ('POLCY001','ID/PW 오류 체크','로그인시 ID/PW 오류 횟수를 체크하여 로그인을 제한한다.','20200707','99991231','Y','"+sstime+"','TESTUSER',"+sstime+")";
-        	String comtnLoginPolicyQry2 = "INSERT INTO COMTNLOGINPOLICY (POLICY_ID,POLICY_NM,POLICY_DC,POLICY_BGNDT,POLICY_ENDDT,POLICY_APPY_YN,POLICY_REGIST_DT,POLICY_APPY_USRID,CHANGE_DT) VALUES ('POLCY002','IP차단','로그인 차단 대상 IP를 등록하고 체크하여 로그인을 제한한다.','20200707','99991231','Y','"+sstime+"'	,'TESTUSER',"+sstime+")";
+        	String comtnLoginPolicyQry1 = "INSERT INTO COMTNLOGINPOLICY (POLICY_ID,POLICY_NM,POLICY_DC,POLICY_BGNDT,POLICY_ENDDT,POLICY_APPY_YN,POLICY_REGIST_DT,POLICY_HTMXCNT,POLICY_APPY_USRID,CHANGE_DT) VALUES ('POLCY001','ID/PW 오류 체크','로그인시 ID/PW 오류 횟수를 체크하여 로그인을 제한한다.','20200707','99991231','Y','"+sstime+"',3,'TESTUSER',"+sstime+")";
+        	String comtnLoginPolicyQry2 = "INSERT INTO COMTNLOGINPOLICY (POLICY_ID,POLICY_NM,POLICY_DC,POLICY_BGNDT,POLICY_ENDDT,POLICY_APPY_YN,POLICY_REGIST_DT,POLICY_HTMXCNT,POLICY_APPY_USRID,CHANGE_DT) VALUES ('POLCY002','IP차단','로그인 차단 대상 IP를 등록하고 체크하여 로그인을 제한한다.','20200707','99991231','Y','"+sstime+"',0,'TESTUSER',"+sstime+")";
         	jdbcTemplate.execute(comtnLoginPolicyQry1);
         	jdbcTemplate.execute(comtnLoginPolicyQry2);
 
@@ -129,9 +130,13 @@ public class DataRunner implements ApplicationRunner {
         	String comtnLoginPolicyHitHistoryQry1 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP) VALUES ('TESTUSER','POLCY002','20200707143514987','10.20.30.114')";
         	String comtnLoginPolicyHitHistoryQry2 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP) VALUES ('TESTUSER','POLCY002','20200702143514987','10.20.30.114')";
         	String comtnLoginPolicyHitHistoryQry3 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP) VALUES ('TESTUSER','POLCY002','20200617143514987','10.20.30.114')";
+        	String comtnLoginPolicyHitHistoryQry4 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP) VALUES ('TESTUSER','POLCY001','20200625093514987','10.20.30.114')";
+        	String comtnLoginPolicyHitHistoryQry5 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP) VALUES ('USER','POLCY001','20200505093514987','10.20.30.114')";
         	jdbcTemplate.execute(comtnLoginPolicyHitHistoryQry1);
         	jdbcTemplate.execute(comtnLoginPolicyHitHistoryQry2);
         	jdbcTemplate.execute(comtnLoginPolicyHitHistoryQry3);
+        	jdbcTemplate.execute(comtnLoginPolicyHitHistoryQry4);
+        	jdbcTemplate.execute(comtnLoginPolicyHitHistoryQry5);
 
         	StringBuffer comBlkipMngr = new StringBuffer();
         	comBlkipMngr.append("\n CREATE TABLE COMBLKIPMNGR      ");

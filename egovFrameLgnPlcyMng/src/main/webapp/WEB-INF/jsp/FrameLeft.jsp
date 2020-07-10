@@ -19,19 +19,14 @@
 			url="LoginPolicyList";
 		} else if(cd == 3){
 			url="LoginPolicyInfo?callType=c&plcyId=";
-
-			
 		} else if(cd == 4){
 			url="DpIPList";
 		} else if(cd == 5){
 			url="DpIPInfo?callType=c&dpIp=";
-
-
-			
 		} else if(cd == 6){
-			url="GroupUserSet?callType=c&userId=";
+			url="LoginPolicyHitList";
 		} else if(cd == 7){
-			url="UserGroupSet?callType=c&groupId=";
+			url="LoginPolicyHitDetailList?userId=&plcyId=";
 		}
 		
 		parent.body.location.href=url;
@@ -50,6 +45,7 @@
 	<br>&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(5);" title="차단IP등록" style="font-size: 15px;font-style: inherit;font-weight: bold;">3-1 차단IP등록 >></a></span>
 	<br>
 	<br><span class="btn_b"><a href="" onClick="fn_leftMenu(6);" title="적중이력 조회" style="font-size: 15px;font-style: inherit;font-weight: bold;">4- 적중이력 조회 >></a></span>
+	<br>&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(7);" title="적중이력 상세 조회" style="font-size: 15px;font-style: inherit;font-weight: bold;">4-1 적중이력 상세 조회 >></a></span>
 
 
 </body>

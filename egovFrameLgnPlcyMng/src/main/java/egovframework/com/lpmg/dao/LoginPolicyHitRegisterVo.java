@@ -19,7 +19,9 @@ package egovframework.com.lpmg.dao;
 public class LoginPolicyHitRegisterVo {
 
 	private String usrId;
+	private String password;
 	private String plcyId;
+	private String plcyNm;
 	private String loginIp;
 	
 	
@@ -30,11 +32,25 @@ public class LoginPolicyHitRegisterVo {
 		this.usrId = usrId;
 	}
 	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
+	
 	public String getPlcyId() {
 		return plcyId;
 	}
 	public void setPlcyId(String plcyId) {
 		this.plcyId = plcyId;
+	}
+	
+	public String getPlcyNm() {
+		return plcyNm;
+	}
+	public void setPlcyNm(String plcyNm) {
+		this.plcyNm = plcyNm;
 	}
 	
 	public String getLoginIp() {
@@ -43,7 +59,5 @@ public class LoginPolicyHitRegisterVo {
 	public void setLoginIp(String loginIp) {
 		this.loginIp = loginIp;
 	}
-	
-	
 	
 }

@@ -42,7 +42,6 @@ public class LoginPolicyDpIpService {
 	 */
 	public List<HashMap<Object, Object>> selectDpIpList() {
 		
-		
 		List<HashMap<Object, Object>> rtnLst = new ArrayList<HashMap<Object, Object>> ();
 		List<HashMap<Object, Object>> sqlLst = new ArrayList<HashMap<Object, Object>> ();
 		

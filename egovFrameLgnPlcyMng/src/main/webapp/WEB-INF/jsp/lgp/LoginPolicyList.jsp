@@ -157,11 +157,11 @@ function fncCheckAll(){
 
 	<div id="grd"></div>
 	<!-- paging navigation -->
-	<div class="pagination">
-		<ul>
-			<li class="current"><a onClick="return false;">1</a></li>
-		</ul>
-	</div>
+<!-- 	<div class="pagination"> -->
+<!-- 		<ul> -->
+<!-- 			<li class="current"><a onClick="return false;">1</a></li> -->
+<!-- 		</ul> -->
+<!-- 	</div> -->
 </div>
 <input name="selectedId" type="hidden" />
 <input name="checkedIdForDel" type="hidden" />

@@ -110,12 +110,12 @@
 				<li>
 					<input type="button" class="btn_login" value="로그인" onclick="fn_login()"> <!-- 로그인  -->
 				</li>
-				<li>
-					<ul class="btn_idpw" >
-						<li><a href="#" onclick="fn_arovRequest()">회원가입</a></li> <!-- 회원가입  -->
+<!-- 				<li> -->
+<!-- 					<ul class="btn_idpw" > -->
+<!-- 						<li><a href="#" onclick="fn_arovRequest()">회원가입</a></li> 회원가입  -->
 <!-- 						<li><a href="#" onclick="goFindId(); return false;">아이디/비밀번호 찾기</a></li> 아이디/비밀번호 찾기 -->
-					</ul>
-				</li>
+<!-- 					</ul> -->
+<!-- 				</li> -->
 			</ul>
 		</div>
 	</fieldset>

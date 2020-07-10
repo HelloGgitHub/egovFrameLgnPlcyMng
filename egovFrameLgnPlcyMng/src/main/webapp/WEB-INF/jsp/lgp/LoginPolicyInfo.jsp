@@ -259,7 +259,7 @@ function fn_movebak(){
 	</table>
 	<br/>
 	<!-- 하단 버튼 -->
-	<button title="뒤로가기" 		id="btn_movBak" onclick="fn_movebak();">뒤로가기</button> 
+<!-- 	<button title="뒤로가기" 		id="btn_movBak" onclick="fn_movebak();">뒤로가기</button>  -->
 	<button title="등록" 			id="btn_Add" 		onclick="fn_insert();">등록</button>
 	<button title="저장" 			id="btn_Modify" 	onclick="fn_update();">저장</button>
 	<button title="삭제" 			id="btn_Del" 		onclick="fn_delete();">삭제</button>

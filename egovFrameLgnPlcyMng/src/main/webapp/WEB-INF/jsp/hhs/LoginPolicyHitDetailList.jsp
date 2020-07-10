@@ -33,7 +33,7 @@ function fn_Select(){
  	ihtml = ihtml + '<thead>';
  	ihtml = ihtml + '<tr>';
  	ihtml = ihtml + '<th>번호</th>';
-//  	ihtml = ihtml + '<th><input type="checkbox" name="checkAll" class="check2" onclick="javascript:fncCheckAll()" title="전체선택체크박스"></th>';
+//  	ihtml = ihtml + '<th></th>';
  	ihtml = ihtml + '<th class="board_th_link">사용자ID</th>';
  	ihtml = ihtml + '<th>정책명</th>';
  	ihtml = ihtml + '<th>적중일시</th>';
@@ -43,11 +43,12 @@ function fn_Select(){
 	
 	for(var i =0; arr.length > i; i++){
    	 	ihtml = ihtml + '<tr>';
-   	 	ihtml = ihtml + '<td>' + (i+1) + '</td>';
-   	 	ihtml = ihtml + '<td>';
-//    	 	ihtml = ihtml + '<input id="checkField" name="checkField" title="checkField" type="checkbox"/>';
+   	 	ihtml = ihtml + '<td>' + (i+1) ; //+ '</td>';
    	 	ihtml = ihtml + '<input id="id_'+(i+1)+'" name="id_'+(i+1)+'" type="hidden" value="'+arr[i].usr_id+'">';
    	 	ihtml = ihtml + '</td>';
+//    	 	ihtml = ihtml + '<td>';
+//    	 	ihtml = ihtml + '<input id="checkField" name="checkField" title="checkField" type="checkbox"/>';
+//    	 	ihtml = ihtml + '</td>';
    	 	ihtml = ihtml + '<td>'+arr[i].usr_id+'</td>';
    	 	ihtml = ihtml + '<td style="text-align: left;padding-left: 30px;" id="plcyNm_'+(i+1)+'" name="plcyNm_'+(i+1)+'">'+arr[i].policy_nm+'</td>';
    	 	ihtml = ihtml + '<td id="plcyHtDt_'+(i+1)+'" name="plcyHtDt_'+(i+1)+'">'+arr[i].policy_hit_dt+'</td>';

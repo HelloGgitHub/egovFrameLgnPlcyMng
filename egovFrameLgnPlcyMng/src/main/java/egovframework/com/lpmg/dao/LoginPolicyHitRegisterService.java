@@ -174,7 +174,6 @@ public class LoginPolicyHitRegisterService {
 		if(htYn== false) { //정책로직에 걸린게 없을 경우 정상 로그인 처리
 			rtnSqlMap.clear();
 			rtnSqlMap = mapper.selectUserPwCk(param);
-			System.out.println(rtnSqlMap);
 			if(rtnSqlMap == null) {  //사용자 정보가 없을때 
 				rtnMap.put("MSG", "등록된 사용자가 없습니다.");
 				rtnMap.put("CKCD", "1");

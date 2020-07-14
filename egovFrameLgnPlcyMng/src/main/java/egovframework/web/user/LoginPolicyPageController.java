@@ -17,7 +17,7 @@ public class LoginPolicyPageController {
 	}
 	
 	@RequestMapping("/FrameDown") 
-	public String Main3(Model model) {
+	public String FrameDown(Model model) {
 		return "FrameDown"; 
 	}
 
@@ -38,13 +38,11 @@ public class LoginPolicyPageController {
 	@RequestMapping("/Login") 
 	public String Login(Model model) {
 		model.addAttribute("msg", "jstl");
-		System.out.println("++++++++++++++++UserInfo++++++++++++");
 		return "Login"; 
 	}
 	
 	@RequestMapping("/LoginPolicyList") 
 	public String LoginPolicyList(Model model) {
-		System.out.println("++++++++++++++++LoginPolicyList.jsp++++++++++++");
 		return "/lgp/LoginPolicyList"; 
 	}
 
@@ -52,18 +50,13 @@ public class LoginPolicyPageController {
 	public String LoginPolicyInfo(Model model
 			, @RequestParam(value = "callType") String callType
 			, @RequestParam(value = "plcyId") String plcyId) {
-
 		model.addAttribute("callType", 	callType);
 		model.addAttribute("plcyId", 	plcyId);
-
-		System.out.println("++++++++++++++++LoginPolicyInfo.jsp++++++++++++");
 		return "/lgp/LoginPolicyInfo"; 
 	}
-
 	
 	@RequestMapping("/DpIPList") 
 	public String DpIPList(Model model) {
-		System.out.println("++++++++++++++++DpIPList.jsp++++++++++++");
 		return "/dip/DpIPList"; 
 	}
 
@@ -71,18 +64,13 @@ public class LoginPolicyPageController {
 	public String DpIPInfo(Model model
 			, @RequestParam(value = "callType") String callType
 			, @RequestParam(value = "dpIp") String dpIp) {
-
 		model.addAttribute("callType", 	callType);
 		model.addAttribute("dpIp", 	dpIp);
-
-		System.out.println("++++++++++++++++DpIPInfo.jsp++++++++++++");
 		return "/dip/DpIPInfo"; 
 	}
-
 	
 	@RequestMapping("/LoginPolicyHitList") 
 	public String LoginPolicyHitList(Model model) {
-		System.out.println("++++++++++++++++LoginPolicyHitList.jsp++++++++++++");
 		return "/hhs/LoginPolicyHitList"; 
 	}
 	
@@ -90,13 +78,9 @@ public class LoginPolicyPageController {
 	public String LoginPolicyHitDetailList(Model model
 			, @RequestParam(value = "userId") String userId
 			, @RequestParam(value = "plcyId") String plcyId) {
-		
 		model.addAttribute("userId", 	userId);
 		model.addAttribute("plcyId", 	plcyId);
-		
-		System.out.println("++++++++++++++++LoginPolicyHitDetailList.jsp++++++++++++");
 		return "/hhs/LoginPolicyHitDetailList"; 
 	}
-
 	
 }

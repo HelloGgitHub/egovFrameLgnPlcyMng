@@ -40,14 +40,15 @@ function fn_Select(){
  	ihtml = ihtml + '<thead>';
  	ihtml = ihtml + '<tr>';
  	ihtml = ihtml + '<th>번호</th>';
- 	ihtml = ihtml + '<th><input type="checkbox" name="checkAll" class="check2" onclick="javascript:fncCheckAll()" title="전체선택체크박스"></th>';
+ 	ihtml = ihtml + '<th><input type="checkbox" name="checkAll" id="checkAll" class="check2" onclick="javascript:fncCheckAll()" title="전체선택체크박스"></th>';
  	ihtml = ihtml + '<th class="board_th_link">사용자ID</th>';
  	ihtml = ihtml + '<th>정책명</th>';
  	ihtml = ihtml + '<th>적중일시</th>';
  	ihtml = ihtml + '</tr>';
  	ihtml = ihtml + '</thead>';
  	ihtml = ihtml + '<tbody class="ov">';
-	
+
+	var cnt = 0;
 	for(var i =0; arr.length > i; i++){
    	 	ihtml = ihtml + '<tr>';
    	 	ihtml = ihtml + '<td>' + (i+1) + '</td>';
@@ -61,7 +62,13 @@ function fn_Select(){
    	 	ihtml = ihtml + '<td id="plcyHtCnt_'+(i+1)+'" name="plcyHtCnt_'+(i+1)+'">'+arr[i].cnt+'</td>';
 	 	ihtml = ihtml + '</tr>';
     }
-
+    
+    if(cnt == 0){
+    	ihtml = ihtml + '<tr>';
+	 	ihtml = ihtml + '<td colspan=5> 조회 결과가 없습니다</td>';
+	 	ihtml = ihtml + '</tr>';
+    }
+    
  	ihtml = ihtml + '</tbody>';
  	ihtml = ihtml + '</table>';
  	
@@ -85,8 +92,6 @@ function fn_Delete(){
 	
 	for(var i=0; ckId.length > i; i++){
 		var ckNum = ckId[i];
-		console.log(ckId.length + "===" +ckId[i] );
-		
 		var rtnData = new Object();
 		var paramData = new Object();
 		paramData.plcyId = $("#plcyid_"+ckNum).val();
@@ -117,12 +122,12 @@ function checkFieldck(){
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////체크박스 전체 선택!!! 더 개발해야함.
 function fncCheckAll(){
-	var rowData = new Array();
-	var checkbox = $("input[name=checkField]:checked");
-	console.log(">>>"+checkbox.parent().parent().eq(1).value);
-// 	checkbox.parent().parent().eq(i)
+	if($("#checkAll").prop("checked")){
+        $("input[name=checkField]").prop("checked",true);
+    }else{
+        $("input[name=checkField]").prop("checked",false);
+    }
 }
 
 </script>
@@ -153,16 +158,7 @@ function fncCheckAll(){
 	</div>
 
 	<div id="grd"></div>
-	<!-- paging navigation -->
-<!-- 	<div class="pagination"> -->
-<!-- 		<ul> -->
-<!-- 			<li class="current"><a onClick="return false;">1</a></li> -->
-<!-- 		</ul> -->
-<!-- 	</div> -->
 </div>
-<input name="selectedId" type="hidden" />
-<input name="checkedIdForDel" type="hidden" />
-<input name="pageIndex" type="hidden" value="1"/>
 
 </body>
 </html>

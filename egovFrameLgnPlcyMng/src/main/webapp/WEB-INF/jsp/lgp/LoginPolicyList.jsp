@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>정책 목록</title>
+<title>로그인 정책 목록</title>
 <%@ include file="/WEB-INF/jsp/cmm/head.jsp" %>
 
 
@@ -32,7 +32,7 @@ function fn_Select(){
  	ihtml = ihtml + '<thead>';
  	ihtml = ihtml + '<tr>';
  	ihtml = ihtml + '<th>번호</th>';
- 	ihtml = ihtml + '<th><input type="checkbox" name="checkAll" class="check2" onclick="javascript:fncCheckAll()" title="전체선택체크박스"></th>';
+ 	ihtml = ihtml + '<th><input type="checkbox" name="checkAll" id="checkAll" class="check2" onclick="javascript:fncCheckAll()" title="전체선택체크박스"></th>';
  	ihtml = ihtml + '<th class="board_th_link">정책명</th>';
  	ihtml = ihtml + '<th>시작일시</th>';
  	ihtml = ihtml + '<th>종료일시</th>';
@@ -41,7 +41,8 @@ function fn_Select(){
  	ihtml = ihtml + '</tr>';
  	ihtml = ihtml + '</thead>';
  	ihtml = ihtml + '<tbody class="ov">';
-	
+
+ 	var cnt = 0;
 	for(var i =0; arr.length > i; i++){
    	 	ihtml = ihtml + '<tr>';
    	 	ihtml = ihtml + '<td>' + (i+1) + '</td>';
@@ -55,8 +56,15 @@ function fn_Select(){
    	 	ihtml = ihtml + '<td id="plcyYn_'+(i+1)+'" name="plcyYn_'+(i+1)+'">'+arr[i].policy_appy_yn+'</td>';
    		ihtml = ihtml + '<td id="apyuserid_'+(i+1)+'" name="apyuserid_'+(i+1)+'">'+arr[i].policy_appy_usrid+'</td>';
 	 	ihtml = ihtml + '</tr>';
+	 	cnt++;
     }
 
+    if(cnt == 0){
+    	ihtml = ihtml + '<tr>';
+	 	ihtml = ihtml + '<td colspan=7> 조회 결과가 없습니다</td>';
+	 	ihtml = ihtml + '</tr>';
+    }
+	
  	ihtml = ihtml + '</tbody>';
  	ihtml = ihtml + '</table>';
  	
@@ -90,7 +98,6 @@ function fn_Delete(){
 		rtnData = fn_calApi("DELETE", "/lgplcy/delete", paramData, false);
 	}
 	fn_Select();
-	return;
 }
 
 
@@ -115,17 +122,17 @@ function checkFieldck(){
 /*********************************************************
  * 정책 목록 조회
  ******************************************************** */
-function fn_Add(){
+function fn_Insert(){
 	location.href=baseUrl+"/LoginPolicyInfo?callType=c&plcyId=";
 }
 
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////체크박스 전체 선택!!! 더 개발해야함.
 function fncCheckAll(){
-	var rowData = new Array();
-	var checkbox = $("input[name=checkField]:checked");
-	console.log(">>>"+checkbox.parent().parent().eq(1).value);
-// 	checkbox.parent().parent().eq(i)
+	if($("#checkAll").prop("checked")){
+        $("input[name=checkField]").prop("checked",true);
+    }else{
+        $("input[name=checkField]").prop("checked",false);
+    }
 }
 
 </script>
@@ -150,22 +157,12 @@ function fncCheckAll(){
 <!-- 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="검색어 입력" value=''  maxlength="255" > -->
 				<input type="button" class="s_btn" onClick="fn_Select();" 	value="조회" title="조회 버튼" />
 				<input type="button" class="s_btn" onClick="fn_Delete();" 	value="삭제" title="삭제 버튼" />
-				<input type="button" class="s_btn" onClick="fn_Add();" 		value="등록" title="등록 버튼" />
+				<input type="button" class="s_btn" onClick="fn_Insert();" 		value="등록" title="등록 버튼" />
 			</li>
 		</ul>
 	</div>
-
 	<div id="grd"></div>
-	<!-- paging navigation -->
-<!-- 	<div class="pagination"> -->
-<!-- 		<ul> -->
-<!-- 			<li class="current"><a onClick="return false;">1</a></li> -->
-<!-- 		</ul> -->
-<!-- 	</div> -->
 </div>
-<input name="selectedId" type="hidden" />
-<input name="checkedIdForDel" type="hidden" />
-<input name="pageIndex" type="hidden" value="1"/>
 
 </body>
 </html>

@@ -27,12 +27,12 @@ function fn_Select(){
 	var arr = rtnData.list;
 	
  	var ihtml = '';
- 	ihtml = ihtml + '<table class="board_list" summary="그룹목록을 출력합니다.">';
+ 	ihtml = ihtml + '<table class="board_list" summary="차단IP 목록을 출력합니다.">';
  	ihtml = ihtml + '<colgroup><col style="width: 5%;"><col style="width: 3%;"><col style="width: ;"><col style="width: 30%;"><col style="width: 20%;"><col style="width: 15%;"></colgroup>';
  	ihtml = ihtml + '<thead>';
  	ihtml = ihtml + '<tr>';
  	ihtml = ihtml + '<th>번호</th>';
- 	ihtml = ihtml + '<th><input type="checkbox" name="checkAll" class="check2" onclick="javascript:fncCheckAll()" title="전체선택체크박스"></th>';
+ 	ihtml = ihtml + '<th><input type="checkbox" name="checkAll" id="checkAll" class="check2" onclick="javascript:fncCheckAll()" title="전체선택체크박스"></th>';
  	ihtml = ihtml + '<th class="board_th_link">IP</th>';
  	ihtml = ihtml + '<th>명칭</th>';
  	ihtml = ihtml + '<th>등록일시</th>';
@@ -40,7 +40,8 @@ function fn_Select(){
  	ihtml = ihtml + '</tr>';
  	ihtml = ihtml + '</thead>';
  	ihtml = ihtml + '<tbody class="ov">';
-	
+
+ 	var cnt = 0;
 	for(var i =0; arr.length > i; i++){
    	 	ihtml = ihtml + '<tr>';
    	 	ihtml = ihtml + '<td>' + (i+1) + '</td>';
@@ -53,8 +54,15 @@ function fn_Select(){
    	 	ihtml = ihtml + '<td id="addDt_'+(i+1)+'" name="addDt_'+(i+1)+'">'+arr[i].add_dt+'</td>';
    		ihtml = ihtml + '<td id="adduserid_'+(i+1)+'" name="adduserid_'+(i+1)+'">'+arr[i].add_usrid+'</td>';
 	 	ihtml = ihtml + '</tr>';
+	 	cnt++;
     }
-
+    
+    if(cnt == 0){
+    	ihtml = ihtml + '<tr>';
+	 	ihtml = ihtml + '<td colspan=6> 조회 결과가 없습니다</td>';
+	 	ihtml = ihtml + '</tr>';
+    }
+    
  	ihtml = ihtml + '</tbody>';
  	ihtml = ihtml + '</table>';
  	
@@ -63,7 +71,7 @@ function fn_Select(){
 }
 
 /*********************************************************
- * 등록페이지 이동
+ * 그리드 선택 등록페이지 이동
  ******************************************************** */
 function fn_SelectIp(dpIp){
 	var pageType= "r";
@@ -112,17 +120,19 @@ function checkFieldck(){
 /*********************************************************
  * 정책 목록 조회
  ******************************************************** */
-function fn_Add(){
+function fn_Insert(){
 	location.href=baseUrl+"/DpIPInfo?callType=c&dpIp=";
 }
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////체크박스 전체 선택!!! 더 개발해야함.
+/*********************************************************
+ * 그리드 체크 박스 전체 선택
+ ******************************************************** */
 function fncCheckAll(){
-	var rowData = new Array();
-	var checkbox = $("input[name=checkField]:checked");
-	console.log(">>>"+checkbox.parent().parent().eq(1).value);
-// 	checkbox.parent().parent().eq(i)
+	if($("#checkAll").prop("checked")){
+        $("input[name=checkField]").prop("checked",true);
+    }else{
+        $("input[name=checkField]").prop("checked",false);
+    }
 }
 
 </script>
@@ -132,7 +142,7 @@ function fncCheckAll(){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 <div class="board">
-	<h1>로그인 정책 목록</h1>
+	<h1>차단IP 목록</h1>
 	<!-- 검색영역 -->
 	<div class="search_box" title="이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다.">
 		<ul>
@@ -147,22 +157,11 @@ function fncCheckAll(){
 <!-- 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="검색어 입력" value=''  maxlength="255" > -->
 				<input type="button" class="s_btn" onClick="fn_Select();" 	value="조회" title="조회 버튼" />
 				<input type="button" class="s_btn" onClick="fn_Delete();" 	value="삭제" title="삭제 버튼" />
-				<input type="button" class="s_btn" onClick="fn_Add();" 		value="등록" title="등록 버튼" />
+				<input type="button" class="s_btn" onClick="fn_Insert();" 		value="등록" title="등록 버튼" />
 			</li>
 		</ul>
 	</div>
-
 	<div id="grd"></div>
-	<!-- paging navigation -->
-<!-- 	<div class="pagination"> -->
-<!-- 		<ul> -->
-<!-- 			<li class="current"><a onClick="return false;">1</a></li> -->
-<!-- 		</ul> -->
-<!-- 	</div> -->
 </div>
-<input name="selectedId" type="hidden" />
-<input name="checkedIdForDel" type="hidden" />
-<input name="pageIndex" type="hidden" value="1"/>
-
 </body>
 </html>

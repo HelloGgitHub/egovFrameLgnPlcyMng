@@ -20,46 +20,30 @@ $(document).ready(function(){
 function inputCellSet(type) {
 	//호출타입에 따라 입력환경 설정
 	if(type == "c"){ //insert
-		$("#btn_Modify").attr("disabled",true);
-		$("#btn_Modify").css("display","none"); 
-		$("#btn_Del").attr("disabled",true);
-		$("#btn_Del").css("display","none");
+		$("#btn_Delete").css("display","none");
 	}else if(type == "r"){
-		$("#btn_Add").attr("disabled",true);
-		$("#btn_Add").css("display","none");
-		$("#inDpIp").val(dpIp);
+		$("#btn_Insert").css("display","none");
 		$("#inDpIp").attr("readonly",true);
-		$("#inDpipNm").attr("readonly",true);
+		$("#inDpipNm").attr("readonly",true); 
 		$("#inDpipDc").attr("readonly",true);
-		$("#inAplyUsr").attr("readonly",true);
-		fn_DetailPlcy();
-	}else if(type == "cr"){  //readOnly
-		$("#btn_Add").attr("disabled",true);
-		$("#btn_Add").css("display","none");
-		$("#btn_Modify").attr("disabled",true);
-		$("#btn_Modify").css("display","none"); 
-		$("#btn_Del").attr("disabled",true);
-		$("#btn_Del").css("display","none");
-		
-		$("#inDpIp").attr("readonly",true);
-		$("#inDpipNm").attr("readonly",true);
-		$("#inDpipDc").attr("readonly",true);
-		$("#inAplyUsr").attr("readonly",true);
-	}else if(type == "u"){ //modify
-		$("#btn_Add").attr("disabled",true);
-		$("#inDpIp").attr("readonly",true);
+		fn_DetailDpIp();
 	}
 }
+
 //입력 필수값 체크
 function required() {
-	if($.trim($("#inDpIp").val()).length == 0){//////////////////////////////
-		alert("정책아이디은(는) 필수 입력값입니다.");$("#inDpIp").focus();return;/////////////////////////////////////
+	if($.trim($("#inDpIp").val()).length == 0){
+		alert("IP은(는) 필수 입력값입니다.");$("#inDpIp").focus();return false;
 	}
 }
 //입력값 길이 체크
 function maxlength() { 
-	if($.trim($("#inDpIp").val()).length >= 20){//////////////////////
-		alert("정책아이디은(는) 20자 이상 입력할수 없습니다.");$("#inDpIp").focus();return false;//////////////
+	if($.trim($("#inDpIp").val()).length >= 20){
+		alert("IP은(는) 23자 이상 입력할수 없습니다.");$("#inDpIp").focus();return false;
+	}else if($.trim($("#inDpipNm").val()).length > 50){
+		alert("명칭은(는) 50자 이상 입력할수 없습니다.");$("#inDpipNm").focus();return false;
+	}else if($.trim($("#inDpipDc").val()).length > 250){
+		alert("설명은(는) 250자 이상 입력할수 없습니다.");$("#inDpipDc").focus();return false;
 	}
 }
 	
@@ -85,40 +69,12 @@ function maxlength() {
 // 	} 
 
 
-
-
-
-/*********************************************************
- * 정책등록
- ******************************************************** */
-function fn_insert(){
-
-	if(confirm("등록하시겠습니까?")){	
-		required(); //필수값 체크
-		maxlength(); //최대 길이 체크
-	}
-
-	var dpIpData = new Object();
-	dpIpData.blkIp				=	$("#inDpIp").val();
-	dpIpData.blkIpNm			=	$("#inDpipNm").val();
-	dpIpData.blkIpDc			=	$("#inDpipDc").val();
-	dpIpData.addUsrid		=	$("#inAplyUsr").val();
-
-	var rtnData = new Object();
-	rtnData = fn_calApi("POST", "/lgDpIp/addnew", dpIpData, false);
-	alert(rtnData.RESULTMSG);
-	if(rtnData.RESULTCD != 0){
-		return;
-	}
-	inputCellSet("cr");
-}
-
 /*********************************************************
  * 정책 정보 조회
  ******************************************************** */
-function fn_DetailPlcy(){
+function fn_DetailDpIp(){
 	var pDpIp = "";
-	if(dpIp == null && dpIp == ""){
+	if(dpIp == null || dpIp == ""){
 		pDpIp = $("#inDpIp").val();
 	}else{
 		pDpIp = dpIp;
@@ -136,21 +92,48 @@ function fn_DetailPlcy(){
 	$("#inAplyUsr").val(obj2.add_usrid);
 }
 
+/*********************************************************
+ * 정책등록
+ ******************************************************** */
+function fn_Insert(){
+
+	if(confirm("등록하시겠습니까?")){	
+		if(required()==false) return; //필수값 체크
+		if(maxlength()==false) return; //최대 길이 체크
+
+		var dpIpData = new Object();
+		dpIpData.blkIp				=	$("#inDpIp").val();
+		dpIpData.blkIpNm			=	$("#inDpipNm").val();
+		dpIpData.blkIpDc			=	$("#inDpipDc").val();
+		dpIpData.addUsrid		=	parent.parent.topFrame.document.all.lgnUserId.value;
+
+		var rtnData = new Object();
+		rtnData = fn_calApi("POST", "/lgDpIp/addnew", dpIpData, false);
+		alert(rtnData.RESULTMSG);
+		if(rtnData.RESULTCD != 0){
+			return;
+		}
+		inputCellSet("r");
+	}
+}
+
 
 /*********************************************************
  * 정책정보 삭제
  ******************************************************** */
-function fn_delete(){
+function fn_Delete(){
 	if(confirm("삭제 하시겠습니까?")){
 		if($("#inDpIp").val() == null){
 			alert("IP가 등록되어있지 않습니다. \n삭제 할 IP가 없습니다.");
 			return;
 		}
+		
+		var rtnData = new Object();
+		rtnData = fn_calApi("DELETE", "/lgDpIp/delete?bkIp="+$("#inDpIp").val(), null, false);
+		
+		alert(rtnData.RESULTMSG);
+		fn_moveDpIpList();
 	}
-	
-	var rtnData = new Object();
-	rtnData = fn_calApi("DELETE", "/lgDpIp/delete?bkIp="+$("#inDpIp").val(), null, false);
-	fn_moveDpIpList();
 }
 
 /******************
@@ -173,16 +156,13 @@ function fn_movebak(){
 <body>
 
 	<div class="wTableFrm">
-	<!-- 타이틀 -->
-	<h2 >차단IP 관리</h2>
-	<!-- 등록폼 -->
-	<table class="wTable" summary="로그인 정책 정보를 출력합니다.">
-	<caption>차단IP 관리</caption>
+	<h2 >차단IP 정보</h2>
+	<table class="wTable" summary="차단IP 정보를 출력합니다.">
+	<caption>차단IP 정보</caption>
 	<colgroup>
 		<col style="width: 22%;"><col style="width: ;">
 	</colgroup>
 	<tbody>
-		<!-- 입력/선택 -->
 		<!-- IP -->
 		<tr>
 			<th><label for="inDpIp">IP</label> <span class="pilsu">*</span></th>
@@ -203,24 +183,14 @@ function fn_movebak(){
 		<tr>
 			<th><label for="inDpipDc">설명</label></th>
 			<td class="left">
-				<textarea id="inDpipDc" name="inDpipDc" title="설명" style="resize: none;height: 300px;"></textarea>
-			</td>
-		</tr>
-		
-		<!-- 등록자ID -->		
-		<tr>
-			<th><label for="inAplyUsr">등록자ID</label></th>
-			<td class="left">
-				<input id="inAplyUsr" name="inAplyUsr" class="txaIpUmt" title="등록한사용자 ID" type="text" value="" size="50" maxlength="100"/>
+				<textarea id="inDpipDc" name="inDpipDc" title="설명" style="resize: none;"></textarea>
 			</td>
 		</tr>
 	</tbody>
 	</table>
 	<br/>
 	<!-- 하단 버튼 -->
-<!-- 	<button title="뒤로가기" 		id="btn_movBak" onclick="fn_movebak();" >뒤로가기</button>  -->
-	<button title="등록" 			id="btn_Add" 		onclick="fn_insert();">등록</button>
-	<button title="삭제" 			id="btn_Del" 		onclick="fn_delete();">삭제</button>
-
+	<button title="등록" 			id="btn_Insert" 		onclick="fn_Insert();">등록</button>
+	<button title="삭제" 			id="btn_Delete" 		onclick="fn_Delete();">삭제</button>
 </body>
 </html>

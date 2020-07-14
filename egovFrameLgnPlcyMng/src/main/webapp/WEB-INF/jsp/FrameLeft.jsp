@@ -28,7 +28,6 @@
 		} else if(cd == 7){
 			url="LoginPolicyHitDetailList?userId=&plcyId=";
 		}
-		
 		parent.body.location.href=url;
 	}
 
@@ -36,16 +35,19 @@
 
 <body>
 	<input type="hidden" id="" name="lngCk" value="9"/>
-	<br><span class="btn_b"><a href="" onClick="fn_leftMenu(1);" title="로그인" style="font-size: 15px;font-style: inherit;font-weight: bold;">1- 로그인 >></a></span>
+	<br><span class="btn_b"><a href="" onClick="fn_leftMenu(1);" title="로그인" style="font-size: 15px;font-style: inherit;font-weight: bold;">로그인</a></span>
 	<br>
-	<br><span class="btn_b"><a href="" onClick="fn_leftMenu(2);" title="정책 목록" style="font-size: 15px;font-style: inherit;font-weight: bold;">2- 정책 목록 >></a></span>
-	<br>&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(3);" title="정책 정보" style="font-size: 15px;font-style: inherit;font-weight: bold;">2-1 정책 정보 >></a></span>
+	<br><span class="btn_b" style="font-size: 15px;font-style: inherit;font-weight: bold;">- 로그인정책 관리</span>
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(3);" title="정책 등록" style="font-size: 15px;font-style: inherit;font-weight: bold;">정책 등록</a></span>
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(2);" title="정책 목록 조회" style="font-size: 15px;font-style: inherit;font-weight: bold;">정책 목록 조회</a></span>
 	<br>
-	<br><span class="btn_b"><a href="" onClick="fn_leftMenu(4);" title="차단IP목록" style="font-size: 15px;font-style: inherit;font-weight: bold;">3- 차단IP목록 >></a></span>
-	<br>&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(5);" title="차단IP등록" style="font-size: 15px;font-style: inherit;font-weight: bold;">3-1 차단IP등록 >></a></span>
+	<br><span class="btn_b" style="font-size: 15px;font-style: inherit;font-weight: bold;">- IP차단 목록 관리 </span>
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(5);" title="차단IP등록" style="font-size: 15px;font-style: inherit;font-weight: bold;">차단IP 등록</a></span>
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(4);" title="차단IP목록 조회" style="font-size: 15px;font-style: inherit;font-weight: bold;">차단IP 목록 조회</a></span>
 	<br>
-	<br><span class="btn_b"><a href="" onClick="fn_leftMenu(6);" title="적중이력 조회" style="font-size: 15px;font-style: inherit;font-weight: bold;">4- 적중이력 조회 >></a></span>
-	<br>&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(7);" title="적중이력 상세 조회" style="font-size: 15px;font-style: inherit;font-weight: bold;">4-1 적중이력 상세 조회 >></a></span>
+	<br><span class="btn_b" style="font-size: 15px;font-style: inherit;font-weight: bold;">- 적중이력 관리</span>
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(6);" title="적중이력 조회" style="font-size: 15px;font-style: inherit;font-weight: bold;">적중이력 조회</a></span>
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(7);" title="적중이력 상세 조회" style="font-size: 15px;font-style: inherit;font-weight: bold;">적중이력 상세 조회</a></span>
 
 
 </body>

@@ -75,7 +75,7 @@ function fn_Select(){
  ******************************************************** */
 function fn_SelectIp(dpIp){
 	var pageType= "r";
-	location.href=baseUrl + "/DpIPInfo?callType="+pageType+"&dpIp="+dpIp;
+	location.href="/DpIPInfo?callType="+pageType+"&dpIp="+dpIp;
 }
 
 /*********************************************************
@@ -121,7 +121,7 @@ function checkFieldck(){
  * 정책 목록 조회
  ******************************************************** */
 function fn_Insert(){
-	location.href=baseUrl+"/DpIPInfo?callType=c&dpIp=";
+	location.href="/DpIPInfo?callType=c&dpIp=";
 }
 
 /*********************************************************

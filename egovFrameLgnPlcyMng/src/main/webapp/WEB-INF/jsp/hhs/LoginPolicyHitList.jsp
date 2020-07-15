@@ -61,6 +61,7 @@ function fn_Select(){
    	 	ihtml = ihtml + '<td id="plcyNm_'+(i+1)+'" name="plcyNm_'+(i+1)+'">'+arr[i].policy_nm+'</td>';
    	 	ihtml = ihtml + '<td id="plcyHtCnt_'+(i+1)+'" name="plcyHtCnt_'+(i+1)+'">'+arr[i].cnt+'</td>';
 	 	ihtml = ihtml + '</tr>';
+	 	cnt++;
     }
     
     if(cnt == 0){
@@ -80,7 +81,7 @@ function fn_Select(){
  * 상세 페이지 이동
  ******************************************************** */
 function fn_SelectDetail(userId, plcyId){
-	location.href=baseUrl + "/LoginPolicyHitDetailList?userId="+userId+"&plcyId="+plcyId;
+	location.href="/LoginPolicyHitDetailList?userId="+userId+"&plcyId="+plcyId;
 }
 
 /*********************************************************

@@ -52,7 +52,7 @@
 		}
 	
 		function fn_movelogin(){
-			location.href=baseUrl+"/LoginPolicyList";
+			location.href="/LoginPolicyList";
 		}
 
 

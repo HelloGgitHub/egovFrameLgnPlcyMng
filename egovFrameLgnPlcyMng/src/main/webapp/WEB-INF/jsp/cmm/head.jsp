@@ -58,12 +58,15 @@
 					console.log(key + "<>" +value);
 				    p = p + key + "=" + value+"&";
 				});
-				tUrl = baseUrl+cPath+"?"+p.substring(0,(p.length-1));
+// 				tUrl = baseUrl+cPath+"?"+p.substring(0,(p.length-1));
+				tUrl = cPath+"?"+p.substring(0,(p.length-1));
 			}else if((cType=="GETpath") && cParam == null){
 				reqType = "GET";
-				tUrl = baseUrl+cPath;
+// 				tUrl = baseUrl+cPath;
+				tUrl = cPath;
 			}else{
-				tUrl = baseUrl+cPath;
+// 				tUrl = baseUrl+cPath;
+				tUrl = cPath;
 			}
 			console.log("reqType >>"+reqType+"\ntarget Url :: " + tUrl);
 			var jsonData = JSON.stringify(cParam);
@@ -106,12 +109,11 @@
 		    $('#myModal').hide();
 		}
 
-
-		
 		function fn_modifyPassword(){
 			$.ajax({
 				type: "PUT",
-				url: baseUrl + "/user/updateUsrPw?userId="+ $("#layUserId").val() + "&usrPw="+ $("#layTobePwd").val(),
+				url: "/user/updateUsrPw?userId="+ $("#layUserId").val() + "&usrPw="+ $("#layTobePwd").val(),
+// 				url: baseUrl + "/user/updateUsrPw?userId="+ $("#layUserId").val() + "&usrPw="+ $("#layTobePwd").val(),
 				contentType: 'application/json; charset=utf-8',
 	 			dataType:'text',
 				async: false,

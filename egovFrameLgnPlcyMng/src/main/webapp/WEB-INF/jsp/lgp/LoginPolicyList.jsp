@@ -77,7 +77,7 @@ function fn_Select(){
  ******************************************************** */
 function fn_SelectPlcy(plcyId){
 	var pageType= "r";
-	location.href=baseUrl + "/LoginPolicyInfo?callType="+pageType+"&plcyId="+plcyId;
+	location.href="/LoginPolicyInfo?callType="+pageType+"&plcyId="+plcyId;
 }
 
 /*********************************************************
@@ -123,7 +123,7 @@ function checkFieldck(){
  * 정책 목록 조회
  ******************************************************** */
 function fn_Insert(){
-	location.href=baseUrl+"/LoginPolicyInfo?callType=c&plcyId=";
+	location.href="/LoginPolicyInfo?callType=c&plcyId=";
 }
 
 

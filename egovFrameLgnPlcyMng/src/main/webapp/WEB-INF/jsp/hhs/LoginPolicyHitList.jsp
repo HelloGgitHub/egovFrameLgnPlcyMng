@@ -138,7 +138,7 @@ function fncCheckAll(){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 <div class="board">
-	<h1>로그인 정책 적중이력</h1>
+	<h1>적중이력 목록</h1>
 	<!-- 검색영역 -->
 	<div class="search_box" title="이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다.">
 		<ul>

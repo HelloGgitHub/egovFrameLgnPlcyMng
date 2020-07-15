@@ -72,7 +72,7 @@ function fn_Select(){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 <div class="board">
-	<h1>로그인 정책 적중이력</h1>
+	<h1>적중이력 상세목록</h1>
 	<div id="grd"></div>
 </div>
 </body>

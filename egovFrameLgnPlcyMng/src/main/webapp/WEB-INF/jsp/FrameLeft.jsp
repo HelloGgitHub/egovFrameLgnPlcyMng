@@ -41,7 +41,7 @@
 	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(3);" title="정책 등록" style="font-size: 15px;font-style: inherit;font-weight: bold;">정책 등록</a></span>
 	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(2);" title="정책 목록 조회" style="font-size: 15px;font-style: inherit;font-weight: bold;">정책 목록 조회</a></span>
 	<br>
-	<br><span class="btn_b" style="font-size: 15px;font-style: inherit;font-weight: bold;">- IP차단 목록 관리 </span>
+	<br><span class="btn_b" style="font-size: 15px;font-style: inherit;font-weight: bold;">- 차단IP 목록 관리 </span>
 	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(5);" title="차단IP등록" style="font-size: 15px;font-style: inherit;font-weight: bold;">차단IP 등록</a></span>
 	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(4);" title="차단IP목록 조회" style="font-size: 15px;font-style: inherit;font-weight: bold;">차단IP 목록 조회</a></span>
 	<br>

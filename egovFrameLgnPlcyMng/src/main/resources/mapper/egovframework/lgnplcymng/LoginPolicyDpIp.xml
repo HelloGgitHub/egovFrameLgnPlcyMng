@@ -8,7 +8,7 @@
 			     , BLK_IPDC 
 			     , ADD_USRID 
 			     , ADD_DT 
-			  FROM COMBLKIPMNGR
+			  FROM COMTNBLKIPMNGR
     </select>
 
     <select id="selectDpIpDetail" resultType="hashMap">
@@ -17,19 +17,19 @@
 			     , BLK_IPDC 
 			     , ADD_USRID 
 			     , ADD_DT 
-			  FROM COMBLKIPMNGR
+			  FROM COMTNBLKIPMNGR
 			 WHERE BLK_IP = '${BLKIP}'
     </select>
 
 
     <select id="selectLgPlcyDpIpCnt" parameterType="Map" resultType="int">
 			SELECT COUNT(*) CNT
-			  FROM COMBLKIPMNGR
+			  FROM COMTNBLKIPMNGR
 			 WHERE BLK_IP = '${BLKIP}'
     </select>
 
     <insert id="insertLgPlcyDpIp" parameterType="hashMap">
-			INSERT INTO COMBLKIPMNGR (
+			INSERT INTO COMTNBLKIPMNGR (
 				 BLK_IP
 				, BLK_IPNM
 			    , BLK_IPDC
@@ -46,7 +46,7 @@
 
     
     <delete id="deleteLgPlcyDpIp" parameterType="hashMap">
-			DELETE FROM COMBLKIPMNGR
+			DELETE FROM COMTNBLKIPMNGR
 			 WHERE BLK_IP = '${BLKIP}'
     </delete>
     

@@ -78,7 +78,7 @@
     </select>
     <select id="selectUserIpCk"  parameterType="Map" resultType="hashMap">
 			SELECT COUNT(*) CNT
-			  FROM COMBLKIPMNGR
+			  FROM COMTNBLKIPMNGR
 			 WHERE BLK_IP LIKE '${LGINIP}%' 
     </select>
     <select id="selectUserPwErCnt"  parameterType="Map" resultType="hashMap">

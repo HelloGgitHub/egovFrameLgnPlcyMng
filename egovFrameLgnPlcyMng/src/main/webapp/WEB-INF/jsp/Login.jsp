@@ -84,6 +84,7 @@
 	<input type="hidden" id="message" name="message" value="">
 	
 	<fieldset>
+		<img src="/images/egplogo.png" border='0' align='absbottom' alt='' />
 <!-- 		<img src="/images/title.jpg" style="margin:30px 0 0px 60px" alt="login title image"  title="login title image"> -->
 		<div class="login_type">
 			<ul id="ulLoginType">

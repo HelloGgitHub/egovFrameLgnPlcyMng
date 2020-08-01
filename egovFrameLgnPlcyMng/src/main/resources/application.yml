@@ -14,12 +14,17 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  whois:
+    key:   #whois에서 제공 하는 API를 사용하기 위해 발급받은 key를 등록한다.
+    url: http://whois.kisa.or.kr/openapi/ipascc.jsp
 server:
   port: 9087
   task:
     fixedDelay: 1000
     name: mariaTask
+
 ---
+
 logging:
   file: /home/vagrant/memberMng/log/egovGrpMng.log
 #    path: /home/vagrant/memberMng/log/egovGrpMng.log  # 로그 메세지가 저장되는 로그 디렉터리

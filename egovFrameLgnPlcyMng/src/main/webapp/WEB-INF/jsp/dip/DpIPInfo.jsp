@@ -4,6 +4,8 @@
 <head>
 <title>사용자관리</title>
 <%@ include file="/WEB-INF/jsp/cmm/head.jsp" %>
+<script src="/js/egovframework/com/cmm/utl/EgovCmmUtl.js"></script>
+<script src="/js/egovframework/com/cmm/utl/InputCk.js"></script>
 
 <script type="text/javaScript" language="javascript" defer="defer">
 
@@ -15,6 +17,7 @@ var dpIp		 	= "<%=request.getParameter("dpIp") %>";
  *********************************************************/
 $(document).ready(function(){
 	inputCellSet(caltype);
+	fn_radio("IP4");
 });
 
 function inputCellSet(type) {
@@ -46,28 +49,18 @@ function maxlength() {
 		alert("설명은(는) 250자 이상 입력할수 없습니다.");$("#inDpipDc").focus();return false;
 	}
 }
-	
-// 	function password1 () { 
-// 		this.aa = new Array("password", "비밀번호은(는) 8~20자 내에서 입력해야 합니다.", new Function ("varName", " return this[varName];"));
-// 	} 
-// 	function password2 () { 
-// 		this.aa = new Array("password", "비밀번호은(는) 한글,특수문자,띄어쓰기는 허용되지 않습니다.", new Function ("varName", " return this[varName];"));
-// 	}
-// 	function password3 () { 
-// 		this.aa = new Array("password", "비밀번호은(는) 순차적인 숫자를 4개이상 연속해서 사용할수 없습니다.", new Function ("varName", " return this[varName];"));
-// 	} 
-// 	function password4 () { 
-// 		this.aa = new Array("password", "비밀번호은(는) 반복되는 문자나 숫자를 4개이상 연속해서 사용할 수 없습니다.", new Function ("varName", " return this[varName];"));
-// 	}
-// 	function IntegerValidations () { 
-// 		this.aa = new Array("inAreaNo", "집지역번호은(는) integer 타입이어야 합니다.", new Function ("varName", "this.maxlength='4';  return this[varName];"));
-// 		this.ab = new Array("inMiddleTelno", "집중간전화번호은(는) integer 타입이어야 합니다.", new Function ("varName", "this.maxlength='4';  return this[varName];"));
-// 		this.ac = new Array("inEndTelno", "집마지막전화번호은(는) integer 타입이어야 합니다.", new Function ("varName", "this.maxlength='4';  return this[varName];"));
-// 	}
-// 	function email () { 
-// 		this.aa = new Array("inUserEmailAdres", "이메일주소은(는) 유효하지 않은 이메일 주소입니다.", new Function ("varName", "this.maxlength='50';  return this[varName];"));
-// 	} 
 
+function ipValCk () {
+	if(chkPwd($.trim($('#inDpIp1').val())) == false) {
+		$("#inDpIp1").focus();return false;
+	} else if(chkPwd($.trim($('#inDpIp2').val())) == false) {
+		$("#inDpIp2").focus();return false;
+	} else if(inDpIp2($.trim($('#inDpIp3').val())) == false) {
+		$("#inDpIp3").focus();return false;
+	} else if(chkPwd($.trim($('#inDpIp4').val())) == false) {
+		$("#inDpIp4").focus();return false;
+	}
+}
 
 /*********************************************************
  * 정책 정보 조회
@@ -85,8 +78,10 @@ function fn_DetailDpIp(){
 	rtnData = fn_calApi("GET", "/lgDpIp/detailInfo/"+pDpIp, null, false);
 	arrlist = rtnData.list;
 	const obj2 = arrlist[0]; 
+	const ip = obj2.blk_ip.split('.');
+	const ip = obj2.blk_ip.split('.');
 	
-	$("#inDpIp").val(obj2.blk_ip);
+	$("#inDpIp").val(obj2.blk_ip);  
 	$("#inDpipNm").val(obj2.blk_ipnm);
 	$("#inDpipDc").val(obj2.blk_ipdc);
 	$("#inAplyUsr").val(obj2.add_usrid);
@@ -100,9 +95,10 @@ function fn_Insert(){
 	if(confirm("등록하시겠습니까?")){	
 		if(required()==false) return; //필수값 체크
 		if(maxlength()==false) return; //최대 길이 체크
-
+		if(ipValCk()==false) return; //IP 숫자 체크
+		
 		var dpIpData = new Object();
-		dpIpData.blkIp				=	$("#inDpIp").val();
+		dpIpData.blkIp				=	$("#inDpIp1").val()+"."+$("#inDpIp2").val()+"."+$("#inDpIp3").val()+"."+$("#inDpIp4").val()+"/"+$("#inDpIpCidr").val();
 		dpIpData.blkIpNm			=	$("#inDpipNm").val();
 		dpIpData.blkIpDc			=	$("#inDpipDc").val();
 		dpIpData.addUsrid		=	parent.parent.topFrame.document.all.lgnUserId.value;
@@ -150,6 +146,15 @@ function fn_movebak(){
 	window.history.back();	
 }
 
+function fn_radio(val){
+	if(val=="IP4"){
+		$("#inDpIpCidr").css("visibility","hidden");
+	}else if(val=="CIDR"){
+		$("#inDpIpCidr").css("visibility","visible");
+	}
+// 	alert($("#chk_info").val());
+}
+
 </script>
 </head>
 
@@ -163,11 +168,21 @@ function fn_movebak(){
 		<col style="width: 22%;"><col style="width: ;">
 	</colgroup>
 	<tbody>
+	
 		<!-- IP -->
 		<tr>
 			<th><label for="inDpIp">IP</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<input id="inDpIp" name="inDpIp" title="정책ID" type="text" value="" size="20" maxlength="20"/>
+				<input type="radio" name="chk_info" id="chk_info" value="IP4" checked="checked" onclick="fn_radio(this.value,'con');">&nbsp;IP4&nbsp;&nbsp;
+				<input type="radio" name="chk_info" id="chk_info" value="CIDR" onclick="fn_radio(this.value,'con');">&nbsp;IP4(CIDR)
+				<br>
+				<p>
+					<input id="inDpIp1" name="inDpIp1" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;"/> . 
+					<input id="inDpIp2" name="inDpIp2" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;"/> . 
+					<input id="inDpIp3" name="inDpIp3" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;"/> . 
+					<input id="inDpIp4" name="inDpIp4" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;"/> / 
+					<input id="inDpIpCidr" name="inDpIpCidr" title="CIDR" type="text" value="" size="20" maxlength="2" style="width:5%;"/>
+				</p>
 			</td>
 		</tr>
 		

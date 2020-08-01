@@ -54,7 +54,7 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/lgHRgt")
 @SessionAttributes
 public class LoginPolicyHitRegisterController {
-	
+
 	@Autowired
 	LoginPolicyHitRegisterService lgnPlcyHitRegstService;
 	
@@ -417,5 +417,4 @@ public class LoginPolicyHitRegisterController {
 		return rtn;
 	}
 	
-
 }

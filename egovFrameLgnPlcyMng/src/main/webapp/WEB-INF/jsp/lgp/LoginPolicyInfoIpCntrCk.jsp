@@ -15,9 +15,6 @@ var plcyId 	 	= "<%=request.getParameter("plcyId") %>";
  *********************************************************/
 $(document).ready(function(){
 	inputCellSet(caltype);
-// 	$("input:text[inDpCnt]").on("keyup", function() {
-// 	    $(this).val($(this).val().replace(/[^0-9]/g,""));
-// 	});
 });
 
 function inputCellSet(type) {
@@ -36,7 +33,6 @@ function inputCellSet(type) {
 		$("#inDpCnt").val("");
 		$("#inPlcyYn").val("");
 		$("#inPlcyDc").val("");
-		$("#inCertKey").val("");
 	}else if(type == "r"){
 		$("#btn_Insert").attr("disabled",true);
 		$("#btn_Modify").attr("disabled",false);
@@ -50,7 +46,6 @@ function inputCellSet(type) {
 		$("#inDpCnt").attr("readonly",true);
 		$("#inPlcyYn").attr("readonly",true);
 		$("#inPlcyDc").attr("readonly",true);
-		$("#inCertKey").attr("readonly",true);
 		fn_DetailPlcy();
 	}else if(type == "u"){ //modify
 		$("#btn_Insert").attr("disabled",true);
@@ -65,7 +60,6 @@ function inputCellSet(type) {
 		$("#inDpCnt").attr("readonly",false);
 		$("#inPlcyYn").attr("readonly",false);
 		$("#inPlcyDc").attr("readonly",false);
-		$("#inCertKey").attr("readonly",false);
 	}
 }
 //입력 필수값 체크
@@ -99,14 +93,7 @@ function maxlength() {
 		alert("접근허용횟수은(는) 5자리 이상 입력할수 없습니다.");$("#inDpCnt").focus();return false;
 	}
 }
-
-function numCk(){
-	if(CheckNumber($.trim($("#inDpCnt").val()))){
-		alert("숫자만 입력 가능합니다.");$("#inDpCnt").focus();return false;
-	}
 	
-}
-
 
 
 /*********************************************************
@@ -117,7 +104,6 @@ function fn_Insert(){
 	if(confirm("등록하시겠습니까?")){	
 		if(required()==false) return; //필수값 체크
 		if(maxlength()==false) return; //최대 길이 체크
-		if(numCk()==false) return; //숫자 체크
 		
 		var policyData = new Object();
 		policyData.policyId			=	$("#inPlcyId").val();
@@ -127,7 +113,7 @@ function fn_Insert(){
 		policyData.policyEnddt		=	$("#inPlcyEnd").val();
 		policyData.policyHtmxCnt	=	$("#inDpCnt").val();
 		policyData.policyAppyYn	=	$("#inPlcyYn").val();
-		policyData.inCertKey			=	$("#inCertKey").val();
+		policyData.policyInCertKey	=	$("#inCertKey").val();
 		policyData.policyAppyUsrid	=	parent.parent.topFrame.document.all.lgnUserId.value;
 		
 		var rtnData = new Object();
@@ -165,8 +151,6 @@ function fn_DetailPlcy(){
 	$("#inPlcyYn").val(obj2.policy_appy_yn);
 	$("#inDpCnt").val(obj2.policy_htmxcnt);
 	$("#inPlcyDc").val(obj2.policy_dc);
-	$("#inCertKey").val(obj2.policy_data);
-	
 // 	$("#inAplyUsr").val(obj2.policy_appy_usrid);
 }
 
@@ -178,8 +162,7 @@ function fn_Update(){
 	if(confirm("저장 하시겠습니까?")){
 		if(required()==false) return; //필수값 체크
 		if(maxlength()==false) return; //최대 길이 체크
-		if(numCk()==false) return; //숫자 체크
-		
+
 		var policyData = new Object();
 		policyData.policyId			=	$("#inPlcyId").val();
 		policyData.policyNm			=	$("#inPlcyNm").val();
@@ -188,7 +171,6 @@ function fn_Update(){
 		policyData.policyEnddt		=	$("#inPlcyEnd").val();
 		policyData.policyHtmxCnt	=	$("#inDpCnt").val();
 		policyData.policyAppyYn	=	$("#inPlcyYn").val();
-		policyData.policyInCertKey	=	$("#inCertKey").val();
 		policyData.policyAppyUsrid	=	parent.parent.topFrame.document.all.lgnUserId.value;
 
 		var rtnData = new Object();
@@ -281,7 +263,7 @@ function fn_Modify(){
 		<tr>
 			<th><label for="inDpCnt">접근허용 횟수</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<input id="inDpCnt" name="inDpCnt" class="txaIpUmt" title="로그인 접근 허용 횟수" type="text" value="0" size="50" maxlength="5" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');" />
+				<input id="inDpCnt" name="inDpCnt" class="txaIpUmt" title="로그인 접근 허용 횟수" type="text" value="0" size="50" maxlength="5"/>
 			</td>
 		</tr>
 		
@@ -300,10 +282,9 @@ function fn_Modify(){
 		<tr>
 			<th><label for="inCertKey">인증 KEY</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<input id="inCertKey" name="inCertKey" class="txaIpUmt" title="인증 key" type="text" value="" size="50" maxlength="50"/>
+				<input id="inCertKey" name="inCertKey" class="txaIpUmt" title="인증 key" type="text" value="0" size="50" maxlength="50"/>
 			</td>
 		</tr>
-		
 		
 		<!-- 정책설명 -->		
 		<tr>

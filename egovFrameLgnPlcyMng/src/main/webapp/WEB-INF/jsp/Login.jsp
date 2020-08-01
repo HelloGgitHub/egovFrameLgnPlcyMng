@@ -17,11 +17,23 @@
 		function fn_egov_init(){
 			
 		}
+
+		//입력 필수값 체크
+		function required() {
+			if($.trim($("#userId").val()).length == 0){
+				alert("아이디를 입력해주세요");$("#userId").focus();return false;
+			}else if($.trim($("#password").val()).length == 0){
+				alert("패스워드를 입력해 주세요.");$("#password").focus();return false;
+			}
+		}
 		
 		/*********************************************************
 		 * 로그인
 		 ******************************************************** */
 		function fn_login(){
+
+			if(required()==false)return;
+			
 			var userData = new Object();
 			userData.usrId				=	$("#userId").val();
 			userData.password		=	$("#password").val();

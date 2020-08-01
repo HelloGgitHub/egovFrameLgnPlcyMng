@@ -108,6 +108,7 @@ public class LoginPolicyManagerController {
 			sqlInpt.put("PLCYID", URLDecoder.decode(plcyCd		,"UTF-8"));
 			
 			lst = lgnPlcyMngService.selectLgPlcyDetail(sqlInpt);
+			System.out.println(lst);
 			if(lst==null || lst.size()==0) {
 				rtnMap = new HashMap<String, Object>();
 				rtnMap.put("RESULTCD", "0");
@@ -156,6 +157,7 @@ public class LoginPolicyManagerController {
 			sqlInpt.put("PLCYAPPYYN" 			,param.getPolicyAppyYn());
 			sqlInpt.put("POLICYHTMXCNT" 	,param.getPolicyHtmxCnt());
 			sqlInpt.put("PLCYAPPYUSRID" 		,param.getPolicyAppyUsrid());
+			sqlInpt.put("POLICYDATA" 			,param.getInCertKey());
 			sqlInpt.put("DT" 						,ComUtil.getTime("yyyyMMddHHmmss"));
 			
 			int rowCnt = lgnPlcyMngService.selectLgPlcyInfoCnt(sqlInpt);
@@ -206,6 +208,7 @@ public class LoginPolicyManagerController {
 			sqlInpt.put("PLCYAPPYYN" 			,param.getPolicyAppyYn());
 			sqlInpt.put("POLICYHTMXCNT" 	,param.getPolicyHtmxCnt());
 			sqlInpt.put("PLCYAPPYUSRID" 		,param.getPolicyAppyUsrid());
+			sqlInpt.put("POLICYDATA" 			,param.getInCertKey());
 			sqlInpt.put("CHANGE_DT" 			,ComUtil.getTime("yyyyMMddHHmmss"));
 			
 			int inputCnt = lgnPlcyMngService.updateLgPlcyInfo(sqlInpt);

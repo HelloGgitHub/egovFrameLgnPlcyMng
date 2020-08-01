@@ -1,13 +1,21 @@
 package egovframework.com.lpmg.dao;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.Inet4Address;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.com.cmm.ComUtil;
 
@@ -30,6 +38,9 @@ import egovframework.com.cmm.ComUtil;
 @Service
 @Transactional
 public class LoginPolicyHitRegisterService {
+	
+	@Value("${spring.whois.url}")
+    String whoIsUrl;
 	
 	@Autowired
     private LoginPolicyHitRegisterDao mapper;
@@ -124,9 +135,10 @@ public class LoginPolicyHitRegisterService {
 	 * @name : selectLgPlcyHitlMsg(로그인 적중 이력 메시지 출력)
 	 * @date : 2020. 6. 15.
 	 * @author : "egov"
+	 * @throws Exception 
 	 * @return_type : HashMap<String,Object>
 	 */
-	public HashMap<String, Object> selectLgPlcyHitlMsg(Map<Object, Object> param) {
+	public HashMap<String, Object> selectLgPlcyHitlMsg(Map<Object, Object> param) throws Exception {
 		
 		HashMap<String, Object> rtnMap = new HashMap<String, Object>();
 		HashMap<String, Object> rtnSqlMap = new HashMap<String, Object>();
@@ -142,9 +154,10 @@ public class LoginPolicyHitRegisterService {
 				listMap = plcyList.get(i);
 				
 				//ID/PW입력 오류 로그인 제한
-				if("POLCY001".equals(listMap.get("policy_id"))) {
+				if(htYn==false && "POLCY001".equals(listMap.get("policy_id"))) {
 					//사용자 ID/PW조회
 					param.put("PLCYID", "POLCY001"); //IDPW 오류횟수 체크
+					param.put("LOGINIPCNTR", "-");
 					rtnSqlMap.clear();
 					rtnSqlMap = mapper.selectUserPwErCnt(param);
 					if(Integer.parseInt(rtnSqlMap.get("cnt").toString()) > Integer.parseInt(listMap.get("policy_htmxcnt").toString())) {//오류 횟수 카운트
@@ -155,21 +168,55 @@ public class LoginPolicyHitRegisterService {
 				}
 				
 				//차단 대상 IP접근 로그인 제한
-				if("POLCY002".equals(listMap.get("policy_id"))) {
+				if(htYn==false && "POLCY002".equals(listMap.get("policy_id"))) {
 					rtnSqlMap.clear();
 					rtnSqlMap = mapper.selectUserIpCk(param);
 					if(Integer.parseInt(rtnSqlMap.get("cnt").toString()) > 0) {  //IDPW값이 저장된 값이랑 다를때
 						htYn = true;
 						param.put("PLCYID", "POLCY002"); //IDPW 오류횟수 저장
 						param.put("POLICYHITDT", ComUtil.getTime("yyyyMMddHHmmss"));
+						param.put("LOGINIPCNTR", "-");
 						mapper.insertLgPlcyHitRgst(param);
 						rtnMap.put("MSG", "접근차단대상 위치에서 접속하고 계십니다. \n로그인에 실패 하였습니다.\n관리자에게 문의하세요.");
 						rtnMap.put("CKCD", "1");
 					}
 				}
+				
+				//해외IP 차단
+				if(htYn==false && "POLCY003".equals(listMap.get("policy_id"))) {
+					param.put("PLCYID", "POLCY003"); //IDPW 오류횟수 저장
+					param.put("POLICYHITDT", ComUtil.getTime("yyyyMMddHHmmss"));
+					
+					String data = mapper.selectWhoisKey(param).get("key");
+					ObjectMapper om = new ObjectMapper();
+					
+					String query = "query="+Inet4Address.getLocalHost().getHostAddress();
+					String key = "key="+data;
+					String answer = "answer=json"; 
+					String url = whoIsUrl+"?"+query+"&"+key+"&"+answer;
+					String whoisIpInfo = getUrlConn("GET", url);
+					
+					if(!"".equals(whoisIpInfo) &&  null != whoisIpInfo) {
+						HashMap<String, Object> map = om.readValue(whoisIpInfo, HashMap.class);
+						rtnSqlMap.clear();
+						rtnSqlMap = (HashMap<String, Object>)map.get("whois");
+						rtnSqlMap.put("countryCode","US");
+						if(!"KR".equals(rtnSqlMap.get("countryCode")) && !"none".equals(rtnSqlMap.get("countryCode"))) { 
+							htYn = true;
+							param.put("LOGINIPCNTR", rtnSqlMap.get("countryCode"));
+							mapper.insertLgPlcyHitRgst(param);
+							rtnMap.put("MSG", "해당 서비스는 해외에서 접근이 불가능합니다. \n로그인에 실패 하였습니다.");
+							rtnMap.put("CKCD", "1");
+						}
+					}
+				}
 			}
 		}
-		//차단 대상 정책이 없을경우 일반 로그인
+		
+		
+		
+		
+		//차단 대상 정책이 적중된 내용이 없을경우 일반 로그인
 		//사용자 ID/PW조회
 		if(htYn== false) { //정책로직에 걸린게 없을 경우 정상 로그인 처리
 			rtnSqlMap.clear();
@@ -200,4 +247,38 @@ public class LoginPolicyHitRegisterService {
 		return rtnMap;
     }
 
+	public String getUrlConn(String Type, String strUrl) {
+		String rtn = "";
+		
+		try {
+			URL url = new URL(strUrl);
+			HttpURLConnection con = (HttpURLConnection) url.openConnection(); 
+			con.setConnectTimeout(5000);
+			con.setReadTimeout(5000);
+			con.setRequestMethod(Type);
+			con.setDoOutput(false); 
+			
+			StringBuilder sb = new StringBuilder();
+			if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
+				BufferedReader br = new BufferedReader(
+				new InputStreamReader(con.getInputStream(), "utf-8"));
+				
+				String line;
+				while ((line = br.readLine()) != null) {
+					sb.append(line); //.append("\n");
+				}
+				br.close();
+				rtn = sb.toString();
+				
+			} else {
+				System.out.println("http_ok no >>>\n" + con.getResponseMessage());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return rtn;
+	}
+
+	
 }

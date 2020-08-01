@@ -25,7 +25,8 @@
 			     , POLICY_APPY_YN
 			     , POLICY_HTMXCNT
 			     , POLICY_REGIST_DT
-			     , POLICY_APPY_USRID 
+			     , POLICY_APPY_USRID
+			     , POLICY_DATA 
 			  FROM COMTNLOGINPOLICY
 			 WHERE POLICY_ID = '${PLCYID}'
     </select>
@@ -48,6 +49,7 @@
 				, POLICY_HTMXCNT
 				, POLICY_REGIST_DT
 				, POLICY_APPY_USRID
+				, POLICY_DATA
 				, CHANGE_DT
 			) VALUES (
 				  #{PLCYID}
@@ -59,6 +61,7 @@
 				, #{POLICYHTMXCNT}
 				, '${DT}'
 				, #{PLCYAPPYUSRID}
+				, #{POLICYDATA}
 				, '${DT}'
 			)
     </insert>
@@ -73,6 +76,7 @@
 			    <if test='POLICYHTMXCNT != null'> 	, POLICY_HTMXCNT	= ${POLICYHTMXCNT} 	</if>
 			    <if test='PLCYAPPYYN != null'> 	, POLICY_APPY_YN	= '${PLCYAPPYYN}' 	</if>
 			    <if test='PLCYAPPYUSRID != null'> 	, POLICY_APPY_USRID	= '${PLCYAPPYUSRID}' 	</if>
+			    <if test='POLICYDATA != null'> 	, POLICY_DATA	= '${POLICYDATA}' 	</if>
 			 WHERE POLICY_ID = '${PLCYID}'
     </update>
     

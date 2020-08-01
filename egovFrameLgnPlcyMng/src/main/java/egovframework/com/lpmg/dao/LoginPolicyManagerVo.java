@@ -31,12 +31,22 @@ public class LoginPolicyManagerVo {
 	private int policyHtmxCnt;
 	private String policyRegistDt;
 	private String policyAppyUsrid;
-
+	private String InCertKey;
+	
+	
 	private String usrId;
 	private String policyHitDt;
 	private String loginIp;
 	
 	
+	
+	
+	public String getInCertKey() {
+		return InCertKey;
+	}
+	public void setInCertKey(String inCertKey) {
+		InCertKey = inCertKey;
+	}
 	public String getBlkIp() {
 		return blkIp;
 	}

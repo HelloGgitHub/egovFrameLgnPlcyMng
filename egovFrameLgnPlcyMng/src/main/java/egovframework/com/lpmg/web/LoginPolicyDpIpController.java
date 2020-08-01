@@ -150,6 +150,7 @@ public class LoginPolicyDpIpController {
 	
 			//입력값 파라미터 정의
 			sqlInpt.put("BLKIP" 			,param.getBlkIp());
+			sqlInpt.put("BLKIPCIDR"		,param.getBlkIpCidr());
 			sqlInpt.put("BLKNM" 			,param.getBlkIpNm());
 			sqlInpt.put("BLKDC" 			,param.getBlkIpDc());
 			sqlInpt.put("ADUSR" 			,param.getAddUsrid());

@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.net.util.SubnetUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -169,6 +170,14 @@ public class LoginPolicyHitRegisterService {
 				
 				//차단 대상 IP접근 로그인 제한
 				if(htYn==false && "POLCY002".equals(listMap.get("policy_id"))) {
+					
+					
+					SubnetUtils subnetUtils = new SubnetUtils("120.131.5.130/26");
+			        subnetUtils.setInclusiveHostCount(true);    //network,broadcast ip 포함, false:불포함
+					
+			        subnetUtils.getInfo().isInRange("120.131.5.130");
+			        
+			        
 					rtnSqlMap.clear();
 					rtnSqlMap = mapper.selectUserIpCk(param);
 					if(Integer.parseInt(rtnSqlMap.get("cnt").toString()) > 0) {  //IDPW값이 저장된 값이랑 다를때
@@ -200,7 +209,7 @@ public class LoginPolicyHitRegisterService {
 						HashMap<String, Object> map = om.readValue(whoisIpInfo, HashMap.class);
 						rtnSqlMap.clear();
 						rtnSqlMap = (HashMap<String, Object>)map.get("whois");
-						rtnSqlMap.put("countryCode","US");
+						rtnSqlMap.put("countryCode","US");///////////////////////////////////////////////////////////////////////////////테스트
 						if(!"KR".equals(rtnSqlMap.get("countryCode")) && !"none".equals(rtnSqlMap.get("countryCode"))) { 
 							htYn = true;
 							param.put("LOGINIPCNTR", rtnSqlMap.get("countryCode"));

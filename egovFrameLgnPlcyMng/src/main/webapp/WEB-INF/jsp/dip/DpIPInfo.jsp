@@ -79,9 +79,12 @@ function fn_DetailDpIp(){
 	arrlist = rtnData.list;
 	const obj2 = arrlist[0]; 
 	const ip = obj2.blk_ip.split('.');
-	const ip = obj2.blk_ip.split('.');
 	
-	$("#inDpIp").val(obj2.blk_ip);  
+	$("#inDpIp1").val(ip[0]);
+	$("#inDpIp2").val(ip[1]);
+	$("#inDpIp3").val(ip[2]);
+	$("#inDpIp4").val(ip[3]);
+
 	$("#inDpipNm").val(obj2.blk_ipnm);
 	$("#inDpipDc").val(obj2.blk_ipdc);
 	$("#inAplyUsr").val(obj2.add_usrid);
@@ -98,7 +101,8 @@ function fn_Insert(){
 		if(ipValCk()==false) return; //IP 숫자 체크
 		
 		var dpIpData = new Object();
-		dpIpData.blkIp				=	$("#inDpIp1").val()+"."+$("#inDpIp2").val()+"."+$("#inDpIp3").val()+"."+$("#inDpIp4").val()+"/"+$("#inDpIpCidr").val();
+		dpIpData.blkIp				=	$("#inDpIp1").val()+"."+$("#inDpIp2").val()+"."+$("#inDpIp3").val()+"."+$("#inDpIp4").val();
+		dpIpData.blkIpcidr		=	$("#inDpIpCidr").val();
 		dpIpData.blkIpNm			=	$("#inDpipNm").val();
 		dpIpData.blkIpDc			=	$("#inDpipDc").val();
 		dpIpData.addUsrid		=	parent.parent.topFrame.document.all.lgnUserId.value;

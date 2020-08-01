@@ -19,11 +19,19 @@ package egovframework.com.lpmg.dao;
 public class LoginPolicyDpIpVo {
 
 	private String blkIp;
+	private String blkIpCidr;
 	private String blkIpNm;
 	private String blkIpDc;
 	private String addUsrid;
 	
 	
+	
+	public String getBlkIpCidr() {
+		return blkIpCidr;
+	}
+	public void setBlkIpCidr(String blkIpCidr) {
+		this.blkIpCidr = blkIpCidr;
+	}
 	public String getBlkIpNm() {
 		return blkIpNm;
 	}

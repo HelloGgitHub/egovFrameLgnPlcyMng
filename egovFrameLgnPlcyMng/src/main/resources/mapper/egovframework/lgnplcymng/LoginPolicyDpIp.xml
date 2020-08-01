@@ -31,12 +31,14 @@
     <insert id="insertLgPlcyDpIp" parameterType="hashMap">
 			INSERT INTO COMTNBLKIPMNGR (
 				 BLK_IP
+				, BLK_IP_CIDR
 				, BLK_IPNM
 			    , BLK_IPDC
 				, ADD_USRID
 				, ADD_DT
 			) VALUES (
 				  #{BLKIP}
+				, #{BLKIPCIDR}
 				, #{BLKNM}
 				, #{BLKDC}
 				, #{ADUSR}

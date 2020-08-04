@@ -4,21 +4,26 @@
 
     <select id="selectDpIpList" resultType="hashMap">
 			SELECT BLK_IP 
-			     , BLK_IPNM 
-			     , BLK_IPDC 
-			     , ADD_USRID 
-			     , ADD_DT 
+			     , BLK_IP_TYP 
+			     , BLK_IP_CIDR 
+			     , BLK_IPNM
+			     , BLK_IPDC
+			     , ADD_USRID
+			     , ADD_DT
 			  FROM COMTNBLKIPMNGR
     </select>
 
     <select id="selectDpIpDetail" resultType="hashMap">
 			SELECT BLK_IP 
+			     , BLK_IP_TYP 
+			     , BLK_IP_CIDR
 			     , BLK_IPNM 
 			     , BLK_IPDC 
 			     , ADD_USRID 
 			     , ADD_DT 
 			  FROM COMTNBLKIPMNGR
 			 WHERE BLK_IP = '${BLKIP}'
+			   AND BLK_IP_TYP = '${BLKIPTYPE}'
     </select>
 
 
@@ -26,11 +31,13 @@
 			SELECT COUNT(*) CNT
 			  FROM COMTNBLKIPMNGR
 			 WHERE BLK_IP = '${BLKIP}'
+			    AND BLK_IP_TYP = '${BLKIPTYP}'
     </select>
 
     <insert id="insertLgPlcyDpIp" parameterType="hashMap">
 			INSERT INTO COMTNBLKIPMNGR (
 				 BLK_IP
+				, BLK_IP_TYP
 				, BLK_IP_CIDR
 				, BLK_IPNM
 			    , BLK_IPDC
@@ -38,6 +45,7 @@
 				, ADD_DT
 			) VALUES (
 				  #{BLKIP}
+				, #{BLKIPTYP}
 				, #{BLKIPCIDR}
 				, #{BLKNM}
 				, #{BLKDC}
@@ -50,6 +58,7 @@
     <delete id="deleteLgPlcyDpIp" parameterType="hashMap">
 			DELETE FROM COMTNBLKIPMNGR
 			 WHERE BLK_IP = '${BLKIP}'
+			    AND BLK_IP_TYP = '${BLKIPTYP}'
     </delete>
     
 </mapper> 

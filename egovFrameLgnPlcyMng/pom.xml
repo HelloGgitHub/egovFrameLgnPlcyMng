@@ -11,9 +11,10 @@
 	<groupId>springBoot</groupId>
 	<artifactId>egovFrameLgnPlcyMng</artifactId>
 	<version>1.0</version>
+	<packaging>war</packaging>
 	<name>egovFrameLgnPlcyMng</name>
 	<description>egovLoginPolicyManager RESTFUL API Develop</description>
-
+	
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
@@ -116,5 +117,5 @@
 		</plugins>
 	</build>
 
-	<packaging>war</packaging>
+	
 </project>

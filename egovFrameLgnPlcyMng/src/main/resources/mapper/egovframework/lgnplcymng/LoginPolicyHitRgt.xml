@@ -77,13 +77,19 @@
 			     , USR_ID
 			  FROM COMTNUSERMNG
 			 WHERE USR_ID = '${USRID}'
-<!-- 			   AND PASSWORD  = '${USRPW}' -->
     </select>
     <select id="selectUserIpCk"  parameterType="Map" resultType="hashMap">
 			SELECT COUNT(*) CNT
 			  FROM COMTNBLKIPMNGR
-			 WHERE BLK_IP LIKE '${LGINIP}%' 
+			 WHERE BLK_IP LIKE '${LGINIP}%'
+			    AND BLK_IP_TYP = '01' 
     </select>
+    <select id="selectCidrIpList"  parameterType="Map" resultType="hashMap">
+			SELECT BLK_IP
+			     , BLK_IP_CIDR
+			  FROM COMTNBLKIPMNGR
+			 WHERE BLK_IP_TYP = '02' 
+    </select>    
     <select id="selectUserPwErCnt"  parameterType="Map" resultType="hashMap">
 			SELECT COUNT(*) CNT 
 			  FROM COMTNLOGINPOLICYHITHISTORY

@@ -4,6 +4,8 @@
 <head>
 <title>사용자관리</title>
 <%@ include file="/WEB-INF/jsp/cmm/head.jsp" %>
+<script src="/js/egovframework/com/cmm/utl/EgovCmmUtl.js"></script>
+<script src="/js/egovframework/com/cmm/utl/InputCk.js"></script>
 
 <script type="text/javaScript" language="javascript" defer="defer">
 
@@ -15,9 +17,6 @@ var plcyId 	 	= "<%=request.getParameter("plcyId") %>";
  *********************************************************/
 $(document).ready(function(){
 	inputCellSet(caltype);
-// 	$("input:text[inDpCnt]").on("keyup", function() {
-// 	    $(this).val($(this).val().replace(/[^0-9]/g,""));
-// 	});
 });
 
 function inputCellSet(type) {
@@ -101,10 +100,9 @@ function maxlength() {
 }
 
 function numCk(){
-	if(CheckNumber($.trim($("#inDpCnt").val()))){
-		alert("숫자만 입력 가능합니다.");$("#inDpCnt").focus();return false;
+	if(CheckNumber($("#inDpCnt").val()) == false) {
+		$("#inDpCnt").focus();return false;
 	}
-	
 }
 
 
@@ -297,8 +295,8 @@ function fn_Modify(){
 		</tr>
 		
 		<!-- 인증key -->
-		<tr>
-			<th><label for="inCertKey">인증 KEY</label> <span class="pilsu">*</span></th>
+		<tr style="display: none;">
+			<th><label for="inCertKey">인증 KEY</label></th>
 			<td class="left">
 				<input id="inCertKey" name="inCertKey" class="txaIpUmt" title="인증 key" type="text" value="" size="50" maxlength="50"/>
 			</td>

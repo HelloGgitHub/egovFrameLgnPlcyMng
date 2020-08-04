@@ -42,14 +42,23 @@ function fn_Select(){
  	ihtml = ihtml + '<tbody class="ov">';
 
  	var cnt = 0;
+ 	
 	for(var i =0; arr.length > i; i++){
+		var strIp = "";
    	 	ihtml = ihtml + '<tr>';
    	 	ihtml = ihtml + '<td>' + (i+1) + '</td>';
    	 	ihtml = ihtml + '<td>';
    	 	ihtml = ihtml + '<input id="checkField" name="checkField" title="checkField" type="checkbox"/>';
    	 	ihtml = ihtml + '<input id="id_'+(i+1)+'" name="id_'+(i+1)+'" type="hidden" value="'+arr[i].blk_ip+'">';
-   	 	ihtml = ihtml + '</td>';
-   	 	ihtml = ihtml + '<td><a onclick="fn_SelectIp(\''+arr[i].blk_ip+'\')">'+arr[i].blk_ip+'</a></td>';
+   		ihtml = ihtml + '<input id="idtype_'+(i+1)+'" name="idtype_'+(i+1)+'" type="hidden" value="'+arr[i].blk_ip_typ+'">'; 
+	 	ihtml = ihtml + '</td>';
+	 	
+	 	if(arr[i].blk_ip_typ == "02"){
+		 	strIp = arr[i].blk_ip+" / "+arr[i].blk_ip_cidr;
+		}else {
+			strIp = arr[i].blk_ip;
+		}
+   	 	ihtml = ihtml + '<td><a onclick="fn_SelectIp(\''+arr[i].blk_ip+"\',\'"+arr[i].blk_ip_typ+'\')">'+strIp+'</a></td>';
    	 	ihtml = ihtml + '<td id="blkIpNm_'+(i+1)+'" name="blkIpNm_'+(i+1)+'">'+arr[i].blk_ipnm+'</td>';
    	 	ihtml = ihtml + '<td id="addDt_'+(i+1)+'" name="addDt_'+(i+1)+'">'+arr[i].add_dt+'</td>';
    		ihtml = ihtml + '<td id="adduserid_'+(i+1)+'" name="adduserid_'+(i+1)+'">'+arr[i].add_usrid+'</td>';
@@ -73,9 +82,9 @@ function fn_Select(){
 /*********************************************************
  * 그리드 선택 등록페이지 이동
  ******************************************************** */
-function fn_SelectIp(dpIp){
+function fn_SelectIp(dpIp, dpIptyp){
 	var pageType= "r";
-	location.href="/DpIPInfo?callType="+pageType+"&dpIp="+dpIp;
+	location.href="/DpIPInfo?callType="+pageType+"&dpIp="+dpIp+"&dpIptyp="+dpIptyp;
 }
 
 /*********************************************************
@@ -91,7 +100,8 @@ function fn_Delete(){
 		var rtnData = new Object();
 		var paramData = new Object();
 		paramData.bkIp = $("#id_"+ckNum).val();
-
+		paramData.dpIptyp = $("#idtype_"+ckNum).val();
+		
 		//API호출
 		rtnData = fn_calApi("DELETE", "/lgDpIp/delete", paramData, false);
 	}
@@ -121,7 +131,7 @@ function checkFieldck(){
  * 정책 목록 조회
  ******************************************************** */
 function fn_Insert(){
-	location.href="/DpIPInfo?callType=c&dpIp=";
+	location.href="/DpIPInfo?callType=c&dpIp=&dpIptyp=";
 }
 
 /*********************************************************

@@ -11,13 +11,21 @@
 
 var caltype  	= "<%=request.getParameter("callType") %>";
 var dpIp		 	= "<%=request.getParameter("dpIp") %>";
+var dpIptyp	= "<%=request.getParameter("dpIptyp") %>";
+var dpIpType	= "";
 
 /*********************************************************
  * 초기화
  *********************************************************/
 $(document).ready(function(){
+	if(dpIptyp==null || dpIptyp==""){
+		dpIpType = "01";
+	}else {
+		dpIpType = dpIptyp;
+	}
+	
 	inputCellSet(caltype);
-	fn_radio("IP4");
+	fn_radio(dpIpType);
 });
 
 function inputCellSet(type) {
@@ -26,24 +34,36 @@ function inputCellSet(type) {
 		$("#btn_Delete").css("display","none");
 	}else if(type == "r"){
 		$("#btn_Insert").css("display","none");
-		$("#inDpIp").attr("readonly",true);
+// 		$("#inDpIp").attr("readonly",true);
 		$("#inDpipNm").attr("readonly",true); 
 		$("#inDpipDc").attr("readonly",true);
+		$("#inDpIp1").attr("readonly",true);
+		$("#inDpIp2").attr("readonly",true);
+		$("#inDpIp3").attr("readonly",true);
+		$("#inDpIp4").attr("readonly",true);
+		$("#inDpIpCidr").attr("readonly",true);
+		$("#ipTyChk1").attr("disabled",true);
+		$("#ipTyChk2").attr("disabled",true);
+		
 		fn_DetailDpIp();
 	}
 }
 
 //입력 필수값 체크
 function required() {
-	if($.trim($("#inDpIp").val()).length == 0){
-		alert("IP은(는) 필수 입력값입니다.");$("#inDpIp").focus();return false;
+	if($.trim($("#inDpIp1").val()).length == 0){
+		alert("형식에 맞지 않습니다.\nIP정보를 다시 확인해주세요.");$("#inDpIp1").focus();return false;
+	}else if($.trim($("#inDpIp2").val()).length == 0){
+		alert("형식에 맞지 않습니다.\nIP정보를 다시 확인해주세요.");$("#inDpIp2").focus();return false;
+	}else if($.trim($("#inDpIp3").val()).length == 0){
+		alert("형식에 맞지 않습니다.\nIP정보를 다시 확인해주세요.");$("#inDpIp3").focus();return false;
+	}else if($.trim($("#inDpIp4").val()).length == 0){
+		alert("형식에 맞지 않습니다.\nIP정보를 다시 확인해주세요.");$("#inDpIp4").focus();return false;
 	}
 }
 //입력값 길이 체크
 function maxlength() { 
-	if($.trim($("#inDpIp").val()).length >= 20){
-		alert("IP은(는) 23자 이상 입력할수 없습니다.");$("#inDpIp").focus();return false;
-	}else if($.trim($("#inDpipNm").val()).length > 50){
+	if($.trim($("#inDpipNm").val()).length > 50){
 		alert("명칭은(는) 50자 이상 입력할수 없습니다.");$("#inDpipNm").focus();return false;
 	}else if($.trim($("#inDpipDc").val()).length > 250){
 		alert("설명은(는) 250자 이상 입력할수 없습니다.");$("#inDpipDc").focus();return false;
@@ -51,13 +71,13 @@ function maxlength() {
 }
 
 function ipValCk () {
-	if(chkPwd($.trim($('#inDpIp1').val())) == false) {
+	if(CheckNumber($.trim($('#inDpIp1').val())) == false) {
 		$("#inDpIp1").focus();return false;
-	} else if(chkPwd($.trim($('#inDpIp2').val())) == false) {
+	} else if(CheckNumber($.trim($('#inDpIp2').val())) == false) {
 		$("#inDpIp2").focus();return false;
-	} else if(inDpIp2($.trim($('#inDpIp3').val())) == false) {
+	} else if(CheckNumber($.trim($('#inDpIp3').val())) == false) {
 		$("#inDpIp3").focus();return false;
-	} else if(chkPwd($.trim($('#inDpIp4').val())) == false) {
+	} else if(CheckNumber($.trim($('#inDpIp4').val())) == false) {
 		$("#inDpIp4").focus();return false;
 	}
 }
@@ -68,23 +88,24 @@ function ipValCk () {
 function fn_DetailDpIp(){
 	var pDpIp = "";
 	if(dpIp == null || dpIp == ""){
-		pDpIp = $("#inDpIp").val();
+		var ip = $("#inDpIp1").val()+"."+$("#inDpIp2").val()+"."+$("#inDpIp3").val()+"."+$("#inDpIp4").val();
+		pDpIp = "?dpIp="+ip + "&dpIptyp="+ dpIpType;
 	}else{
-		pDpIp = dpIp;
+		pDpIp = "?dpIp="+ dpIp + "&dpIptyp="+ dpIpType;
 	}
-
 	var rtnData = new Object();
 	var arrlist = new Array();
-	rtnData = fn_calApi("GET", "/lgDpIp/detailInfo/"+pDpIp, null, false);
+	rtnData = fn_calApi("GET", "/lgDpIp/detailInfo"+pDpIp, null, false);
 	arrlist = rtnData.list;
 	const obj2 = arrlist[0]; 
-	const ip = obj2.blk_ip.split('.');
+	var ip = obj2.blk_ip.split(".");
 	
 	$("#inDpIp1").val(ip[0]);
 	$("#inDpIp2").val(ip[1]);
 	$("#inDpIp3").val(ip[2]);
 	$("#inDpIp4").val(ip[3]);
-
+	$("#inDpIpCidr").val(obj2.blk_ip_cidr);
+	
 	$("#inDpipNm").val(obj2.blk_ipnm);
 	$("#inDpipDc").val(obj2.blk_ipdc);
 	$("#inAplyUsr").val(obj2.add_usrid);
@@ -102,7 +123,9 @@ function fn_Insert(){
 		
 		var dpIpData = new Object();
 		dpIpData.blkIp				=	$("#inDpIp1").val()+"."+$("#inDpIp2").val()+"."+$("#inDpIp3").val()+"."+$("#inDpIp4").val();
-		dpIpData.blkIpcidr		=	$("#inDpIpCidr").val();
+		dpIpData.blkIpTyp		=	dpIpType;
+		
+		dpIpData.blkIpCidr		=	$("#inDpIpCidr").val();
 		dpIpData.blkIpNm			=	$("#inDpipNm").val();
 		dpIpData.blkIpDc			=	$("#inDpipDc").val();
 		dpIpData.addUsrid		=	parent.parent.topFrame.document.all.lgnUserId.value;
@@ -113,7 +136,9 @@ function fn_Insert(){
 		if(rtnData.RESULTCD != 0){
 			return;
 		}
-		inputCellSet("r");
+
+		fn_moveDpIpList();
+// 		inputCellSet("r");
 	}
 }
 
@@ -123,13 +148,14 @@ function fn_Insert(){
  ******************************************************** */
 function fn_Delete(){
 	if(confirm("삭제 하시겠습니까?")){
-		if($("#inDpIp").val() == null){
+		var ip = $("#inDpIp1").val()+"."+$("#inDpIp2").val()+"."+$("#inDpIp3").val()+"."+$("#inDpIp4").val();
+		if(ip == null){
 			alert("IP가 등록되어있지 않습니다. \n삭제 할 IP가 없습니다.");
 			return;
 		}
-		
+
 		var rtnData = new Object();
-		rtnData = fn_calApi("DELETE", "/lgDpIp/delete?bkIp="+$("#inDpIp").val(), null, false);
+		rtnData = fn_calApi("DELETE", "/lgDpIp/delete?bkIp="+ip+"&dpIptyp="+dpIpType, null, false);
 		
 		alert(rtnData.RESULTMSG);
 		fn_moveDpIpList();
@@ -151,12 +177,16 @@ function fn_movebak(){
 }
 
 function fn_radio(val){
-	if(val=="IP4"){
+	dpIpType = val;
+	if(val=="01"){
+		$("input:radio[name='ipTyChk']:radio[value='01']").prop('checked', true);
+		$("input:radio[name='ipTyChk']:radio[value='02']").prop('checked', false);
 		$("#inDpIpCidr").css("visibility","hidden");
-	}else if(val=="CIDR"){
+	}else if(val=="02"){
+		$("input:radio[name='ipTyChk']:radio[value='01']").prop('checked', false);
+		$("input:radio[name='ipTyChk']:radio[value='02']").prop('checked', true);
 		$("#inDpIpCidr").css("visibility","visible");
 	}
-// 	alert($("#chk_info").val());
 }
 
 </script>
@@ -177,15 +207,15 @@ function fn_radio(val){
 		<tr>
 			<th><label for="inDpIp">IP</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<input type="radio" name="chk_info" id="chk_info" value="IP4" checked="checked" onclick="fn_radio(this.value,'con');">&nbsp;IP4&nbsp;&nbsp;
-				<input type="radio" name="chk_info" id="chk_info" value="CIDR" onclick="fn_radio(this.value,'con');">&nbsp;IP4(CIDR)
-				<br>
+				<input type="radio" name="ipTyChk" id="ipTyChk1" value="01" checked="checked" onclick="fn_radio(this.value,'con');">&nbsp;IP4&nbsp;&nbsp;
+				<input type="radio" name="ipTyChk" id="ipTyChk2" value="02" onclick="fn_radio(this.value,'con');">&nbsp;IP4(CIDR)
+				<br><br>
 				<p>
-					<input id="inDpIp1" name="inDpIp1" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;"/> . 
-					<input id="inDpIp2" name="inDpIp2" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;"/> . 
-					<input id="inDpIp3" name="inDpIp3" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;"/> . 
-					<input id="inDpIp4" name="inDpIp4" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;"/> / 
-					<input id="inDpIpCidr" name="inDpIpCidr" title="CIDR" type="text" value="" size="20" maxlength="2" style="width:5%;"/>
+					<input id="inDpIp1" name="inDpIp1" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/> . 
+					<input id="inDpIp2" name="inDpIp2" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/> . 
+					<input id="inDpIp3" name="inDpIp3" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/> . 
+					<input id="inDpIp4" name="inDpIp4" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>&nbsp;
+					<input id="inDpIpCidr" name="inDpIpCidr" title="CIDR" type="text" value="" size="20" maxlength="2" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
 				</p>
 			</td>
 		</tr>

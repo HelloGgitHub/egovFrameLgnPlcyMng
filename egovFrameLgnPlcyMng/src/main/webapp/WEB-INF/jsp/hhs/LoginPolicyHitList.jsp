@@ -43,7 +43,7 @@ function fn_Select(){
  	ihtml = ihtml + '<th><input type="checkbox" name="checkAll" id="checkAll" class="check2" onclick="javascript:fncCheckAll()" title="전체선택체크박스"></th>';
  	ihtml = ihtml + '<th class="board_th_link">사용자ID</th>';
  	ihtml = ihtml + '<th>정책명</th>';
- 	ihtml = ihtml + '<th>적중일시</th>';
+ 	ihtml = ihtml + '<th>적중횟수</th>';
  	ihtml = ihtml + '</tr>';
  	ihtml = ihtml + '</thead>';
  	ihtml = ihtml + '<tbody class="ov">';

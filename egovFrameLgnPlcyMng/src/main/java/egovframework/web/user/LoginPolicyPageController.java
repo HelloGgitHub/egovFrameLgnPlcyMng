@@ -63,9 +63,11 @@ public class LoginPolicyPageController {
 	@RequestMapping("/DpIPInfo")
 	public String DpIPInfo(Model model
 			, @RequestParam(value = "callType") String callType
-			, @RequestParam(value = "dpIp") String dpIp) {
+			, @RequestParam(value = "dpIp") String dpIp
+			, @RequestParam(value = "dpIptyp") String dpIptyp) {
 		model.addAttribute("callType", 	callType);
-		model.addAttribute("dpIp", 	dpIp);
+		model.addAttribute("dpIp", 		dpIp);
+		model.addAttribute("dpIptyp", 	dpIptyp);
 		return "/dip/DpIPInfo"; 
 	}
 	

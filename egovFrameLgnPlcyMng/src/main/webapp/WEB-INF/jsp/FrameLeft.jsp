@@ -22,11 +22,13 @@
 		} else if(cd == 4){
 			url="DpIPList";
 		} else if(cd == 5){
-			url="DpIPInfo?callType=c&dpIp=";
+			url="DpIPInfo?callType=c&dpIp=&dpIptyp=";
 		} else if(cd == 6){
 			url="LoginPolicyHitList";
 		} else if(cd == 7){
+			alert("'적중이력 목록 조회'를 통해 접근했을때 정상 동작 합니다.");
 			url="LoginPolicyHitDetailList?userId=&plcyId=";
+			return;
 		}
 		parent.body.location.href=url;
 	}

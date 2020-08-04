@@ -58,7 +58,7 @@ function fn_Select(){
 
     if(cnt == 0){
     	ihtml = ihtml + '<tr>';
-	 	ihtml = ihtml + '<td colspan=4> 조회 결과가 없습니다</td>';
+	 	ihtml = ihtml + '<td colspan=6> 조회 결과가 없습니다</td>';
 	 	ihtml = ihtml + '</tr>';
     }
     

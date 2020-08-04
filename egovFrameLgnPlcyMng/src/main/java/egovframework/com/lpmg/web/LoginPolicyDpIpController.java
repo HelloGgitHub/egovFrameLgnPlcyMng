@@ -93,10 +93,11 @@ public class LoginPolicyDpIpController {
 	 */
 	@ApiOperation(value = "차단IP 정보 조회")
     @ApiImplicitParams({
-    	@ApiImplicitParam(name = "dpIp", value = "차단IP", required = true, dataType = "string", paramType = "path", defaultValue = "")
+    	@ApiImplicitParam(name = "dpIp", value = "차단IP", required = true, dataType = "string", paramType = "query", defaultValue = "")
+    	,@ApiImplicitParam(name = "dpIptyp", value = "차단IP TYPE", required = true, dataType = "string", paramType = "query", defaultValue = "")
     })
-	@GetMapping(path = "/detailInfo/{dpIp}")
-	public String DpIpDetailInfo(@PathVariable("dpIp") String dpIp) throws Exception {
+	@GetMapping(path = "/detailInfo") ///{dpIp}
+	public String DpIpDetailInfo(@RequestParam(value="dpIp") String dpIp, @RequestParam(value="dpIptyp") String dpIptyp) throws Exception {
 		String rtn = "";
 		ObjectMapper om = new ObjectMapper();
 		Map<String, Object> rtnMap = new HashMap<String, Object>();
@@ -104,8 +105,8 @@ public class LoginPolicyDpIpController {
 		Map<Object, Object> sqlInpt = new HashMap<Object, Object>();
 		
 		try {
-			
-			sqlInpt.put("BLKIP", URLDecoder.decode(dpIp		,"UTF-8"));
+			sqlInpt.put("BLKIP", 			URLDecoder.decode(dpIp		,"UTF-8"));
+			sqlInpt.put("BLKIPTYPE", 	URLDecoder.decode(dpIptyp	,"UTF-8"));
 			
 			lst = lgnPlcyDpIpService.selectDpIpDetail(sqlInpt);
 			
@@ -150,6 +151,7 @@ public class LoginPolicyDpIpController {
 	
 			//입력값 파라미터 정의
 			sqlInpt.put("BLKIP" 			,param.getBlkIp());
+			sqlInpt.put("BLKIPTYP"		,param.getBlkIpTyp());
 			sqlInpt.put("BLKIPCIDR"		,param.getBlkIpCidr());
 			sqlInpt.put("BLKNM" 			,param.getBlkIpNm());
 			sqlInpt.put("BLKDC" 			,param.getBlkIpDc());
@@ -195,7 +197,9 @@ public class LoginPolicyDpIpController {
     	@ApiImplicitParam(name = "bkIp", value = "차단IP", required = true, dataType = "string", paramType = "query", defaultValue = "")
     })
 	@DeleteMapping(path = "/delete")
-	public String LgPlcyDeleteDpIp(@RequestParam(value = "bkIp") String bkIp) throws Exception {
+	public String LgPlcyDeleteDpIp(
+			@RequestParam(value = "bkIp") String bkIp
+			, @RequestParam(value = "dpIptyp") String dpIptyp ) throws Exception {
 		String rtn = "";
 		ObjectMapper om = new ObjectMapper();
 		Map<Object, Object> rtnMap = new HashMap<Object, Object>();
@@ -203,7 +207,8 @@ public class LoginPolicyDpIpController {
 		try {
 			//입력값 파라미터 정의
 			Map<Object, Object> sqlInpt = new HashMap<Object, Object>();
-			sqlInpt.put("BLKIP", URLDecoder.decode(bkIp		,"UTF-8"));
+			sqlInpt.put("BLKIP"		, URLDecoder.decode(bkIp		,"UTF-8"));
+			sqlInpt.put("BLKIPTYP"	, URLDecoder.decode(dpIptyp		,"UTF-8"));
 			
 			int inputCnt = lgnPlcyDpIpService.deleteLgPlcyDpIp(sqlInpt);
 			if(inputCnt > 0) {

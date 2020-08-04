@@ -20,12 +20,19 @@ public class LoginPolicyDpIpVo {
 
 	private String blkIp;
 	private String blkIpCidr;
+	private String blkIpTyp;
 	private String blkIpNm;
 	private String blkIpDc;
 	private String addUsrid;
 	
 	
 	
+	public String getBlkIpTyp() {
+		return blkIpTyp;
+	}
+	public void setBlkIpTyp(String blkIpTyp) {
+		this.blkIpTyp = blkIpTyp;
+	}
 	public String getBlkIpCidr() {
 		return blkIpCidr;
 	}

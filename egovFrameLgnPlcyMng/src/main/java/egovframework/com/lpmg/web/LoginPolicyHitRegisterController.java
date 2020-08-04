@@ -1,6 +1,5 @@
 package egovframework.com.lpmg.web;
 
-import java.net.Inet4Address;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -387,12 +386,13 @@ public class LoginPolicyHitRegisterController {
 		if (ip == null){
 			ip = req.getRemoteAddr();
 		}
-//		System.out.println("\n\n\nIP6>>>>>>>>>>>>>>>>>>>" + ip);
-		System.out.println("IP4*************************" + Inet4Address.getLocalHost().getHostAddress());
+		
+		System.out.println("IP>>>>>>>>>>>>>>>>>>>" + ip);
+//		System.out.println("IP*******************" + Inet4Address.getLocalHost().getHostAddress());
 		
 		try {
 			Map<Object, Object> sqlInpt = new HashMap<Object, Object>();
-			sqlInpt.put("LGINIP", 	Inet4Address.getLocalHost().getHostAddress());
+			sqlInpt.put("LGINIP", 	ip);  //Inet4Address.getLocalHost().getHostAddress()
 			sqlInpt.put("USRID", 		URLDecoder.decode(param.getUsrId()		,"UTF-8"));
 			sqlInpt.put("USRPW", 	SecuritySha.SHA256(URLDecoder.decode(param.getPassword()		,"UTF-8")));
 			

@@ -85,8 +85,8 @@ public class DataRunner implements ApplicationRunner {
         	comtnLoginPolicy.append("\n )                                    ");
         	statement.executeUpdate(comtnLoginPolicy.toString());
         	String comtnLoginPolicyQry1 = "INSERT INTO COMTNLOGINPOLICY (POLICY_ID,POLICY_NM,POLICY_DC,POLICY_BGNDT,POLICY_ENDDT,POLICY_APPY_YN,POLICY_REGIST_DT,POLICY_HTMXCNT,POLICY_APPY_USRID,CHANGE_DT) VALUES ('POLCY001','ID/PW 오류 체크','로그인시 ID/PW 오류 횟수를 체크하여 로그인을 제한한다.','20200707','99991231','Y','"+sstime+"',3,'TESTUSER',"+sstime+")";
-        	String comtnLoginPolicyQry2 = "INSERT INTO COMTNLOGINPOLICY (POLICY_ID,POLICY_NM,POLICY_DC,POLICY_BGNDT,POLICY_ENDDT,POLICY_APPY_YN,POLICY_REGIST_DT,POLICY_HTMXCNT,POLICY_APPY_USRID,CHANGE_DT) VALUES ('POLCY002','IP차단','로그인 차단 대상 IP를 등록하고 체크하여 로그인을 제한한다.','20200707','99991231','Y','"+sstime+"',0,'TESTUSER',"+sstime+")";
-        	String comtnLoginPolicyQry3 = "INSERT INTO COMTNLOGINPOLICY (POLICY_ID,POLICY_NM,POLICY_DC,POLICY_BGNDT,POLICY_ENDDT,POLICY_APPY_YN,POLICY_REGIST_DT,POLICY_HTMXCNT,POLICY_APPY_USRID,POLICY_DATA,CHANGE_DT) VALUES ('POLCY003','해외IP구분','해외IP여부를 확인한다.\nwhois.kisa.or.kr 의 WHOIS OpenAPI를 활용한다. \n사용을 위해서는 whois(한국인터넷진흥원)에서 발급받은 key를 등록해야한다.  ','20200707','99991231','Y','"+sstime+"',0,'TESTUSER','"+"2020073020252544398149"+"',"+sstime+")";
+        	String comtnLoginPolicyQry2 = "INSERT INTO COMTNLOGINPOLICY (POLICY_ID,POLICY_NM,POLICY_DC,POLICY_BGNDT,POLICY_ENDDT,POLICY_APPY_YN,POLICY_REGIST_DT,POLICY_HTMXCNT,POLICY_APPY_USRID,CHANGE_DT) VALUES ('POLCY002','IP차단','Client(접속지)의 IP4주소를 확인하여, 등록된 차단 대상 IP와 비교하여 로그인을 제한한다.\nCIDR표기도 지원한다. ','20200707','99991231','Y','"+sstime+"',0,'TESTUSER',"+sstime+")";
+        	String comtnLoginPolicyQry3 = "INSERT INTO COMTNLOGINPOLICY (POLICY_ID,POLICY_NM,POLICY_DC,POLICY_BGNDT,POLICY_ENDDT,POLICY_APPY_YN,POLICY_REGIST_DT,POLICY_HTMXCNT,POLICY_APPY_USRID,POLICY_DATA,CHANGE_DT) VALUES ('POLCY003','해외IP구분','해외IP여부를 확인한다.\nwhois.kisa.or.kr 의 WHOIS OpenAPI를 활용한다. \n사용을 위해서는 whois(한국인터넷진흥원)에서 발급받은 key를 등록해야한다.  ','20200707','99991231','N','"+sstime+"',0,'TESTUSER','"+"2020073020252544398149"+"',"+sstime+")";
         	jdbcTemplate.execute(comtnLoginPolicyQry1);
         	jdbcTemplate.execute(comtnLoginPolicyQry2);
         	jdbcTemplate.execute(comtnLoginPolicyQry3);
@@ -103,11 +103,11 @@ public class DataRunner implements ApplicationRunner {
         	comtnLoginPolicyHitHistory.append("\n 	PRIMARY KEY (USR_ID, POLICY_ID, POLICY_HIT_DT)   ");
         	comtnLoginPolicyHitHistory.append("\n )                                                  ");
         	statement.executeUpdate(comtnLoginPolicyHitHistory.toString());
-        	String comtnLoginPolicyHitHistoryQry1 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP, LOGIN_IP_CNTR) VALUES ('TESTUSER','POLCY002','20200707143514987','10.20.30.114','none')";
-        	String comtnLoginPolicyHitHistoryQry2 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP, LOGIN_IP_CNTR) VALUES ('TESTUSER','POLCY002','20200702143514987','10.20.30.114','none')";
-        	String comtnLoginPolicyHitHistoryQry3 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP, LOGIN_IP_CNTR) VALUES ('TESTUSER','POLCY002','20200617143514987','10.20.30.114','none')";
-        	String comtnLoginPolicyHitHistoryQry4 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP, LOGIN_IP_CNTR) VALUES ('TESTUSER','POLCY001','20200625093514987','10.20.30.114','none')";
-        	String comtnLoginPolicyHitHistoryQry5 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP, LOGIN_IP_CNTR) VALUES ('USER','POLCY001','20200505093514987','10.20.30.114','none')";
+        	String comtnLoginPolicyHitHistoryQry1 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP, LOGIN_IP_CNTR) VALUES ('TESTUSER','POLCY002','20200707143514987','10.20.30.114','-')";
+        	String comtnLoginPolicyHitHistoryQry2 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP, LOGIN_IP_CNTR) VALUES ('TESTUSER','POLCY002','20200702143514987','10.20.30.114','-')";
+        	String comtnLoginPolicyHitHistoryQry3 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP, LOGIN_IP_CNTR) VALUES ('TESTUSER','POLCY002','20200617143514987','10.20.30.114','-')";
+        	String comtnLoginPolicyHitHistoryQry4 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP, LOGIN_IP_CNTR) VALUES ('TESTUSER','POLCY001','20200625093514987','10.20.30.114','-')";
+        	String comtnLoginPolicyHitHistoryQry5 = "INSERT INTO COMTNLOGINPOLICYHITHISTORY (USR_ID, POLICY_ID, POLICY_HIT_DT, LOGIN_IP, LOGIN_IP_CNTR) VALUES ('USER','POLCY001','20200505093514987','10.20.30.114','-')";
         	jdbcTemplate.execute(comtnLoginPolicyHitHistoryQry1);
         	jdbcTemplate.execute(comtnLoginPolicyHitHistoryQry2);
         	jdbcTemplate.execute(comtnLoginPolicyHitHistoryQry3);
@@ -119,17 +119,21 @@ public class DataRunner implements ApplicationRunner {
         	COMTNBLKIPMNGR.append("\n CREATE TABLE COMTNBLKIPMNGR      ");
         	COMTNBLKIPMNGR.append("\n (                              ");
         	COMTNBLKIPMNGR.append("\n 	BLK_IP VARCHAR(23) NOT NULL,  ");
-        	COMTNBLKIPMNGR.append("\n 	BLK_IPNM VARCHAR(100) ,  ");
-        	COMTNBLKIPMNGR.append("\n 	BLK_IPDC VARCHAR(500) ,  ");
+        	COMTNBLKIPMNGR.append("\n 	BLK_IP_TYP VARCHAR(2) NOT NULL,  ");
+        	COMTNBLKIPMNGR.append("\n 	BLK_IP_CIDR VARCHAR(2),  ");
+        	COMTNBLKIPMNGR.append("\n 	BLK_IPNM VARCHAR(100),  ");
+        	COMTNBLKIPMNGR.append("\n 	BLK_IPDC VARCHAR(500),  ");
         	COMTNBLKIPMNGR.append("\n 	ADD_USRID VARCHAR(20) NOT NULL,  ");
         	COMTNBLKIPMNGR.append("\n 	ADD_DT VARCHAR(14) NOT NULL,  ");
-        	COMTNBLKIPMNGR.append("\n 	PRIMARY KEY (BLK_IP)          ");
+        	COMTNBLKIPMNGR.append("\n 	PRIMARY KEY (BLK_IP, BLK_IP_TYP)          ");
         	COMTNBLKIPMNGR.append("\n )                              ");
         	statement.executeUpdate(COMTNBLKIPMNGR.toString());
-        	String comBlkipMngrQry1 = "INSERT INTO COMTNBLKIPMNGR(BLK_IP, BLK_IPNM, BLK_IPDC, ADD_USRID, ADD_DT) VALUES ('10.20.30.40','테스트IP','테스트를 위해 등록된 IP','TESTUSER','"+sstime+"')";
-        	String comBlkipMngrQry2 = "INSERT INTO COMTNBLKIPMNGR(BLK_IP, BLK_IPNM, BLK_IPDC, ADD_USRID, ADD_DT) VALUES ('202.10.210.50','테스트IP2','테스트를 위해 등록된 IP2','TESTUSER','"+sstime+"')";
+        	String comBlkipMngrQry1 = "INSERT INTO COMTNBLKIPMNGR(BLK_IP, BLK_IP_TYP, BLK_IP_CIDR, BLK_IPNM, BLK_IPDC, ADD_USRID, ADD_DT) VALUES ('10.20.30.40','01','','테스트IP','테스트를 위해 등록된 IP','TESTUSER','"+sstime+"')";
+        	String comBlkipMngrQry2 = "INSERT INTO COMTNBLKIPMNGR(BLK_IP, BLK_IP_TYP, BLK_IP_CIDR, BLK_IPNM, BLK_IPDC, ADD_USRID, ADD_DT) VALUES ('202.10.210.50','01','','테스트IP2','테스트를 위해 등록된 IP2','TESTUSER','"+sstime+"')";
+        	String comBlkipMngrQry3 = "INSERT INTO COMTNBLKIPMNGR(BLK_IP, BLK_IP_TYP, BLK_IP_CIDR, BLK_IPNM, BLK_IPDC, ADD_USRID, ADD_DT) VALUES ('202.10.5.25','02','24','테스트IP3','테스트를 위해 등록된 IP3','TESTUSER','"+sstime+"')";
         	jdbcTemplate.execute(comBlkipMngrQry1);
         	jdbcTemplate.execute(comBlkipMngrQry2);
+        	jdbcTemplate.execute(comBlkipMngrQry3);
         	
         }
     }

@@ -44,6 +44,9 @@ public interface LoginPolicyHitRegisterDao {
 	HashMap<String, Object> selectUserPwCk(Map<Object, Object> param);
 	//IP체크
 	HashMap<String, Object> selectUserIpCk(Map<Object, Object> param);
+	//IP(CIDR)체크
+	List<HashMap<String, Object>> selectCidrIpList(Map<Object, Object> param);
+		
 	//정책오류 횟수확인
 	HashMap<String, Object> selectUserPwErCnt(Map<Object, Object> param);
 	//사용자 정보 조회

@@ -149,6 +149,7 @@ public class LoginPolicyHitRegisterService {
 		//정책목록 조회
 		param.put("PDT", ComUtil.getTime("yyyyMMdd"));
 		plcyList = mapper.selectLgPlcyList(param);
+		
 		if(plcyList.size() > 0) {
 			for(int i =0; plcyList.size() > i; i++) {
 				Map<String,Object> listMap = new HashMap<String, Object>();
@@ -163,32 +164,57 @@ public class LoginPolicyHitRegisterService {
 					rtnSqlMap = mapper.selectUserPwErCnt(param);
 					if(Integer.parseInt(rtnSqlMap.get("cnt").toString()) > Integer.parseInt(listMap.get("policy_htmxcnt").toString())) {//오류 횟수 카운트
 						htYn = true;
-						rtnMap.put("MSG", "패스워드 오류 횟수가 총 " + listMap.get("policy_htmxcnt") + "회 이상으로 ID가 잠겼습니다.\n관리자에게 문의하세요.");
+						rtnMap.put("MSG", "패스워드 오류 횟수가 총 " + listMap.get("policy_htmxcnt") + "회를 초과하여 ID가 잠겼습니다.\n관리자에게 문의하세요.");
 						rtnMap.put("CKCD", "1");
 					}
 				}
 				
 				//차단 대상 IP접근 로그인 제한
 				if(htYn==false && "POLCY002".equals(listMap.get("policy_id"))) {
+					//ip4 입력방식으로 등록된 IP목록 비교
+					boolean dpCk = false;
 					
-					
-					SubnetUtils subnetUtils = new SubnetUtils("120.131.5.130/26");
-			        subnetUtils.setInclusiveHostCount(true);    //network,broadcast ip 포함, false:불포함
-					
-			        subnetUtils.getInfo().isInRange("120.131.5.130");
-			        
-			        
+					//IP4방식으로 입력된 항목들 비교_SQL
 					rtnSqlMap.clear();
 					rtnSqlMap = mapper.selectUserIpCk(param);
-					if(Integer.parseInt(rtnSqlMap.get("cnt").toString()) > 0) {  //IDPW값이 저장된 값이랑 다를때
+					if(Integer.parseInt(rtnSqlMap.get("cnt").toString()) > 0) {
 						htYn = true;
+						dpCk = true;
+					}
+					
+					if(dpCk == false) {
+						//CIDR 방식으로 입력된 항목 비교
+						List<HashMap<String, Object>> ipList = new ArrayList<HashMap<String, Object>> ();
+						ipList = mapper.selectCidrIpList(param);
+						
+						for(int j = 0; j < ipList.size(); j++) {
+							HashMap<String, Object> cidrList = new HashMap<String, Object>();
+							cidrList = ipList.get(j);
+							
+							SubnetUtils subnetUtils = new SubnetUtils(cidrList.get("blk_ip").toString()+"/"+cidrList.get("blk_ip_cidr").toString());
+							subnetUtils.setInclusiveHostCount(true);    //network,broadcast ip 포함, false:불포함
+//							System.out.println("시작 IP:" + subnetUtils.getInfo().getLowAddress());
+//							System.out.println("끝 IP:" + subnetUtils.getInfo().getHighAddress());
+//							System.out.println("120.131.5.130 해당 대역의 포함여부: " + subnetUtils.getInfo().isInRange(param.get("LGINIP").toString()));
+							dpCk = subnetUtils.getInfo().isInRange(param.get("LGINIP").toString());
+						
+							if(dpCk == true) {
+								htYn = true;
+								break;
+							}
+						}
+					}
+					
+					if(dpCk == true) {
 						param.put("PLCYID", "POLCY002"); //IDPW 오류횟수 저장
 						param.put("POLICYHITDT", ComUtil.getTime("yyyyMMddHHmmss"));
 						param.put("LOGINIPCNTR", "-");
 						mapper.insertLgPlcyHitRgst(param);
+						
 						rtnMap.put("MSG", "접근차단대상 위치에서 접속하고 계십니다. \n로그인에 실패 하였습니다.\n관리자에게 문의하세요.");
 						rtnMap.put("CKCD", "1");
 					}
+					
 				}
 				
 				//해외IP 차단
@@ -209,7 +235,7 @@ public class LoginPolicyHitRegisterService {
 						HashMap<String, Object> map = om.readValue(whoisIpInfo, HashMap.class);
 						rtnSqlMap.clear();
 						rtnSqlMap = (HashMap<String, Object>)map.get("whois");
-						rtnSqlMap.put("countryCode","US");///////////////////////////////////////////////////////////////////////////////테스트
+//						rtnSqlMap.put("countryCode","US");///////////////////////////////////////////////////////////////////////////////테스트
 						if(!"KR".equals(rtnSqlMap.get("countryCode")) && !"none".equals(rtnSqlMap.get("countryCode"))) { 
 							htYn = true;
 							param.put("LOGINIPCNTR", rtnSqlMap.get("countryCode"));

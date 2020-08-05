@@ -13,7 +13,7 @@ spring:
   h2:
     console:
       enabled: true
-      path: /h2-console
+      path: /database
   whois:
     key:   #whois에서 제공 하는 API를 사용하기 위해 발급받은 key를 등록한다.
     url: http://whois.kisa.or.kr/openapi/ipascc.jsp

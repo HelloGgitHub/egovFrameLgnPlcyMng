@@ -7,6 +7,12 @@
 <script src="/js/egovframework/com/cmm/utl/EgovCmmUtl.js"></script>
 <script src="/js/egovframework/com/cmm/utl/InputCk.js"></script>
 
+<link rel="stylesheet" type="text/css" href="/css/egovframework/com/com.css" >
+<link rel="stylesheet" type="text/css" href="/css/egovframework/com/button.css" >
+<link rel="stylesheet" type="text/css" href="/css/egovframework/com/cmm/jqueryui.css" >
+<script src="/js/egovframework/com/cmm/jquery.js"></script>
+<script src="/js/egovframework/com/cmm/jqueryui.js"></script>
+
 <script type="text/javaScript" language="javascript" defer="defer">
 
 var caltype  	= "<%=request.getParameter("callType") %>";
@@ -17,6 +23,37 @@ var plcyId 	 	= "<%=request.getParameter("plcyId") %>";
  *********************************************************/
 $(document).ready(function(){
 	inputCellSet(caltype);
+
+	$("#inPlcyBgn").datepicker(
+	        {dateFormat:'yy-mm-dd'
+	         , showOn: 'button'
+	         , buttonImage: '/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'
+	         , buttonImageOnly: true
+	        
+	         , showMonthAfterYear: true
+	         , showOtherMonths: true
+		     , selectOtherMonths: true
+			
+	         , changeMonth: true // 월선택 select box 표시 (기본은 false)
+	         , changeYear: true  // 년선택 selectbox 표시 (기본은 false)
+	         , showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
+	});			
+	
+	$("#inPlcyEnd").datepicker(
+	        {dateFormat:'yy-mm-dd'
+	         , showOn: 'button'
+	         , buttonImage: '/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'
+	         , buttonImageOnly: true
+	        
+	         , showMonthAfterYear: true
+	         , showOtherMonths: true
+		     , selectOtherMonths: true
+			
+	         , changeMonth: true // 월선택 select box 표시 (기본은 false)
+	         , changeYear: true  // 년선택 selectbox 표시 (기본은 false)
+	         , showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
+	});			
+	
 });
 
 function inputCellSet(type) {
@@ -90,9 +127,9 @@ function maxlength() {
 		alert("정책명은(는) 50자 이상 입력할수 없습니다.");$("#inPlcyNm").focus();return false;
 	} else if($.trim($("#inPlcyDc").val()).length >= 250){
 		alert("정책설명은(는) 250자 이상 입력할수 없습니다.");$("#inPlcyDc").focus();return false;
-	} else if($.trim($("#inPlcyBgn").val()).length != 8){
+	} else if($.trim($("#inPlcyBgn").val().replace(/-/gi, "")).length != 8){
 		alert("시작일자은(는) 입력값이 올바르지 않습니다.");$("#inPlcyBgn").focus();return false;
-	} else if($.trim($("#inPlcyEnd").val()).length != 8){
+	} else if($.trim($("#inPlcyEnd").val().replace(/-/gi, "")).length != 8){
 		alert("종료일자은(는) 입력값이 올바르지 않습니다.");$("#inPlcyEnd").focus();return false;
 	} else if($.trim($("#inDpCnt").val()).length >= 5){
 		alert("접근허용횟수은(는) 5자리 이상 입력할수 없습니다.");$("#inDpCnt").focus();return false;
@@ -105,6 +142,16 @@ function numCk(){
 	}
 }
 
+function dateCk(){
+	var plcyBgn =$("#inPlcyBgn").val().replace(/-/gi, "");
+	var plcyEnd =$("#inPlcyEnd").val().replace(/-/gi, "");
+	if(checkDate(plcyBgn.substring(0,4), plcyBgn.substring(4,6), plcyBgn.substring(6,8), "시작일자") == false) {
+		$("#inPlcyBgn").focus();return false;
+	}
+	if(checkDate(plcyEnd.substring(0,4), plcyEnd.substring(4,6), plcyEnd.substring(6,8), "종료일자") == false) {
+		$("#inPlcyEnd").focus();return false;
+	}
+}
 
 
 /*********************************************************
@@ -116,13 +163,15 @@ function fn_Insert(){
 		if(required()==false) return; //필수값 체크
 		if(maxlength()==false) return; //최대 길이 체크
 		if(numCk()==false) return; //숫자 체크
+		if(dateCk()==false) return; //날자 체크
+		
 		
 		var policyData = new Object();
 		policyData.policyId			=	$("#inPlcyId").val();
 		policyData.policyNm			=	$("#inPlcyNm").val();
 		policyData.policyDc			=	$("#inPlcyDc").val();
-		policyData.policyBgndt		=	$("#inPlcyBgn").val();
-		policyData.policyEnddt		=	$("#inPlcyEnd").val();
+		policyData.policyBgndt		=	$("#inPlcyBgn").val().replace(/-/gi, "");
+		policyData.policyEnddt		=	$("#inPlcyEnd").val().replace(/-/gi, "");
 		policyData.policyHtmxCnt	=	$("#inDpCnt").val();
 		policyData.policyAppyYn	=	$("#inPlcyYn").val();
 		policyData.inCertKey			=	$("#inCertKey").val();
@@ -155,11 +204,13 @@ function fn_DetailPlcy(){
 	rtnData = fn_calApi("GET", "/lgplcy/detailInfo/"+pPlcyId, null, false);
 	arrlist = rtnData.list;
 	const obj2 = arrlist[0]; 
+	var bgndt = strToDt(obj2.policy_bgndt);
+	var enddt = strToDt(obj2.policy_enddt);
 	
 	$("#inPlcyId").val(obj2.policy_id);
 	$("#inPlcyNm").val(obj2.policy_nm);
-	$("#inPlcyBgn").val(obj2.policy_bgndt);
-	$("#inPlcyEnd").val(obj2.policy_enddt);
+	$("#inPlcyBgn").val(bgndt);
+	$("#inPlcyEnd").val(enddt);
 	$("#inPlcyYn").val(obj2.policy_appy_yn);
 	$("#inDpCnt").val(obj2.policy_htmxcnt);
 	$("#inPlcyDc").val(obj2.policy_dc);
@@ -182,8 +233,8 @@ function fn_Update(){
 		policyData.policyId			=	$("#inPlcyId").val();
 		policyData.policyNm			=	$("#inPlcyNm").val();
 		policyData.policyDc			=	$("#inPlcyDc").val();
-		policyData.policyBgndt		=	$("#inPlcyBgn").val();
-		policyData.policyEnddt		=	$("#inPlcyEnd").val();
+		policyData.policyBgndt		=	$("#inPlcyBgn").val().replace(/-/gi, "");
+		policyData.policyEnddt		=	$("#inPlcyEnd").val().replace(/-/gi, "");
 		policyData.policyHtmxCnt	=	$("#inDpCnt").val();
 		policyData.policyAppyYn	=	$("#inPlcyYn").val();
 		policyData.policyInCertKey	=	$("#inCertKey").val();
@@ -263,7 +314,8 @@ function fn_Modify(){
 		<tr>
 			<th><label for="inPlcyBgn">시작일자</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<input id="inPlcyBgn" name="inPlcyBgn" class="txaIpUmt" title="로그인 정책 적용 시작일자" type="text" value="" size="50" maxlength="100"/>
+<!-- 				<input id="schdulBgndeYYYMMDD" name="schdulBgndeYYYMMDD" style="width:98px" title="일정시작일자" type="text" value="" size="10" maxlength="10"/>	 -->
+				<input id="inPlcyBgn" name="inPlcyBgn" class="txaIpUmt" title="로그인정책 적용 시작일자" type="text" style="width:150px"  value="" size="10" maxlength="10"/>
 			</td>
 		</tr>
 		
@@ -271,7 +323,7 @@ function fn_Modify(){
 		<tr>
 			<th><label for="inPlcyEnd">종료일자</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<input id="inPlcyEnd" name="inPlcyEnd" class="txaIpUmt" title="로그인정책 적용 종료일자" type="text" value="" size="50" maxlength="100"/>
+				<input id="inPlcyEnd" name="inPlcyEnd" class="txaIpUmt" title="로그인정책 적용 종료일자" type="text" style="width:150px" value="" size="10" maxlength="10"/>
 			</td>
 		</tr>
 		

@@ -81,3 +81,4 @@ function checkDate(varCk1, varCk2, varCk3, msg) {
 	alert(msg + " 유효하지 않은 년,월,일(YYYYMMDD)입니다. 다시 확인해 주세요!");
 	return false;
 }
+

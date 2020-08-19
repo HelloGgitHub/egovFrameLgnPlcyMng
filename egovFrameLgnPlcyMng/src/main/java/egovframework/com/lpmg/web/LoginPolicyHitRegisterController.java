@@ -8,6 +8,8 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -53,7 +55,9 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("/lgHRgt")
 @SessionAttributes
 public class LoginPolicyHitRegisterController {
-
+	
+	private static final Logger log = LoggerFactory.getLogger(LoginPolicyHitRegisterController.class);
+	
 	@Autowired
 	LoginPolicyHitRegisterService lgnPlcyHitRegstService;
 	
@@ -387,8 +391,8 @@ public class LoginPolicyHitRegisterController {
 			ip = req.getRemoteAddr();
 		}
 		
-		System.out.println("IP>>>>>>>>>>>>>>>>>>>" + ip);
-//		System.out.println("IP*******************" + Inet4Address.getLocalHost().getHostAddress());
+		log.info("CLIENT IP CK :: " + ip);
+//		log.debug("HOST IP :: " + Inet4Address.getLocalHost().getHostAddress());
 		
 		try {
 			Map<Object, Object> sqlInpt = new HashMap<Object, Object>();

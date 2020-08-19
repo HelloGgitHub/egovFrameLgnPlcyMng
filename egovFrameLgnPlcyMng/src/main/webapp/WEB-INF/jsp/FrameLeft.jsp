@@ -28,16 +28,18 @@
 		} else if(cd == 7){
 			alert("'적중이력 목록 조회'를 통해 접근했을때 정상 동작 합니다.");
 			url="LoginPolicyHitDetailList?userId=&plcyId=";
-			return;
+		} else if(cd == 88){
+			url="/swagger-ui.html#/";
+		} else if(cd == 99){
+			url="/db-console";
 		}
 		parent.body.location.href=url;
 	}
-
 </script>
 
 <body>
 	<input type="hidden" id="" name="lngCk" value="9"/>
-	<br><span class="btn_b"><a href="" onClick="fn_leftMenu(1);" title="로그인" style="font-size: 15px;font-style: inherit;font-weight: bold;">로그인</a></span>
+	<br><span class="btn_b"><a href="" onClick="fn_leftMenu(1);" title="로그인" style="font-size: 15px;font-style: inherit;font-weight: bold;">- 로그인</a></span>
 	<br>
 	<br><span class="btn_b" style="font-size: 15px;font-style: inherit;font-weight: bold;">- 로그인정책 관리</span>
 	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(3);" title="정책 등록" style="font-size: 15px;font-style: inherit;font-weight: bold;">정책 등록</a></span>
@@ -50,7 +52,10 @@
 	<br><span class="btn_b" style="font-size: 15px;font-style: inherit;font-weight: bold;">- 적중이력 관리</span>
 	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(6);" title="적중이력 목록조회" style="font-size: 15px;font-style: inherit;font-weight: bold;">적중이력 목록 조회</a></span>
 	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(7);" title="적중이력 상세조회" style="font-size: 15px;font-style: inherit;font-weight: bold;">적중이력 상세 조회</a></span>
-
-
+	<br><br>
+	<br><span class="btn_b" style="font-size: 15px;font-style: inherit;font-weight: bold;">- API명세 및 DB스키마</span>
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(88);" title="권한관리 API명세" style="font-size: 15px;font-style: inherit;font-weight: bold;">API 명세</a></span>
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="btn_b"><a href="" onClick="fn_leftMenu(99);" title="권한관리 DB스키마" style="font-size: 15px;font-style: inherit;font-weight: bold;">DB 스키마</a></span>
+	
 </body>
 </html>

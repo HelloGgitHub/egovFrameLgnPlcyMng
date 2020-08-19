@@ -108,7 +108,6 @@ public class LoginPolicyManagerController {
 			sqlInpt.put("PLCYID", URLDecoder.decode(plcyCd		,"UTF-8"));
 			
 			lst = lgnPlcyMngService.selectLgPlcyDetail(sqlInpt);
-			System.out.println(lst);
 			if(lst==null || lst.size()==0) {
 				rtnMap = new HashMap<String, Object>();
 				rtnMap.put("RESULTCD", "0");

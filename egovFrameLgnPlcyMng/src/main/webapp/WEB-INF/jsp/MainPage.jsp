@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon" />
@@ -10,10 +9,12 @@
 <!-- 	<frame src="FrameTop" name="topFrame" scrolling="no"/> -->
 <!-- 	<frame src="FrameDown" name="downFrame" /> -->
 <!-- </frameset> -->
+
 <script type="text/javascript">
 	var loginCk = "";
 </script>
 </head>
+
 <body style="overflow-y: hidden; margin: 0;">
 	<input type="hidden" id="lngCk" name="lngCk" value="" />
 	<table width=100%>
@@ -30,7 +31,3 @@
 	</table>
 </body>
 </html>
-
-
-
-

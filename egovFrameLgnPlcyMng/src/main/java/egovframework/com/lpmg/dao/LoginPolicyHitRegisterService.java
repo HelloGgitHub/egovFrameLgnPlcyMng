@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.net.util.SubnetUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -39,6 +41,8 @@ import egovframework.com.cmm.ComUtil;
 @Service
 @Transactional
 public class LoginPolicyHitRegisterService {
+	
+	private static final Logger log = LoggerFactory.getLogger(LoginPolicyHitRegisterService.class);
 	
 	@Value("${spring.whois.url}")
     String whoIsUrl;
@@ -144,7 +148,6 @@ public class LoginPolicyHitRegisterService {
 		HashMap<String, Object> rtnMap = new HashMap<String, Object>();
 		HashMap<String, Object> rtnSqlMap = new HashMap<String, Object>();
 		List<HashMap<String, Object>> plcyList = new ArrayList<HashMap<String, Object>> ();
-		List<HashMap<String, Object>> sqlList = new ArrayList<HashMap<String, Object>> ();
 		boolean htYn = false;
 		//정책목록 조회
 		param.put("PDT", ComUtil.getTime("yyyyMMdd"));
@@ -193,9 +196,6 @@ public class LoginPolicyHitRegisterService {
 							
 							SubnetUtils subnetUtils = new SubnetUtils(cidrList.get("blk_ip").toString()+"/"+cidrList.get("blk_ip_cidr").toString());
 							subnetUtils.setInclusiveHostCount(true);    //network,broadcast ip 포함, false:불포함
-//							System.out.println("시작 IP:" + subnetUtils.getInfo().getLowAddress());
-//							System.out.println("끝 IP:" + subnetUtils.getInfo().getHighAddress());
-//							System.out.println("120.131.5.130 해당 대역의 포함여부: " + subnetUtils.getInfo().isInRange(param.get("LGINIP").toString()));
 							dpCk = subnetUtils.getInfo().isInRange(param.get("LGINIP").toString());
 						
 							if(dpCk == true) {
@@ -304,9 +304,8 @@ public class LoginPolicyHitRegisterService {
 				}
 				br.close();
 				rtn = sb.toString();
-				
 			} else {
-				System.out.println("http_ok no >>>\n" + con.getResponseMessage());
+				log.warn("http Connection fail >>>\n" + con.getResponseMessage());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

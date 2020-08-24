@@ -58,8 +58,8 @@ spring:
   profiles: maria 
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://192.168.33.20:3306/EGOVCLDDEV #local Vm
-#    url: jdbc:mariadb://10.182.164.67:3306/EGOVCLDDEV  #개발
+#    url: jdbc:mariadb://192.168.33.20:3306/EGOVCLDDEV #local Vm
+    url: jdbc:mariadb://10.182.164.67:3306/EGOVCLDDEV  #개발
 #    url: jdbc:mariadb://220.73.22.204:9606/EGOVCLDDEV #개발(bastion) 
     username: egovclddev
     password: Helloegov1!

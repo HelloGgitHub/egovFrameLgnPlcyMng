@@ -3,37 +3,37 @@
 <mapper namespace="egovframework.com.lpmg.dao.LoginPolicyManagerDao">
 
     <select id="selectLgPlcyList" resultType="hashMap">
-			SELECT POLICY_ID
-			     , POLICY_NM
-			     , POLICY_DC
-			     , POLICY_BGNDT
-			     , POLICY_ENDDT
-			     , POLICY_APPY_YN
-			     , POLICY_HTMXCNT
-			     , POLICY_REGIST_DT
-			     , POLICY_APPY_USRID 
+			SELECT POLICY_ID as "policy_id"
+			     , POLICY_NM as "policy_nm"
+			     , POLICY_DC as "policy_dc"
+			     , POLICY_BGNDT as "policy_bgndt"
+			     , POLICY_ENDDT as "policy_enddt"
+			     , POLICY_APPY_YN as "policy_appy_yn"
+			     , POLICY_HTMXCNT as "policy_htmxcnt"
+			     , POLICY_REGIST_DT as "policy_regist_dt"
+			     , POLICY_APPY_USRID as "policy_appy_usrid"
 			  FROM COMTNLOGINPOLICY
     </select>
 
 
     <select id="selectLgPlcyDetail"  parameterType="Map" resultType="hashMap">
-			SELECT POLICY_ID
-			     , POLICY_NM
-			     , POLICY_DC
-			     , POLICY_BGNDT
-			     , POLICY_ENDDT
-			     , POLICY_APPY_YN
-			     , POLICY_HTMXCNT
-			     , POLICY_REGIST_DT
-			     , POLICY_APPY_USRID
-			     , POLICY_DATA 
+			SELECT POLICY_ID as "policy_id"
+			     , POLICY_NM as "policy_nm"
+			     , POLICY_DC as "policy_dc"
+			     , POLICY_BGNDT as "policy_bgndt"
+			     , POLICY_ENDDT as "policy_enddt"
+			     , POLICY_APPY_YN as "policy_appy_yn"
+			     , POLICY_HTMXCNT as "policy_htmxcnt"
+			     , POLICY_REGIST_DT as "policy_regist_dt"
+			     , POLICY_APPY_USRID as "policy_appy_usrid"
+			     , POLICY_DATA as "policy_data"
 			  FROM COMTNLOGINPOLICY
 			 WHERE POLICY_ID = '${PLCYID}'
     </select>
 
 
     <select id="selectLgPlcyInfoCnt" parameterType="Map" resultType="int">
-			SELECT COUNT(*) CNT
+			SELECT COUNT(*) as "cnt"
 			  FROM COMTNLOGINPOLICY
 			 WHERE POLICY_ID = '${PLCYID}'
     </select>

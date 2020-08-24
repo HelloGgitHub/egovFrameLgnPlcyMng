@@ -149,6 +149,8 @@ public class LoginPolicyHitRegisterService {
 		HashMap<String, Object> rtnSqlMap = new HashMap<String, Object>();
 		List<HashMap<String, Object>> plcyList = new ArrayList<HashMap<String, Object>> ();
 		boolean htYn = false;
+		boolean idpwCk = false;
+		
 		//정책목록 조회
 		param.put("PDT", ComUtil.getTime("yyyyMMdd"));
 		plcyList = mapper.selectLgPlcyList(param);
@@ -161,6 +163,7 @@ public class LoginPolicyHitRegisterService {
 				//ID/PW입력 오류 로그인 제한
 				if(htYn==false && "POLCY001".equals(listMap.get("policy_id"))) {
 					//사용자 ID/PW조회
+					idpwCk = true;
 					param.put("PLCYID", "POLCY001"); //IDPW 오류횟수 체크
 					param.put("LOGINIPCNTR", "-");
 					rtnSqlMap.clear();
@@ -259,7 +262,7 @@ public class LoginPolicyHitRegisterService {
 			if(rtnSqlMap == null) {  //사용자 정보가 없을때 
 				rtnMap.put("MSG", "등록된 사용자가 없습니다.");
 				rtnMap.put("CKCD", "1");
-			}else if(!param.get("USRPW").equals(rtnSqlMap.get("password"))) {  //IDPW값이 저장된 값이랑 다를때
+			}else if(idpwCk == true && !param.get("USRPW").equals(rtnSqlMap.get("password"))) {  //IDPW값이 저장된 값이랑 다를때
 				param.put("PLCYID", "POLCY001"); //IDPW 오류횟수 저장
 				param.put("POLICYHITDT", ComUtil.getTime("yyyyMMddHHmmss"));
 				mapper.insertLgPlcyHitRgst(param);

@@ -3,10 +3,10 @@
 <mapper namespace="egovframework.com.lpmg.dao.LoginPolicyHitRegisterDao">
 
     <select id="selectHitRgstList" resultType="hashMap">
-			SELECT a.USR_ID
-			     , a.POLICY_ID
-			     , ifnull(b.POLICY_NM,'-미등록정책-') AS POLICY_NM 
-			     , COUNT(*) CNT
+			SELECT a.USR_ID as "usr_id"
+			     , a.POLICY_ID as "policy_id"
+			     , ifnull(b.POLICY_NM,'-미등록정책-') as "policy_nm" 
+			     , COUNT(*) as "cnt"
 			  FROM COMTNLOGINPOLICYHITHISTORY a
 			  	   LEFT OUTER JOIN
 			        COMTNLOGINPOLICY b
@@ -18,12 +18,12 @@
     </select>
 
     <select id="selectHitRgstDetailList" resultType="hashMap">
-			SELECT a.USR_ID 
-			     , a.POLICY_ID
-			     , ifnull(b.POLICY_NM,'-미등록정책-') AS POLICY_NM 
-			     , a.POLICY_HIT_DT 
-			     , a.LOGIN_IP 
-			     , a.LOGIN_IP_CNTR
+			SELECT a.USR_ID as "usr_id"
+			     , a.POLICY_ID as "policy_id"
+			     , ifnull(b.POLICY_NM,'-미등록정책-') as "policy_nm" 
+			     , a.POLICY_HIT_DT as "policy_hit_dt" 
+			     , a.LOGIN_IP as "login_ip"
+			     , a.LOGIN_IP_CNTR as "login_ip_cntr"
 			  FROM COMTNLOGINPOLICYHITHISTORY a
 			  LEFT OUTER JOIN 
 			       COMTNLOGINPOLICY b
@@ -34,10 +34,10 @@
     </select>
 
     <select id="selectHitRgstUser"  parameterType="Map" resultType="hashMap">
-			SELECT a.USR_ID 
-			     , a.POLICY_ID 
-			     , ifnull(b.POLICY_NM,'-미등록정책-') AS POLICY_NM
-			     , COUNT(*) CNT 
+			SELECT a.USR_ID as "usr_id"
+			     , a.POLICY_ID as "policy_id"
+			     , ifnull(b.POLICY_NM,'-미등록정책-') as "policy_nm"
+			     , COUNT(*) as "cnt" 
 			  FROM COMTNLOGINPOLICYHITHISTORY a 
 			       LEFT OUTER JOIN 
 			       COMTNLOGINPOLICY b 
@@ -73,51 +73,50 @@
     </delete>
     
     <select id="selectUserPwCk"  parameterType="Map" resultType="hashMap">
-			SELECT PASSWORD
-			     , USR_ID
+			SELECT PASSWORD as "password"
+			     , USR_ID as "usr_id"
 			  FROM COMTNUSERMNG
 			 WHERE USR_ID = '${USRID}'
     </select>
     <select id="selectUserIpCk"  parameterType="Map" resultType="hashMap">
-			SELECT COUNT(*) CNT
+			SELECT COUNT(*) as "cnt"
 			  FROM COMTNBLKIPMNGR
 			 WHERE BLK_IP LIKE '${LGINIP}%'
 			    AND BLK_IP_TYP = '01' 
     </select>
     <select id="selectCidrIpList"  parameterType="Map" resultType="hashMap">
-			SELECT BLK_IP
-			     , BLK_IP_CIDR
+			SELECT BLK_IP as "blk_ip"
+			     , BLK_IP_CIDR as "blk_ip_cidr"
 			  FROM COMTNBLKIPMNGR
 			 WHERE BLK_IP_TYP = '02' 
     </select>    
     <select id="selectUserPwErCnt"  parameterType="Map" resultType="hashMap">
-			SELECT COUNT(*) CNT 
+			SELECT COUNT(*) as "cnt" 
 			  FROM COMTNLOGINPOLICYHITHISTORY
 			 WHERE USR_ID  = '${USRID}'
 			   AND POLICY_ID = '${PLCYID}'
     </select>
     
 	<select id="selectLgPlcyList" resultType="hashMap">
-			SELECT POLICY_ID
-			     , POLICY_NM
-			     , POLICY_DC
-			     , POLICY_BGNDT
-			     , POLICY_ENDDT
-			     , POLICY_APPY_YN
-			     , POLICY_REGIST_DT
-			     , POLICY_REGIST_DT
-			     , POLICY_HTMXCNT
-			     , POLICY_APPY_USRID 
+			SELECT POLICY_ID as "policy_id"
+			     , POLICY_NM as "policy_nm"
+			     , POLICY_DC as "policy_dc"
+			     , POLICY_BGNDT as "policy_bgndt"
+			     , POLICY_ENDDT as "policy_enddt"
+			     , POLICY_APPY_YN as "policy_appy_yn"
+			     , POLICY_REGIST_DT as "policy_regist_dt"
+			     , POLICY_HTMXCNT as "policy_htmxcnt"
+			     , POLICY_APPY_USRID as "policy_appy_usrid"
 			  FROM COMTNLOGINPOLICY
 			 WHERE POLICY_APPY_YN = 'Y'
 			    AND '${PDT}' BETWEEN POLICY_BGNDT AND POLICY_ENDDT
     </select>
     
     <select id="selectLgPlcyHitlMsg"  parameterType="Map" resultType="hashMap">
-			SELECT a.USR_ID 
-			     , a.POLICY_ID 
-			     , ifnull(b.POLICY_NM,'-미등록정책-') AS POLICY_NM
-			     , COUNT(*) CNT 
+			SELECT a.USR_ID as "usr_id"
+			     , a.POLICY_ID as "policy_id"
+			     , ifnull(b.POLICY_NM,'-미등록정책-') as "policy_nm"
+			     , COUNT(*) as "cnt" 
 			  FROM COMTNLOGINPOLICYHITHISTORY a 
 			       LEFT OUTER JOIN 
 			       COMTNLOGINPOLICY b 

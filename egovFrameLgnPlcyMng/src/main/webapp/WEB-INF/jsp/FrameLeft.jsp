@@ -29,7 +29,7 @@
 			alert("'적중이력 목록 조회'를 통해 접근했을때 정상 동작 합니다.");
 			url="LoginPolicyHitDetailList?userId=&plcyId=";
 		} else if(cd == 88){
-			url="/swagger-ui.html#/";
+			url="/swagger-ui.html#/"; 
 		} else if(cd == 99){
 			url="/db-console";
 		} else if(cd == 00){

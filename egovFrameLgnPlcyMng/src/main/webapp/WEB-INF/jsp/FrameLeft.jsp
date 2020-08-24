@@ -33,7 +33,7 @@
 		} else if(cd == 99){
 			url="/db-console";
 		} else if(cd == 00){
-			url="/download/eGovFrameAuthMng.zip";
+			url="/download/egovFrameLgnPlcyMng.zip";
 		}
 		parent.body.location.href=url;
 	}

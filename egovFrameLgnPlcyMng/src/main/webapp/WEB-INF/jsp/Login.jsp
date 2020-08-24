@@ -84,7 +84,7 @@
 				</li>
 				<li>
 					<label for="password">비밀번호</label>
-					<input type="password" name="password" id="password" maxlength="12" title="비밀번호 " placeholder="비밀번호 ">
+					<input type="password" name="password" id="password" maxlength="12" title="비밀번호 " placeholder="비밀번호 " onKeypress="javascript:if(event.keyCode==13) fn_login()" >
 				</li>
 				<li>
 					<input type="button" class="btn_login" value="로그인" onclick="fn_login()"> <!-- 로그인  -->

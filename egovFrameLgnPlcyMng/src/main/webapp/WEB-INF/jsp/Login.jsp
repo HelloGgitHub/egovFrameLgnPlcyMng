@@ -16,7 +16,6 @@
 		parent.parent.topFrame.document.all.infoImg.style.display = "none";
 		parent.parent.topFrame.document.all.lgnUserId.value= "";
 		parent.parent.topFrame.document.all.lgnMnt.value= "";
-		parent.parent.topFrame.document.all.authorGrpCode.value= "";
 	});
 
 	//입력 필수값 체크

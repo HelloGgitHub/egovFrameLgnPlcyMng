@@ -90,7 +90,7 @@ function fn_DetailDpIp(){
 	if(dpIp == null || dpIp == ""){
 		var ip = $("#inDpIp1").val()+"."+$("#inDpIp2").val()+"."+$("#inDpIp3").val()+"."+$("#inDpIp4").val();
 		pDpIp = "?dpIp="+ip + "&dpIptyp="+ dpIpType;
-	}else{
+	}else {
 		pDpIp = "?dpIp="+ dpIp + "&dpIptyp="+ dpIpType;
 	}
 	var rtnData = new Object();
@@ -109,6 +109,16 @@ function fn_DetailDpIp(){
 	$("#inDpipNm").val(obj2.blk_ipnm);
 	$("#inDpipDc").val(obj2.blk_ipdc);
 	$("#inAplyUsr").val(obj2.add_usrid);
+
+	if(obj2.blk_ip_ed != "undefined" && obj2.blk_ip_ed != null ){
+		var edip = obj2.blk_ip_ed.split(".");
+		$("#inDpIp1Ed").val(edip[0]);
+		$("#inDpIp2Ed").val(edip[1]);
+		$("#inDpIp3Ed").val(edip[2]);
+		$("#inDpIp4Ed").val(edip[3]);	
+	}
+// 	var ipEd = obj2.blk_ip_ed.split(".");
+	
 }
 
 /*********************************************************
@@ -123,6 +133,7 @@ function fn_Insert(){
 		
 		var dpIpData = new Object();
 		dpIpData.blkIp				=	$("#inDpIp1").val()+"."+$("#inDpIp2").val()+"."+$("#inDpIp3").val()+"."+$("#inDpIp4").val();
+		dpIpData.blkIpEd			=	$("#inDpIp1Ed").val()+"."+$("#inDpIp2Ed").val()+"."+$("#inDpIp3Ed").val()+"."+$("#inDpIp4Ed").val();
 		dpIpData.blkIpTyp		=	dpIpType;
 		
 		dpIpData.blkIpCidr		=	$("#inDpIpCidr").val();
@@ -181,11 +192,25 @@ function fn_radio(val){
 	if(val=="01"){
 		$("input:radio[name='ipTyChk']:radio[value='01']").prop('checked', true);
 		$("input:radio[name='ipTyChk']:radio[value='02']").prop('checked', false);
-		$("#inDpIpCidr").css("visibility","hidden");
+		$("input:radio[name='ipTyChk']:radio[value='03']").prop('checked', false);
+		$("#dpIp_cidr").css("visibility","hidden");
+		$("#dpIp_ed").css("visibility","hidden");
 	}else if(val=="02"){
 		$("input:radio[name='ipTyChk']:radio[value='01']").prop('checked', false);
 		$("input:radio[name='ipTyChk']:radio[value='02']").prop('checked', true);
-		$("#inDpIpCidr").css("visibility","visible");
+		$("input:radio[name='ipTyChk']:radio[value='03']").prop('checked', false);
+		$("#dpIp_cidr").css("visibility","visible");
+		$("#dpIp_ed").css("visibility","hidden");
+// 		$("#dpIp_cidr").css("display","block");
+// 		$("#dpIp_ed").css("display","none");
+	}else if(val=="03"){
+		$("input:radio[name='ipTyChk']:radio[value='01']").prop('checked', false);
+		$("input:radio[name='ipTyChk']:radio[value='02']").prop('checked', false);
+		$("input:radio[name='ipTyChk']:radio[value='03']").prop('checked', true);
+		$("#dpIp_cidr").css("visibility","hidden");
+		$("#dpIp_ed").css("visibility","visible");
+// 		$("#dpIp_cidr").css("display","none");
+// 		$("#dpIp_ed").css("display","block");
 	}
 }
 
@@ -208,15 +233,26 @@ function fn_radio(val){
 			<th><label for="inDpIp">IP</label> <span class="pilsu">*</span></th>
 			<td class="left">
 				<input type="radio" name="ipTyChk" id="ipTyChk1" value="01" checked="checked" onclick="fn_radio(this.value,'con');">&nbsp;IP4&nbsp;&nbsp;
-				<input type="radio" name="ipTyChk" id="ipTyChk2" value="02" onclick="fn_radio(this.value,'con');">&nbsp;IP4(CIDR)
+				<input type="radio" name="ipTyChk" id="ipTyChk2" value="02" onclick="fn_radio(this.value,'con');">&nbsp;IP4(서브넷)&nbsp;&nbsp;
+				<input type="radio" name="ipTyChk" id="ipTyChk3" value="03" onclick="fn_radio(this.value,'con');">&nbsp;IP4(범위)&nbsp;&nbsp;
 				<br><br>
-				<p>
+				<span id= "dpIp">
 					<input id="inDpIp1" name="inDpIp1" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/> . 
 					<input id="inDpIp2" name="inDpIp2" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/> . 
 					<input id="inDpIp3" name="inDpIp3" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/> . 
-					<input id="inDpIp4" name="inDpIp4" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>&nbsp;
+					<input id="inDpIp4" name="inDpIp4" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
+				</span>
+				<span id= "dpIp_cidr">	
+					&nbsp; / &nbsp;
 					<input id="inDpIpCidr" name="inDpIpCidr" title="CIDR" type="text" value="" size="20" maxlength="2" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
-				</p>
+				 </span>
+				<span id= "dpIp_ed">
+					&nbsp;~&nbsp;
+					<input id="inDpIp1Ed" name="inDpIp1Ed" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/> . 
+					<input id="inDpIp2Ed" name="inDpIp2Ed" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/> . 
+					<input id="inDpIp3Ed" name="inDpIp3Ed" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/> . 
+					<input id="inDpIp4Ed" name="inDpIp4Ed" title="IP" type="text" value="" size="20" maxlength="3" style="width:5%;" onKeyup="this.value=this.value.replace(/[^0-9]/g,'');"/>
+				</span>
 			</td>
 		</tr>
 		

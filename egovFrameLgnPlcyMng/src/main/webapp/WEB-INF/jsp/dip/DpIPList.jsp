@@ -55,6 +55,8 @@ function fn_Select(){
 	 	
 	 	if(arr[i].blk_ip_typ == "02"){
 		 	strIp = arr[i].blk_ip+" / "+arr[i].blk_ip_cidr;
+		}else if(arr[i].blk_ip_typ == "03"){
+		 	strIp = arr[i].blk_ip+" ~ "+arr[i].blk_ip_ed;
 		}else {
 			strIp = arr[i].blk_ip;
 		}

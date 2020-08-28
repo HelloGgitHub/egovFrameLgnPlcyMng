@@ -20,24 +20,36 @@ public class LoginPolicyDpIpVo {
 
 	private String blkIp;
 	private String blkIpCidr;
+	private String blkIpEd;
 	private String blkIpTyp;
 	private String blkIpNm;
 	private String blkIpDc;
 	private String addUsrid;
 	
 	
-	
-	public String getBlkIpTyp() {
-		return blkIpTyp;
+	public String getBlkIp() {
+		return blkIp;
 	}
-	public void setBlkIpTyp(String blkIpTyp) {
-		this.blkIpTyp = blkIpTyp;
+	public void setBlkIp(String blkIp) {
+		this.blkIp = blkIp;
 	}
 	public String getBlkIpCidr() {
 		return blkIpCidr;
 	}
 	public void setBlkIpCidr(String blkIpCidr) {
 		this.blkIpCidr = blkIpCidr;
+	}
+	public String getBlkIpEd() {
+		return blkIpEd;
+	}
+	public void setBlkIpEd(String blkIpEd) {
+		this.blkIpEd = blkIpEd;
+	}
+	public String getBlkIpTyp() {
+		return blkIpTyp;
+	}
+	public void setBlkIpTyp(String blkIpTyp) {
+		this.blkIpTyp = blkIpTyp;
 	}
 	public String getBlkIpNm() {
 		return blkIpNm;
@@ -50,12 +62,6 @@ public class LoginPolicyDpIpVo {
 	}
 	public void setBlkIpDc(String blkIpDc) {
 		this.blkIpDc = blkIpDc;
-	}
-	public String getBlkIp() {
-		return blkIp;
-	}
-	public void setBlkIp(String blkIp) {
-		this.blkIp = blkIp;
 	}
 	public String getAddUsrid() {
 		return addUsrid;

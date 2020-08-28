@@ -19,9 +19,10 @@ public class COMTNBLKIPMNGR implements Serializable {
 	/***************************************
 		 CREATE TABLE COMTNBLKIPMNGR
 		 (
-		 	BLK_IP VARCHAR(23) NOT NULL COMMENT '차단IP',
+		 	BLK_IP VARCHAR(23) NOT NULL COMMENT '차단IP(시작)',
 		 	BLK_IP_TYP VARCHAR(2) NOT NULL COMMENT '차단IP표시방법',
 		 	BLK_IP_CIDR VARCHAR(2) COMMENT '차단IPCIDR',
+		 	BLK_IP_ED VARCHAR(23) COMMENT '차단IP(범위 종료)',
 		 	BLK_IPNM VARCHAR(100) COMMENT '차단IP명',
 		 	BLK_IPDC VARCHAR(500) COMMENT '차단IP설명',
 		 	ADD_USRID VARCHAR(20) NOT NULL COMMENT '등록자ID',
@@ -31,7 +32,7 @@ public class COMTNBLKIPMNGR implements Serializable {
 	 ***************************************/
 	
     @Id
-	@Column(columnDefinition = "VARCHAR(23) NOT NULL COMMENT '차단IP'")
+	@Column(columnDefinition = "VARCHAR(23) NOT NULL COMMENT '차단IP(시작)'")
     private String BLK_IP;
 
     @Id
@@ -40,6 +41,9 @@ public class COMTNBLKIPMNGR implements Serializable {
 
     @Column(columnDefinition = "VARCHAR(2) COMMENT '차단IPCIDR'")
     private String BLK_IP_CIDR;
+
+    @Column(columnDefinition = "VARCHAR(23) COMMENT '차단IP(범위 종료)'")
+    private String BLK_IP_ED;
 
     @Column(columnDefinition = "VARCHAR(100) COMMENT '차단IP명'")
     private String BLK_IPNM;

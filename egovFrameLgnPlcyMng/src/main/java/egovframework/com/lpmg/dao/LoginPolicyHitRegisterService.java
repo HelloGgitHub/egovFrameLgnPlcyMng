@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import egovframework.com.cmm.ComUtil;
+import egovframework.com.cmm.IpCheckUtil;
 
 /**
  * @title : 로그인 정책 적중이력 관리 Service 
@@ -182,14 +183,16 @@ public class LoginPolicyHitRegisterService {
 					
 					//IP4방식으로 입력된 항목들 비교_SQL
 					rtnSqlMap.clear();
+					//1:1 비교
 					rtnSqlMap = mapper.selectUserIpCk(param);
 					if(Integer.parseInt(rtnSqlMap.get("cnt").toString()) > 0) {
 						htYn = true;
 						dpCk = true;
 					}
 					
+					//CIDR(서브넷) 비교
 					if(dpCk == false) {
-						//CIDR 방식으로 입력된 항목 비교
+						//CIDR(서브넷) 방식으로 입력된 항목 비교
 						List<HashMap<String, Object>> ipList = new ArrayList<HashMap<String, Object>> ();
 						ipList = mapper.selectCidrIpList(param);
 						
@@ -208,6 +211,27 @@ public class LoginPolicyHitRegisterService {
 						}
 					}
 					
+					//range 비교
+					if(dpCk == false) {
+						//range 방식으로 입력된 항목 비교
+						List<HashMap<String, Object>> ipList = new ArrayList<HashMap<String, Object>> ();
+						ipList = mapper.selectRngIpList(param);
+						IpCheckUtil ipRngCk = new IpCheckUtil(); 
+						
+						for(int j = 0; j < ipList.size(); j++) {
+							HashMap<String, Object> rngList = new HashMap<String, Object>();
+							rngList = ipList.get(j);
+							
+							dpCk = ipRngCk.ipCheck(param.get("LGINIP").toString(), rngList.get("blk_ip").toString(), rngList.get("blk_ip_ed").toString());
+						
+							if(dpCk == true) {
+								htYn = true;
+								break;
+							}
+						}
+					}
+					
+					/* 접근차단 대상 IP일 경우 접근 이력 저장 */
 					if(dpCk == true) {
 						param.put("PLCYID", "POLCY002"); //IDPW 오류횟수 저장
 						param.put("POLICYHITDT", ComUtil.getTime("yyyyMMddHHmmss"));

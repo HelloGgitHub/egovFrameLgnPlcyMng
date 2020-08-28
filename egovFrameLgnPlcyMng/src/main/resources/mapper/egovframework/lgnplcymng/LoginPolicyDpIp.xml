@@ -6,6 +6,7 @@
 			SELECT BLK_IP as "blk_ip" 
 			     , BLK_IP_TYP as "blk_ip_typ"
 			     , BLK_IP_CIDR as "blk_ip_cidr"
+			     , BLK_IP_ED as "blk_ip_ed"
 			     , BLK_IPNM as "blk_ipnm"
 			     , BLK_IPDC as "blk_ipdc"
 			     , ADD_USRID as "add_usrid"
@@ -17,6 +18,7 @@
 			SELECT BLK_IP as "blk_ip"
 			     , BLK_IP_TYP as "blk_ip_typ"
 			     , BLK_IP_CIDR as "blk_ip_cidr"
+			     , BLK_IP_ED as "blk_ip_ed"
 			     , BLK_IPNM as "blk_ipnm"
 			     , BLK_IPDC as "blk_ipdc"
 			     , ADD_USRID as "add_usrid"
@@ -39,6 +41,7 @@
 				 BLK_IP
 				, BLK_IP_TYP
 				, BLK_IP_CIDR
+				, BLK_IP_ED
 				, BLK_IPNM
 			    , BLK_IPDC
 				, ADD_USRID
@@ -47,6 +50,7 @@
 				  #{BLKIP}
 				, #{BLKIPTYP}
 				, #{BLKIPCIDR}
+				, #{BLKIPED}
 				, #{BLKNM}
 				, #{BLKDC}
 				, #{ADUSR}

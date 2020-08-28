@@ -42,10 +42,12 @@ public interface LoginPolicyHitRegisterDao {
 	List<HashMap<String, Object>> selectLgPlcyList(Map<Object, Object> param);
 	//ID/PW체크
 	HashMap<String, Object> selectUserPwCk(Map<Object, Object> param);
-	//IP체크
+	//IP체크(1:1)
 	HashMap<String, Object> selectUserIpCk(Map<Object, Object> param);
-	//IP(CIDR)체크
+	//IP(CIDR:서브넷)체크
 	List<HashMap<String, Object>> selectCidrIpList(Map<Object, Object> param);
+	//IP(범위)체크
+	List<HashMap<String, Object>> selectRngIpList(Map<Object, Object> param);
 		
 	//정책오류 횟수확인
 	HashMap<String, Object> selectUserPwErCnt(Map<Object, Object> param);

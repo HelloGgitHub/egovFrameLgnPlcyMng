@@ -90,6 +90,12 @@
 			  FROM COMTNBLKIPMNGR
 			 WHERE BLK_IP_TYP = '02' 
     </select>    
+    <select id="selectRngIpList"  parameterType="Map" resultType="hashMap">
+			SELECT BLK_IP as "blk_ip"
+			     , BLK_IP_ED as "blk_ip_ed"
+			  FROM COMTNBLKIPMNGR
+			 WHERE BLK_IP_TYP = '03' 
+    </select>
     <select id="selectUserPwErCnt"  parameterType="Map" resultType="hashMap">
 			SELECT COUNT(*) as "cnt" 
 			  FROM COMTNLOGINPOLICYHITHISTORY

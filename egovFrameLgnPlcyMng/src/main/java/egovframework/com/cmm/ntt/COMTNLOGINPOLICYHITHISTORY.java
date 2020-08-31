@@ -23,6 +23,7 @@ public class COMTNLOGINPOLICYHITHISTORY implements Serializable {
 		 	POLICY_ID VARCHAR(20) NOT NULL COMMENT '정책ID',
 		 	POLICY_HIT_DT VARCHAR(20) NOT NULL COMMENT '정책적중 일시',
 		 	LOGIN_IP VARCHAR(23) COMMENT '접속IP',
+		 	BLK_YN VARCHAR(1) COMMENT '차단대상여부',
 		 	LOGIN_IP_CNTR VARCHAR(10) COMMENT '접속IP 국가',
 		 	PRIMARY KEY (USR_ID, POLICY_ID, POLICY_HIT_DT)
 		 ) COMMENT '로그인정책 적중이력' ;
@@ -39,6 +40,9 @@ public class COMTNLOGINPOLICYHITHISTORY implements Serializable {
     @Id
     @Column(columnDefinition = "VARCHAR(20) NOT NULL COMMENT '정책적중 일시'")
     private String POLICY_HIT_DT;
+
+    @Column(columnDefinition = "VARCHAR(1) COMMENT '차단대상여부'")
+    private String BLK_YN;
 
     @Column(columnDefinition = "VARCHAR(23) COMMENT '접속IP'")
     private String LOGIN_IP;

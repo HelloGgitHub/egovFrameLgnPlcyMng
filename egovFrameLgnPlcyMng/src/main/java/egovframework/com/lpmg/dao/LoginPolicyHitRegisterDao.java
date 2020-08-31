@@ -55,6 +55,8 @@ public interface LoginPolicyHitRegisterDao {
 	List<HashMap<String, Object>> selectUserDetail(Map<Object, Object> param);
 	//적중이력 삭제
 	int deleteHtlist(Map<Object, Object> param);
+	//적중이력 초기화
+	int blockCancelHtlist(Map<Object, Object> param);
 	
 	//whoisKey 조회
 	HashMap<String, String> selectWhoisKey(Map<Object, Object> param);

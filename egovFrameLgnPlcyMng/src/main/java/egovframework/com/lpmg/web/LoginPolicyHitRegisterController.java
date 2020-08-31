@@ -369,6 +369,46 @@ public class LoginPolicyHitRegisterController {
 
 	
 	/**
+	 * @name : LgPlcyHitRgtPlcyBlockCancel(로그인 정책 적중 차단 해지)
+	 * @date : 2020. 8. 31.
+	 * @author : "egov"
+	 * @return_type : String
+	 * @desc : 로그인 정책/사용자 기준으로 차단 대상에서 해지 한다. 
+	 */
+	@ApiOperation(value = "로그인 정책 차단 대상 해지", notes = "로그인 정책/사용자 기준으로 차단 대상에서 해지 한다.")
+	@PostMapping(path = "/blckCl")
+	public String LgPlcyHitRgtPlcyBlockCancel(@RequestBody LoginPolicyHitRegisterVo param) throws Exception {
+		
+		String rtn = "";
+		ObjectMapper om = new ObjectMapper();
+		Map<Object, Object> rtnMap = new HashMap<Object, Object>();
+		try {
+			//입력값 파라미터 정의
+			Map<Object, Object> sqlInpt = new HashMap<Object, Object>();
+			sqlInpt.put("PLCYID", URLDecoder.decode(param.getPlcyId()	,"UTF-8"));
+			sqlInpt.put("USRID",	 URLDecoder.decode(param.getUsrId()		,"UTF-8"));
+			
+			int inputCnt = lgnPlcyHitRegstService.blockCancelHtlist(sqlInpt);
+
+			if(inputCnt > 0) {
+				rtnMap.put("RESULTCD", "0");
+				rtnMap.put("RESULTMSG", "정상 처리 되었습니다.");
+			}else {
+				rtnMap.put("RESULTCD", "1");
+				rtnMap.put("RESULTMSG", "초기화 할 이력이 없습니다.");
+			}
+		}catch (Exception e) {
+			rtnMap.put("RESULTCD", "1");
+			rtnMap.put("RESULTMSG", "처리중 오류가 발생하였습니다.");
+			e.printStackTrace();
+		}
+
+		rtn = om.writeValueAsString(rtnMap);
+		return rtn;
+	}
+
+	
+	/**
 	 * @name : LgPlcyHitRgtMsg(로그인 정책 적중이력 조회)
 	 * @date : 2020. 6. 15.
 	 * @author : "egov"
@@ -376,9 +416,6 @@ public class LoginPolicyHitRegisterController {
 	 * @desc : 로그인 정책 적중내용을 조회한다.
 	 */
 	@ApiOperation(value = "로그인 정책 적중내용 조회")
-    @ApiImplicitParams({
-    	@ApiImplicitParam(name = "userId", value = "사용자ID", required = true, dataType = "string", paramType = "path", defaultValue = "")
-    })
 	@PostMapping(path = "/detailMsg")
 	public String LgPlcyHitRgtMsg(@RequestBody LoginPolicyHitRegisterVo param) throws Exception {
 		String rtn = "";
@@ -389,9 +426,13 @@ public class LoginPolicyHitRegisterController {
 		String ip = req.getHeader("X-FORWARDED-FOR");
 		if (ip == null){
 			ip = req.getRemoteAddr();
+			if("0:0:0:0:0:0:0:1".equals(ip)) {  //local 일때
+				ip="127.0.0.1";
+			}
 		}
 		
 		log.info("CLIENT IP CK :: " + ip);
+
 //		log.debug("HOST IP :: " + Inet4Address.getLocalHost().getHostAddress());
 		
 		try {

@@ -43,6 +43,7 @@ function fn_Select(){
  	ihtml = ihtml + '<th><input type="checkbox" name="checkAll" id="checkAll" class="check2" onclick="javascript:fncCheckAll()" title="전체선택체크박스"></th>';
  	ihtml = ihtml + '<th class="board_th_link">사용자ID</th>';
  	ihtml = ihtml + '<th>정책명</th>';
+ 	ihtml = ihtml + '<th>로그인 제한여부</th>';
  	ihtml = ihtml + '<th>적중횟수</th>';
  	ihtml = ihtml + '</tr>';
  	ihtml = ihtml + '</thead>';
@@ -59,6 +60,7 @@ function fn_Select(){
 	 	ihtml = ihtml + '</td>';
    	 	ihtml = ihtml + '<td><a onclick="fn_SelectDetail(\''+arr[i].usr_id+'\',\''+arr[i].policy_id+'\')">'+arr[i].usr_id+'</a></td>';
    	 	ihtml = ihtml + '<td id="plcyNm_'+(i+1)+'" name="plcyNm_'+(i+1)+'">'+arr[i].policy_nm+'</td>';
+   	 	ihtml = ihtml + '<td id="plcyBlkYn_'+(i+1)+'" name="plcyBlkYn_'+(i+1)+'">'+arr[i].blkyn+'</td>';
    	 	ihtml = ihtml + '<td id="plcyHtCnt_'+(i+1)+'" name="plcyHtCnt_'+(i+1)+'">'+arr[i].cnt+'</td>';
 	 	ihtml = ihtml + '</tr>';
 	 	cnt++;
@@ -66,7 +68,7 @@ function fn_Select(){
     
     if(cnt == 0){
     	ihtml = ihtml + '<tr>';
-	 	ihtml = ihtml + '<td colspan=5> 조회 결과가 없습니다</td>';
+	 	ihtml = ihtml + '<td colspan=6> 조회 결과가 없습니다</td>';
 	 	ihtml = ihtml + '</tr>';
     }
     
@@ -85,9 +87,9 @@ function fn_SelectDetail(userId, plcyId){
 }
 
 /*********************************************************
- * 정책 삭제
+ * 로그인 접근 차단 해지
  ******************************************************** */
-function fn_Delete(){
+function fn_BlkCancel(){
 	var ckId = new Array();
 	ckId = checkFieldck();
 	
@@ -96,10 +98,10 @@ function fn_Delete(){
 		var rtnData = new Object();
 		var paramData = new Object();
 		paramData.plcyId = $("#plcyid_"+ckNum).val();
-		paramData.userId = $("#id_"+ckNum).val();
+		paramData.usrId = $("#id_"+ckNum).val();
 
 		//API호출
-		rtnData = fn_calApi("DELETE", "/lgHRgt/clean", paramData, false);
+		rtnData = fn_calApi("POST", "/lgHRgt/blckCl", paramData, false);
 	}
 	fn_Select();
 }
@@ -153,7 +155,7 @@ function fncCheckAll(){
 			<li>
 				<input class="s_input" name="searchKeyword" id="searchKeyword" type="text"  size="35" title="검색어 입력" value=''  maxlength="255" >
 				<input type="button" class="s_btn" onClick="fn_Select();" 	value="조회" title="조회 버튼" />
-				<input type="button" class="s_btn" onClick="fn_Delete();" 	value="삭제" title="삭제 버튼" />
+				<input type="button" class="s_btn" onClick="fn_BlkCancel();" 	value="로그인차단 해지" title="로그인 차단 해지 버튼" />
 			</li>
 		</ul>
 	</div>

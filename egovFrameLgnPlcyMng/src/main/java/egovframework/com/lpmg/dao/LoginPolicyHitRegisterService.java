@@ -136,7 +136,16 @@ public class LoginPolicyHitRegisterService {
         return mapper.deleteHtlist(param);
     }
 
-	
+	/**
+	 * @name : blockCancelHtlist(로그인 정책적중이력 초기화)
+	 * @date : 2020. 8. 31.
+	 * @author : "egov"
+	 * @return_type : int
+	 */
+	public int blockCancelHtlist(Map<Object, Object> param) {
+        return mapper.blockCancelHtlist(param);
+    }
+
 	/**
 	 * @name : selectLgPlcyHitlMsg(로그인 적중 이력 메시지 출력)
 	 * @date : 2020. 6. 15.
@@ -166,10 +175,11 @@ public class LoginPolicyHitRegisterService {
 					//사용자 ID/PW조회
 					idpwCk = true;
 					param.put("PLCYID", "POLCY001"); //IDPW 오류횟수 체크
+					param.put("BLKYN", "Y");
 					param.put("LOGINIPCNTR", "-");
 					rtnSqlMap.clear();
 					rtnSqlMap = mapper.selectUserPwErCnt(param);
-					if(Integer.parseInt(rtnSqlMap.get("cnt").toString()) > Integer.parseInt(listMap.get("policy_htmxcnt").toString())) {//오류 횟수 카운트
+					if(Integer.parseInt(rtnSqlMap.get("cnt").toString()) >= Integer.parseInt(listMap.get("policy_htmxcnt").toString())) {//오류 횟수 카운트
 						htYn = true;
 						rtnMap.put("MSG", "패스워드 오류 횟수가 총 " + listMap.get("policy_htmxcnt") + "회를 초과하여 ID가 잠겼습니다.\n관리자에게 문의하세요.");
 						rtnMap.put("CKCD", "1");
@@ -186,8 +196,10 @@ public class LoginPolicyHitRegisterService {
 					//1:1 비교
 					rtnSqlMap = mapper.selectUserIpCk(param);
 					if(Integer.parseInt(rtnSqlMap.get("cnt").toString()) > 0) {
-						htYn = true;
 						dpCk = true;
+						if("Y".equals(listMap.get("policy_appy_yn"))) {  //IP 차단이력 남기고 정책 해지시킬 수 있음
+							htYn = true;
+						}
 					}
 					
 					//CIDR(서브넷) 비교
@@ -205,15 +217,17 @@ public class LoginPolicyHitRegisterService {
 							dpCk = subnetUtils.getInfo().isInRange(param.get("LGINIP").toString());
 						
 							if(dpCk == true) {
-								htYn = true;
+								if("Y".equals(listMap.get("policy_appy_yn"))) {  //IP 차단이력 남기고 정책 해지시킬 수 있음
+									htYn = true;
+								}
 								break;
 							}
 						}
 					}
 					
-					//range 비교
+					//범위 비교
 					if(dpCk == false) {
-						//range 방식으로 입력된 항목 비교
+						//범위 방식으로 입력된 항목 비교
 						List<HashMap<String, Object>> ipList = new ArrayList<HashMap<String, Object>> ();
 						ipList = mapper.selectRngIpList(param);
 						IpCheckUtil ipRngCk = new IpCheckUtil(); 
@@ -225,7 +239,9 @@ public class LoginPolicyHitRegisterService {
 							dpCk = ipRngCk.ipCheck(param.get("LGINIP").toString(), rngList.get("blk_ip").toString(), rngList.get("blk_ip_ed").toString());
 						
 							if(dpCk == true) {
-								htYn = true;
+								if("Y".equals(listMap.get("policy_appy_yn"))) {  //IP 차단이력 남기고 정책 해지시킬 수 있음
+									htYn = true;
+								}
 								break;
 							}
 						}
@@ -236,10 +252,13 @@ public class LoginPolicyHitRegisterService {
 						param.put("PLCYID", "POLCY002"); //IDPW 오류횟수 저장
 						param.put("POLICYHITDT", ComUtil.getTime("yyyyMMddHHmmss"));
 						param.put("LOGINIPCNTR", "-");
+						param.put("BLKYN", "Y");
 						mapper.insertLgPlcyHitRgst(param);
 						
-						rtnMap.put("MSG", "접근차단대상 위치에서 접속하고 계십니다. \n로그인에 실패 하였습니다.\n관리자에게 문의하세요.");
-						rtnMap.put("CKCD", "1");
+						if("Y".equals(listMap.get("policy_appy_yn"))) {  //IP 차단이력 남기고 정책 해지시킬 수 있음
+							rtnMap.put("MSG", "접근차단대상 위치에서 접속하고 계십니다. \n로그인에 실패 하였습니다.\n관리자에게 문의하세요.");
+							rtnMap.put("CKCD", "1");
+						}
 					}
 					
 				}
@@ -248,6 +267,7 @@ public class LoginPolicyHitRegisterService {
 				if(htYn==false && "POLCY003".equals(listMap.get("policy_id"))) {
 					param.put("PLCYID", "POLCY003"); //IDPW 오류횟수 저장
 					param.put("POLICYHITDT", ComUtil.getTime("yyyyMMddHHmmss"));
+					param.put("BLKYN", "Y");
 					
 					String data = mapper.selectWhoisKey(param).get("key");
 					ObjectMapper om = new ObjectMapper();
@@ -295,7 +315,7 @@ public class LoginPolicyHitRegisterService {
 			}else if(param.get("USRPW").equals(rtnSqlMap.get("password"))) {  //IDPW값이 저장된 값이랑 다를때
 				List<HashMap<String, Object>> usrDt = new ArrayList<HashMap<String, Object>>();
 				param.put("PLCYID", "POLCY001"); //IDPW 오류횟수 저장
-				mapper.deleteHtlist(param); //정상 로그인 시 이전 패스워드 실패 이력 삭제
+				mapper.blockCancelHtlist(param); //정상 로그인 시 이전 패스워드 실패 이력 삭제
 				usrDt = mapper.selectUserDetail(param);
 				rtnMap.put("list", usrDt);
 				rtnMap.put("MSG", param.get("USRID") + "님 환영합니다.");

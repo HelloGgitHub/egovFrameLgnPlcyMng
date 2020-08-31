@@ -36,6 +36,7 @@ function fn_Select(){
  	ihtml = ihtml + '<th>정책명</th>';
  	ihtml = ihtml + '<th>적중일시</th>';
  	ihtml = ihtml + '<th>접근 IP</th>';
+ 	ihtml = ihtml + '<th>차단대상 횟수<br>여부</th>';
  	ihtml = ihtml + '<th>위치(국가)</th>';
  	ihtml = ihtml + '</tr>';
  	ihtml = ihtml + '</thead>';
@@ -51,6 +52,7 @@ function fn_Select(){
    	 	ihtml = ihtml + '<td style="text-align: left;padding-left: 30px;" id="plcyNm_'+(i+1)+'" name="plcyNm_'+(i+1)+'">'+arr[i].policy_nm+'</td>';
    	 	ihtml = ihtml + '<td id="plcyHtDt_'+(i+1)+'" name="plcyHtDt_'+(i+1)+'">'+arr[i].policy_hit_dt+'</td>';
    		ihtml = ihtml + '<td id="lgnIp_'+(i+1)+'" name="lgnIp_'+(i+1)+'">'+arr[i].login_ip+'</td>';
+   		ihtml = ihtml + '<td id="blkyn_'+(i+1)+'" name="blkyn_'+(i+1)+'">'+arr[i].blk_yn+'</td>';
    		ihtml = ihtml + '<td id="lgnIpCntr_'+(i+1)+'" name="lgnIpCntr_'+(i+1)+'">'+arr[i].login_ip_cntr+'</td>';
 	 	ihtml = ihtml + '</tr>';
 	 	cnt++;
@@ -58,7 +60,7 @@ function fn_Select(){
 
     if(cnt == 0){
     	ihtml = ihtml + '<tr>';
-	 	ihtml = ihtml + '<td colspan=6> 조회 결과가 없습니다</td>';
+	 	ihtml = ihtml + '<td colspan=7> 조회 결과가 없습니다</td>';
 	 	ihtml = ihtml + '</tr>';
     }
     
